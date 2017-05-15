@@ -2,3 +2,7 @@ events.csv
 events.json
 node_modules
 public/dist
+.env
+backend/venv
+backend/__pycache__
+*.pyc
