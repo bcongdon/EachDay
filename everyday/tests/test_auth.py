@@ -11,7 +11,7 @@ class TestAuthRoutes(BaseTestCase):
         """ Test for user registration """
         with self.client:
             response = self.client.post(
-                '/user',
+                '/register',
                 data=json.dumps(dict(
                     email='foo@bar.com',
                     password='123456'
@@ -35,7 +35,7 @@ class TestAuthRoutes(BaseTestCase):
         db.session.commit()
         with self.client:
             response = self.client.post(
-                '/user',
+                '/register',
                 data=json.dumps(dict(
                     email='foo@bar.com',
                     password='123456'
@@ -54,7 +54,7 @@ class TestAuthRoutes(BaseTestCase):
         with self.client:
             # user registration
             resp_register = self.client.post(
-                '/user',
+                '/register',
                 data=json.dumps(dict(
                     email='joe@gmail.com',
                     password='123456'
@@ -91,7 +91,7 @@ class TestAuthRoutes(BaseTestCase):
         with self.client:
             # user registration
             resp_register = self.client.post(
-                '/user',
+                '/register',
                 data=json.dumps(dict(
                     email='joe@gmail.com',
                     password='123456'

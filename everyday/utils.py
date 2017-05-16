@@ -17,3 +17,12 @@ def send_success(message, code=200, **kwargs):
     }
     payload.update(kwargs)
     return make_response(jsonify(payload), code)
+
+
+def send_data(data, code=200, **kwargs):
+    payload = {
+        'status': 'success',
+        'data': data,
+    }
+    payload.update(kwargs)
+    return make_response(jsonify(payload), code)

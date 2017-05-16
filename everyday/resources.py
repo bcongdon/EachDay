@@ -1,23 +1,42 @@
-from flask import jsonify
-from flask_restful import Resource, reqparse
+from flask import jsonify, request
+from flask_restful import Resource, reqparse, wraps
 from .models import User, Entry
-from .utils import send_error, send_success
+from .utils import send_error, send_success, send_data
 
 from everyday import db, bcrypt
 
 
-class UserResource(Resource):
-    def get(self, user_id=None):
-        if not user_id:
-            return [u.to_dict() for u in db.session.query(User).all()]
+def validate_auth(func):
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            auth_token = auth_header.split(" ")[1]
+        else:
+            return send_error('Please provide an auth token', 401)
 
+        resp = User.decode_auth_token(auth_token)
+        if not isinstance(resp, str):
+            user_id = resp
+            return func(user_id=user_id, *args, **kwargs)
+        else:
+            return send_error(resp, 401)
+    return wrapped
+
+
+class UserResource(Resource):
+    method_decorators = [validate_auth]
+
+    def get(self, user_id=None):
         user = db.session.query(User).filter_by(id=user_id).first()
         if not user:
-            send_error('Invalid user id', 404)
+            return send_error('Invalid user id', 404)
 
-        return jsonify(user.to_dict())
+        return send_data(user.to_dict())
 
-    def post(self, user_id=None):
+
+class RegisterResource(Resource):
+    def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('email', required=True)
         parser.add_argument('password', required=True)
@@ -28,9 +47,10 @@ class UserResource(Resource):
             return send_error('User already exists.', 202)
 
         user = User(email=args.email, password=args.password)
-        auth_token = user.encode_auth_token(user.id)
         db.session.add(user)
         db.session.commit()
+        
+        auth_token = user.encode_auth_token(user.id)
         return send_success('Successfully registered.', 201,
                             auth_token=auth_token.decode())
 
@@ -76,3 +96,10 @@ class EntryResource(Resource):
         db.session.commit()
 
         return jsonify(entry.to_dict())
+
+
+def create_apis(api):
+    api.add_resource(UserResource, '/user')
+    api.add_resource(EntryResource, '/entry/<int:entry_id>')
+    api.add_resource(LoginResource, '/login')
+    api.add_resource(RegisterResource, '/register')
