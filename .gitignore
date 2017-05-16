@@ -6,3 +6,4 @@ public/dist
 backend/venv
 backend/__pycache__
 *.pyc
+venv
