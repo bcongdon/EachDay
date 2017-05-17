@@ -108,6 +108,25 @@ class EntryResource(Resource):
 
         return send_data(entry.to_dict(), 201)
 
+    def put(self, entry_id, user_id=None):
+        parser = reqparse.RequestParser()
+        parser.add_argument('notes')
+        parser.add_argument('rating', type=validate_rating)
+        args = parser.parse_args()
+
+        entry = db.session.query(Entry).filter_by(
+            user_id=user_id, id=entry_id).first()
+
+        if not entry:
+            send_error('Invalid entry id', 404)
+
+        entry.notes = args.notes or entry.notes
+        entry.rating = args.rating or entry.rating
+        db.session.add(entry)
+        db.session.commit()
+
+        return send_data(entry.to_dict(), 200)
+
 
 def create_apis(api):
     api.add_resource(UserResource, '/user')

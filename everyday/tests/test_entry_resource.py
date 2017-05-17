@@ -125,6 +125,30 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(entry1.notes, data['data']['notes'])
         self.assertEqual(resp.status_code, 200)
 
+    def test_entry_editing(self):
+        entry1 = Entry(user_id=self.user.id, rating=1, notes='foobar')
+        db.session.add(entry1)
+        db.session.commit()
+
+        # Test editing an entry with PUT
+        resp = self.client.put(
+            '/entry/{}'.format(entry1.id),
+            data={
+                'rating': 10,
+                'notes': 'changed'
+            },
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            }
+        )
+        data = json.loads(resp.data.decode())
+        self.assertTrue(data['status'] == 'success')
+        self.assertIn('data', data)
+        self.assertEqual(entry1.id, data['data']['id'])
+        self.assertEqual(10, data['data']['rating'])
+        self.assertEqual('changed', data['data']['notes'])
+        self.assertEqual(resp.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
