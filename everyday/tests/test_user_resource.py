@@ -10,22 +10,24 @@ class TestUserModel(BaseTestCase):
         with self.client:
             resp_register = self.client.post(
                 '/register',
-                data=json.dumps(dict(
-                    email='joe@gmail.com',
-                    password='123456'
-                )),
+                data=json.dumps({
+                    'email': 'joe@gmail.com',
+                    'password': '123456'
+                }),
                 content_type='application/json'
             )
+            token = json.loads(resp_register.data.decode())['auth_token']
             response = self.client.get(
                 '/user',
-                headers=dict(
-                    Authorization='Bearer ' + json.loads(
-                        resp_register.data.decode()
-                    )['auth_token']
-                )
+                headers={
+                    'Authorization': 'Bearer ' + token
+                }
             )
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['data'] is not None)
             self.assertTrue(data['data']['email'] == 'joe@gmail.com')
             self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()

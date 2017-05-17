@@ -24,6 +24,13 @@ def validate_auth(func):
     return wrapped
 
 
+def validate_rating(rating):
+    rating = int(rating)
+    if not 1 <= rating <= 10:
+        raise ValueError('Rating must be between 1 and 10')
+    return rating
+
+
 class UserResource(Resource):
     method_decorators = [validate_auth]
 
@@ -49,7 +56,7 @@ class RegisterResource(Resource):
         user = User(email=args.email, password=args.password)
         db.session.add(user)
         db.session.commit()
-        
+
         auth_token = user.encode_auth_token(user.id)
         return send_success('Successfully registered.', 201,
                             auth_token=auth_token.decode())
@@ -75,31 +82,35 @@ class LoginResource(Resource):
 
 
 class EntryResource(Resource):
-    def get(self, entry_id=None):
-        if not entry_id:
-            return [e.to_dict() for e in db.session.query(Entry).all()]
+    method_decorators = [validate_auth]
 
-        entry = db.session.query(Entry).filter_by(id=entry_id).first()
+    def get(self, user_id=None, entry_id=None):
+        entries = db.session.query(Entry).filter_by(user_id=user_id)
+
+        if not entry_id:
+            return [e.to_dict() for e in entries.all()]
+
+        entry = entries.filter_by(id=entry_id).first()
         if not entry:
             send_error('Invalid entry id', 404)
 
         return jsonify(entry.to_dict())
 
-    def post(self, entry_id=None):
+    def post(self, user_id=None, entry_id=None):
         parser = reqparse.RequestParser()
         parser.add_argument('notes', required=True)
-        parser.add_argument('rating', type=int, require=True)
+        parser.add_argument('rating', type=validate_rating, required=True)
         args = parser.parse_args()
 
-        entry = Entry(notes=args.notes, rating=args.rating)
+        entry = Entry(notes=args.notes, rating=args.rating, user_id=user_id)
         db.session.add(entry)
         db.session.commit()
 
-        return jsonify(entry.to_dict())
+        return send_data(entry.to_dict(), 201)
 
 
 def create_apis(api):
     api.add_resource(UserResource, '/user')
-    api.add_resource(EntryResource, '/entry/<int:entry_id>')
+    api.add_resource(EntryResource, '/entry/<int:entry_id>', '/entry')
     api.add_resource(LoginResource, '/login')
     api.add_resource(RegisterResource, '/register')
