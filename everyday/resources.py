@@ -88,13 +88,13 @@ class EntryResource(Resource):
         entries = db.session.query(Entry).filter_by(user_id=user_id)
 
         if not entry_id:
-            return [e.to_dict() for e in entries.all()]
+            return send_data([e.to_dict() for e in entries.all()])
 
         entry = entries.filter_by(id=entry_id).first()
         if not entry:
             send_error('Invalid entry id', 404)
 
-        return jsonify(entry.to_dict())
+        return send_data(entry.to_dict())
 
     def post(self, user_id=None, entry_id=None):
         parser = reqparse.RequestParser()
