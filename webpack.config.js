@@ -15,7 +15,10 @@ var config = {
       {
         test : /\.js?/,
         include : APP_DIR,
-        loader : 'babel-loader'
+        loader : 'babel-loader',
+        query: {
+          presets: ['es2015', 'react', 'stage-2']
+        }
       },
       {
         test: /\.css$/,
@@ -26,7 +29,8 @@ var config = {
   devServer: {
     contentBase: path.join(__dirname, "public"),
     publicPath: "/dist/",
-    port: 9000
+    port: 9000,
+    historyApiFallback: true
   }
 };
 

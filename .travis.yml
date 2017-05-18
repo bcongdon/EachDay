@@ -7,7 +7,9 @@ before_script:
   - psql -c 'create database everyday_test;' -U postgres
 install:
   - pip install -r everyday/requirements.txt
+  - npm install
 script:
   - python manage.py test
+  - npm run lint
 env:
   - SECRET_KEY="super_secret_key"
