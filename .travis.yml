@@ -1,15 +1,24 @@
 language: python
-python:
-  - "3.6"
 services:
   - postgresql
 before_script:
   - psql -c 'create database everyday_test;' -U postgres
+python:
+  - "3.6"
 install:
   - pip install -r everyday/requirements.txt
-  - npm install
 script:
   - python manage.py test
-  - npm run lint
+
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - "node"
+      install:
+        - npm install
+      script:
+        - npm run lint
+
 env:
   - SECRET_KEY="super_secret_key"
