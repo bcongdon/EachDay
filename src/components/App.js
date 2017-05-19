@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
+import Logout from './auth/Logout'
 
 class App extends Component {
   render() {
@@ -7,6 +8,7 @@ class App extends Component {
       <div>
         <p>Header here</p>
 
+        <Logout />
         <div className='container'>
           {this.props.children}
         </div>
@@ -18,7 +20,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  children: PropTypes.element.isRequired
+  children: PropTypes.object
 }
 
 export default App

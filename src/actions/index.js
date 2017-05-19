@@ -13,12 +13,10 @@ export function errorHandler(dispatch, error, type) {
   let errorMessage = ''
 
   if (error.data && error.data.message) {
-    errorMessage = error.data.message
+    errorMessage = JSON.stringify(error.data.message)
   } else {
-    errorMessage = error.data
+    errorMessage = JSON.stringify(error.data)
   }
-
-  console.log(error)
 
   if (error.status === 403) {
     dispatch({

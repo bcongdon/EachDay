@@ -8,6 +8,7 @@ import reduxThunk from 'redux-thunk'
 import reducers from './reducers'
 import Cookies from 'universal-cookie'
 import { AUTH_USER } from './actions/types'
+import App from './components/App'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(reducers)
@@ -21,7 +22,9 @@ if (token) {
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      {routes}
+      <App>
+        {routes}
+      </App>
     </Router>
   </Provider>,
   document.getElementById('root')
