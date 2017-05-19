@@ -7,3 +7,4 @@ backend/venv
 backend/__pycache__
 *.pyc
 venv
+everyday.sublime-workspace

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { logoutUser } from '../../actions'
 import { PropTypes } from 'prop-types'
 
 class Logout extends Component {
   render() {
-    const { onLogoutClick } = this.props
-
     return (
-      <button onClick={() => onLogoutClick()} className='btn btn-primary'>
+      <button onClick={this.props.logoutUser} className='btn btn-primary'>
         Logout
       </button>
     )
@@ -14,7 +14,7 @@ class Logout extends Component {
 }
 
 Logout.propTypes = {
-  onLogoutClick: PropTypes.func
+  logoutUser: PropTypes.func.isRequired
 }
 
-export default Logout
+export default connect(null, { logoutUser })(Logout)

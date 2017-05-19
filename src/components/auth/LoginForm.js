@@ -9,7 +9,12 @@ const form = reduxForm({
   form: 'login'
 })
 
-class Login extends Component {
+class LoginForm extends Component {
+  constructor(props) {
+    super(props)
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+  }
+
   handleFormSubmit(formProps) {
     this.props.loginUser(formProps)
   }
@@ -25,11 +30,9 @@ class Login extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
-
     return (
       <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit)}>
+        <form onSubmit={this.props.handleSubmit(this.handleFormSubmit)}>
           {this.props.authenticated ? (<Redirect push to='/dashboard' />) : null}
           {this.renderAlert()}
           <div>
@@ -47,7 +50,7 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+LoginForm.propTypes = {
   loginUser: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
@@ -62,4 +65,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { loginUser })(form(Login))
+export default connect(mapStateToProps, { loginUser })(form(LoginForm))

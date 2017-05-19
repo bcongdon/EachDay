@@ -9,13 +9,15 @@ import reducers from './reducers'
 import Cookies from 'universal-cookie'
 import { AUTH_USER } from './actions/types'
 import App from './components/App'
+import jwtDecode from 'jwt-decode'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(reducers)
 
 const token = (new Cookies()).get('token')
 
-if (token) {
+// Check if token is available and non-expired
+if (token && jwtDecode(token) && jwtDecode(token).exp > Math.floor(Date.now() / 1000)) {
   store.dispatch({ type: AUTH_USER })
 }
 
