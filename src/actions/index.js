@@ -74,19 +74,21 @@ export function logoutUser() {
   }
 }
 
-export function protectedTest() {
+export function loadEntries() {
   return function(dispatch) {
     axios.get(`${API_URL}/entry`, {
-      headers: { 'Authorization': 'Bearer ' + cookie.load('token') }
+      headers: { 'Authorization': 'Bearer ' + cookie.get('token') }
     })
     .then(response => {
       dispatch({
         type: LOAD_ENTRIES,
-        payload: response.data.content
+        payload: response.data.data
       })
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      if(error) {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
+      }
     })
   }
 }
