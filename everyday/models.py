@@ -1,4 +1,5 @@
 from sqlalchemy.orm import validates
+from sqlalchemy import UniqueConstraint
 from everyday import app, db, bcrypt
 from datetime import datetime, timedelta
 import jwt
@@ -61,8 +62,11 @@ class Entry(db.Model):
     __tablename__ = 'entry'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    date = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text)
     rating = db.Column(db.Integer)
+
+    __table_args__ = (UniqueConstraint('user_id', 'date'),)
 
     @validates('rating')
     def validate_rating(self, key, rating):
@@ -73,6 +77,7 @@ class Entry(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
+            'date': self.date,
             'notes': self.notes,
             'rating': self.rating
         }

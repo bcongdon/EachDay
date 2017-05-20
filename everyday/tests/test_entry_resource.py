@@ -3,6 +3,7 @@ import unittest
 from everyday import db
 from everyday.models import User, Entry
 from everyday.tests.base import BaseTestCase
+from datetime import date, timedelta
 
 import json
 
@@ -24,7 +25,8 @@ class TestEntryResource(BaseTestCase):
             '/entry',
             data=json.dumps({
                 'notes': 'Hello world',
-                'rating': 5
+                'rating': 5,
+                'date': '1-1-2017'
             }),
             content_type='application/json',
             headers={
@@ -39,11 +41,13 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(resp.status_code, 201)
 
     def test_entry_validation(self):
+        # Test rating validation
         resp = self.client.post(
             '/entry',
             data=json.dumps({
                 'notes': 'Hello world',
-                'rating': 11
+                'rating': 11,
+                'date': '1-1-2010'
             }),
             content_type='application/json',
             headers={
@@ -51,9 +55,27 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['message']['rating'])
+        self.assertTrue('rating' in data['message'])
         self.assertEqual(resp.status_code, 400)
 
+        # Test date validation
+        resp = self.client.post(
+            '/entry',
+            data=json.dumps({
+                'notes': 'Hello world',
+                'rating': 5,
+                'date': 'foobar'
+            }),
+            content_type='application/json',
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            }
+        )
+        data = json.loads(resp.data.decode())
+        self.assertTrue('date' in data['message'])
+        self.assertEqual(resp.status_code, 400)
+
+        # Test rating required
         resp = self.client.post(
             '/entry',
             data=json.dumps({
@@ -65,7 +87,6 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['message']['rating'])
         self.assertEqual(resp.status_code, 400)
 
     def test_entry_auth(self):
@@ -89,8 +110,11 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(resp.status_code, 401)
 
     def test_entry_getting(self):
-        entry1 = Entry(user_id=self.user.id, rating=1, notes='foobar')
-        entry2 = Entry(user_id=self.user.id, rating=2)
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today() + timedelta(days=1))
+        entry2 = Entry(user_id=self.user.id, rating=2, date=date.today())
         db.session.add(entry1)
         db.session.add(entry2)
         db.session.commit()
@@ -126,7 +150,10 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_entry_editing(self):
-        entry1 = Entry(user_id=self.user.id, rating=1, notes='foobar')
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today())
         db.session.add(entry1)
         db.session.commit()
 

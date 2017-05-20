@@ -1,7 +1,8 @@
-from flask import jsonify, request
+from flask import request
 from flask_restful import Resource, reqparse, wraps
 from .models import User, Entry
 from .utils import send_error, send_success, send_data
+from dateutil.parser import parse
 
 from everyday import db, bcrypt
 
@@ -29,6 +30,14 @@ def validate_rating(rating):
     if not 1 <= rating <= 10:
         raise ValueError('Rating must be between 1 and 10')
     return rating
+
+
+def validate_date(date):
+    try:
+        dt = parse(date)
+        return dt.date()
+    except:
+        raise ValueError('Invalid date')
 
 
 class UserResource(Resource):
@@ -98,11 +107,15 @@ class EntryResource(Resource):
 
     def post(self, user_id=None, entry_id=None):
         parser = reqparse.RequestParser()
+        parser.add_argument('date', type=validate_date, required=True)
         parser.add_argument('notes', required=True)
         parser.add_argument('rating', type=validate_rating, required=True)
         args = parser.parse_args()
 
-        entry = Entry(notes=args.notes, rating=args.rating, user_id=user_id)
+        entry = Entry(notes=args.notes,
+                      rating=args.rating,
+                      user_id=user_id,
+                      date=args.date)
         db.session.add(entry)
         db.session.commit()
 
