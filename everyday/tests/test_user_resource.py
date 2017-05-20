@@ -27,6 +27,7 @@ class TestUserModel(BaseTestCase):
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['data'] is not None)
             self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+            self.assertTrue('password' not in data['data'])
             self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':

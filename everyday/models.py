@@ -19,12 +19,6 @@ class User(db.Model):
             password, app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'email': self.email
-        }
-
     def encode_auth_token(self, user_id):
         """
         Generates an Auth Token
@@ -75,14 +69,6 @@ class Entry(db.Model):
         if not 1 <= rating <= 10:
             raise ValueError('Rating must be between 1 and 10')
         return rating
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'date': self.date.isoformat(),
-            'notes': self.notes,
-            'rating': self.rating
-        }
 
 
 class UserSchema(Schema):

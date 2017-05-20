@@ -38,7 +38,7 @@ class UserResource(Resource):
         if not user:
             return send_error('Invalid user id', 404)
 
-        return send_data(user.to_dict())
+        return send_data(UserSchema().dump(user).data)
 
 
 class RegisterResource(Resource):
@@ -85,13 +85,13 @@ class EntryResource(Resource):
         entries = db.session.query(Entry).filter_by(user_id=user_id)
 
         if not entry_id:
-            return send_data([e.to_dict() for e in entries.all()])
+            return send_data(EntrySchema(many=True).dump(entries.all()).data)
 
         entry = entries.filter_by(id=entry_id).first()
         if not entry:
             send_error('Invalid entry id', 404)
 
-        return send_data(entry.to_dict())
+        return send_data(EntrySchema().dump(entry).data)
 
     def post(self, user_id=None, entry_id=None):
         args, errors = EntrySchema().load(request.get_json())
@@ -102,7 +102,7 @@ class EntryResource(Resource):
         db.session.add(entry)
         db.session.commit()
 
-        return send_data(entry.to_dict(), 201)
+        return send_data(EntrySchema().dump(entry).data, 201)
 
     def put(self, entry_id, user_id=None):
         entry = db.session.query(Entry).filter_by(
@@ -111,19 +111,20 @@ class EntryResource(Resource):
         if not entry:
             send_error('Invalid entry id', 404)
 
-        entry_dict = entry.to_dict()
+        entry_dict = EntrySchema().dump(entry).data
         entry_dict.update(request.get_json())
 
         args, errors = EntrySchema().load(entry_dict)
         if errors:
             return send_error(errors)
 
-        db.session.query(Entry).filter_by(
-            user_id=user_id, id=entry_id).update(args)
+        for k, v in args.items():
+            setattr(entry, k, v)
 
+        db.session.add(entry)
         db.session.commit()
 
-        return send_data(entry.to_dict(), 200)
+        return send_data(EntrySchema().dump(entry).data, 200)
 
 
 def create_apis(api):
