@@ -86,7 +86,7 @@ export function loadEntries() {
       })
     })
     .catch((error) => {
-      if(error) {
+      if (error) {
         errorHandler(dispatch, error.response, AUTH_ERROR)
       }
     })

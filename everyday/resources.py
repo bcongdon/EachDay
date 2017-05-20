@@ -1,10 +1,15 @@
-from flask import request
-from flask_restful import Resource, reqparse, wraps
-from .models import User, Entry
+from flask import request, Request
+from flask_restful import Resource, wraps
+from .models import User, Entry, UserSchema, EntrySchema
 from .utils import send_error, send_success, send_data
-from dateutil.parser import parse
 
 from everyday import db, bcrypt
+
+
+def json_load_failed(self):
+    return send_error('Invalid json body')
+
+Request.on_json_load_failure = json_load_failed
 
 
 def validate_auth(func):
@@ -12,7 +17,7 @@ def validate_auth(func):
     def wrapped(*args, **kwargs):
         auth_header = request.headers.get('Authorization')
         if auth_header:
-            auth_token = auth_header.split(" ")[1]
+            auth_token = auth_header.split(' ')[1]
         else:
             return send_error('Please provide an auth token', 401)
 
@@ -23,21 +28,6 @@ def validate_auth(func):
         else:
             return send_error(resp, 401)
     return wrapped
-
-
-def validate_rating(rating):
-    rating = int(rating)
-    if not 1 <= rating <= 10:
-        raise ValueError('Rating must be between 1 and 10')
-    return rating
-
-
-def validate_date(date):
-    try:
-        dt = parse(date)
-        return dt.date()
-    except:
-        raise ValueError('Invalid date')
 
 
 class UserResource(Resource):
@@ -53,16 +43,15 @@ class UserResource(Resource):
 
 class RegisterResource(Resource):
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('email', required=True)
-        parser.add_argument('password', required=True)
-        args = parser.parse_args()
+        args, errors = UserSchema().load(request.get_json())
+        if errors:
+            return send_error(errors)
 
-        user = db.session.query(User).filter_by(email=args.email).first()
+        user = db.session.query(User).filter_by(email=args['email']).first()
         if user:
             return send_error('User already exists.', 202)
 
-        user = User(email=args.email, password=args.password)
+        user = User(**args)
         db.session.add(user)
         db.session.commit()
 
@@ -73,16 +62,15 @@ class RegisterResource(Resource):
 
 class LoginResource(Resource):
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('email', required=True)
-        parser.add_argument('password', required=True)
-        args = parser.parse_args()
+        args, errors = UserSchema().load(request.get_json())
+        if errors:
+            return send_error(errors)
 
-        user = db.session.query(User).filter_by(email=args.email).first()
+        user = db.session.query(User).filter_by(email=args['email']).first()
         if not user:
             return send_error('User does not exist.', 404)
 
-        if bcrypt.check_password_hash(user.password, args.password):
+        if bcrypt.check_password_hash(user.password, args['password']):
             auth_token = user.encode_auth_token(user.id)
             return send_success('Successfully logged in.', 200,
                                 auth_token=auth_token.decode())
@@ -106,36 +94,33 @@ class EntryResource(Resource):
         return send_data(entry.to_dict())
 
     def post(self, user_id=None, entry_id=None):
-        parser = reqparse.RequestParser()
-        parser.add_argument('date', type=validate_date, required=True)
-        parser.add_argument('notes', required=True)
-        parser.add_argument('rating', type=validate_rating, required=True)
-        args = parser.parse_args()
+        args, errors = EntrySchema().load(request.get_json())
+        if errors:
+            return send_error(errors)
 
-        entry = Entry(notes=args.notes,
-                      rating=args.rating,
-                      user_id=user_id,
-                      date=args.date)
+        entry = Entry(**args)
         db.session.add(entry)
         db.session.commit()
 
         return send_data(entry.to_dict(), 201)
 
     def put(self, entry_id, user_id=None):
-        parser = reqparse.RequestParser()
-        parser.add_argument('notes')
-        parser.add_argument('rating', type=validate_rating)
-        args = parser.parse_args()
-
         entry = db.session.query(Entry).filter_by(
             user_id=user_id, id=entry_id).first()
 
         if not entry:
             send_error('Invalid entry id', 404)
 
-        entry.notes = args.notes or entry.notes
-        entry.rating = args.rating or entry.rating
-        db.session.add(entry)
+        entry_dict = entry.to_dict()
+        entry_dict.update(request.get_json())
+
+        args, errors = EntrySchema().load(entry_dict)
+        if errors:
+            return send_error(errors)
+
+        db.session.query(Entry).filter_by(
+            user_id=user_id, id=entry_id).update(args)
+
         db.session.commit()
 
         return send_data(entry.to_dict(), 200)

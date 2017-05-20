@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as events from '../../events.json'
 import CalendarHeatmap from 'react-calendar-heatmap'
 import { chain } from 'lodash'
 import './Dashboard.css'
@@ -13,7 +12,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const values = chain(events)
+    const values = chain(this.props.entries)
     .map(e => {
       return {
         date: e.date,
@@ -25,7 +24,6 @@ class Dashboard extends Component {
     .value()
 
     return (
-      <div>
       <CalendarHeatmap
         endDate={new Date('12-31-2016')}
         numDays={366}
@@ -36,8 +34,6 @@ class Dashboard extends Component {
           }
           return `color-scale-${value.count}`
         }} />
-      {JSON.stringify(this.props.entries)}
-      </div>
     )
   }
 }

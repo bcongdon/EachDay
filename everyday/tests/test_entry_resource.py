@@ -36,8 +36,9 @@ class TestEntryResource(BaseTestCase):
         data = json.loads(resp.data.decode())
         self.assertTrue(data['status'] == 'success')
         self.assertTrue(data['data'] is not None)
-        self.assertTrue(data['data']['notes'] == 'Hello world')
-        self.assertTrue(data['data']['rating'] == 5)
+        self.assertEqual(data['data']['notes'], 'Hello world')
+        self.assertEqual(data['data']['rating'], 5)
+        self.assertEqual(data['data']['date'], '2017-01-01')
         self.assertEqual(resp.status_code, 201)
 
     def test_entry_validation(self):
@@ -160,13 +161,14 @@ class TestEntryResource(BaseTestCase):
         # Test editing an entry with PUT
         resp = self.client.put(
             '/entry/{}'.format(entry1.id),
-            data={
+            data=json.dumps({
                 'rating': 10,
                 'notes': 'changed'
-            },
+            }),
             headers={
                 'Authorization': 'Bearer ' + self.auth_token
-            }
+            },
+            content_type='application/json'
         )
         data = json.loads(resp.data.decode())
         self.assertTrue(data['status'] == 'success')

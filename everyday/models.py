@@ -3,6 +3,8 @@ from sqlalchemy import UniqueConstraint
 from everyday import app, db, bcrypt
 from datetime import datetime, timedelta
 import jwt
+import marshmallow
+from marshmallow import Schema, fields, validate, ValidationError
 
 
 class User(db.Model):
@@ -77,7 +79,28 @@ class Entry(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'date': self.date,
+            'date': self.date.isoformat(),
             'notes': self.notes,
             'rating': self.rating
         }
+
+
+class UserSchema(Schema):
+    id = fields.Int()
+    email = fields.Str(required=True,
+                       validate=validate.Email(error='Invalid email address'))
+    password = fields.Str(load_only=True)
+
+
+class EntrySchema(Schema):
+    id = fields.Int()
+    user_id = fields.Int()
+    date = fields.Date(required=True)
+    notes = fields.Str()
+    rating = fields.Int(required=True)
+
+    @marshmallow.validates('rating')
+    def validate_rating(self, data):
+        if not 1 <= data <= 10:
+            raise ValidationError('Rating must be between 1 and 10')
+        return data
