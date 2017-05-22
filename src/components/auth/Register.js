@@ -4,18 +4,13 @@ import { Field, reduxForm } from 'redux-form'
 import { registerUser } from '../../actions'
 import { Redirect } from 'react-router'
 import { PropTypes } from 'prop-types'
+import { Button, Form } from 'semantic-ui-react'
+import SemanticReduxFormField from '../SemanticReduxFormField'
 
 const form = reduxForm({
   form: 'register',
   validate
 })
-
-const renderField = field => (
-  <div>
-    <input className='form-control' {...field.input} />
-    {field.touched && field.error && <div className='error'>{field.error}</div>}
-  </div>
-)
 
 function validate(formProps) {
   const errors = {}
@@ -55,23 +50,21 @@ class Register extends Component {
     const { handleSubmit } = this.props
 
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
+      <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
         {this.props.authenticated ? (<Redirect push to='/dashboard' />) : null}
         {this.renderAlert()}
-        <div className='row'>
-          <div className='col-md-12'>
+        <Form.Group>
+          <Form.Field>
             <label>Email</label>
-            <Field name='email' className='form-control' component={renderField} type='text' />
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col-md-12'>
+            <Field component={SemanticReduxFormField} as={Form.Input} name='email' placeholder='Email' />
+          </Form.Field>
+          <Form.Field>
             <label>Password</label>
-            <Field name='password' className='form-control' component={renderField} type='password' />
-          </div>
-        </div>
-        <button type='submit' className='btn btn-primary'>Register</button>
-      </form>
+            <Field component={SemanticReduxFormField} as={Form.Input} name='password' placeholder='Password' type='password' />
+          </Form.Field>
+        </Form.Group>
+        <Button type='submit'>Submit</Button>
+      </Form>
     )
   }
 }
