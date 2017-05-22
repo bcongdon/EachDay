@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import jwtDecode from 'jwt-decode'
 import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER,
@@ -37,11 +38,14 @@ export function loginUser({ email, password }) {
     axios.post(`${API_URL}/login`, { email, password })
     .then(response => {
       cookie.set('token', response.data.auth_token, { path: '/' })
-      dispatch({ type: AUTH_USER })
+      let payload = jwtDecode(response.data.auth_token)
+      dispatch({ type: AUTH_USER, payload: payload })
       window.location.href = CLIENT_ROOT_URL + '/dashboard'
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      if (error) {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
+      }
     })
   }
 }
@@ -54,7 +58,8 @@ export function registerUser({ email, password }) {
         errorHandler(dispatch, response, AUTH_ERROR)
       }
       cookie.set('token', response.data.auth_token, { path: '/' })
-      dispatch({ type: AUTH_USER })
+      let payload = jwtDecode(response.data.auth_token)
+      dispatch({ type: AUTH_USER, payload: payload })
       window.location.href = CLIENT_ROOT_URL + '/dashboard'
     })
     .catch((error) => {
@@ -70,7 +75,7 @@ export function logoutUser() {
     dispatch({ type: UNAUTH_USER })
     cookie.remove('token', { path: '/' })
 
-    window.location.href = CLIENT_ROOT_URL + '/login'
+    window.location.href = CLIENT_ROOT_URL
   }
 }
 

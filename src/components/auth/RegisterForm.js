@@ -26,7 +26,7 @@ function validate(formProps) {
   return errors
 }
 
-class Register extends Component {
+class RegisterForm extends Component {
   constructor(props) {
     super(props)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
@@ -69,7 +69,7 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {
+RegisterForm.propTypes = {
   registerUser: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
@@ -84,4 +84,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { registerUser })(form(Register))
+export default connect(mapStateToProps, { registerUser })(form(RegisterForm))

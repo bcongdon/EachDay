@@ -6,6 +6,7 @@ import { chain } from 'lodash'
 import './Dashboard.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries } from '../actions'
+import UserNavbar from './UserNavbar'
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -25,16 +26,19 @@ class Dashboard extends Component {
     .value()
 
     return (
-      <CalendarHeatmap
-        endDate={new Date('12-31-2016')}
-        numDays={366}
-        values={values}
-        classForValue={(value) => {
-          if (!value) {
-            return 'color-empty'
-          }
-          return `color-scale-${value.count}`
-        }} />
+      <div>
+        <UserNavbar />
+        <CalendarHeatmap
+          endDate={new Date('12-31-2016')}
+          numDays={366}
+          values={values}
+          classForValue={(value) => {
+            if (!value) {
+              return 'color-empty'
+            }
+            return `color-scale-${value.count}`
+          }} />
+      </div>
     )
   }
 }

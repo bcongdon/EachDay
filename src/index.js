@@ -18,7 +18,7 @@ const token = (new Cookies()).get('token')
 
 // Check if token is available and non-expired
 if (token && jwtDecode(token) && jwtDecode(token).exp > Math.floor(Date.now() / 1000)) {
-  store.dispatch({ type: AUTH_USER })
+  store.dispatch({ type: AUTH_USER, payload: jwtDecode(token) })
 }
 
 ReactDOM.render(

@@ -20,7 +20,9 @@ class PublicNavbar extends Component {
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Button>Log In</Button>
+            <Link to='/login'>
+              <Button primary>Log In</Button>
+            </Link>
           </Menu.Item>
         </Menu.Menu>
       </Menu>
