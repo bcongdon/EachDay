@@ -1,19 +1,30 @@
 // Credit to https://stackoverflow.com/a/42422255
 
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
 
-export default function SemanticReduxFormField ({ input, label, meta: { touched, error, warning }, as: As = Input, ...props }) {
-  function handleChange (e, { value }) {
-    return input.onChange(value)
+class SemanticReduxFormField extends Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
   }
-  return (
-    <div>
-      <As {...input} value={input.value} {...props} onChange={handleChange} error={Boolean(touched && error)} />
-      {touched && (warning && <span>{warning}</span>)}
-    </div>
-  )
+
+  handleChange (e, { value }) {
+    return this.props.input.onChange(value)
+  }
+
+  render() {
+    const { input, label, meta, ...props } = this.props
+    const { touched, error } = meta
+
+    return (
+      <div>
+        <this.props.as {...input} value={input.value} {...props} onChange={this.handleChange} error={Boolean(touched && error)} />
+        {touched && (error && <Message error content={error} />)}
+      </div>
+    )
+  }
 }
 
 SemanticReduxFormField.propTypes = {
@@ -22,3 +33,5 @@ SemanticReduxFormField.propTypes = {
   label: PropTypes.any,
   meta: PropTypes.any
 }
+
+export default SemanticReduxFormField

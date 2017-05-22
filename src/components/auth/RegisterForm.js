@@ -23,6 +23,10 @@ function validate(formProps) {
     errors.password = 'Please enter a password'
   }
 
+  if (!formProps.name) {
+    errors.name = 'Please enter your name'
+  }
+
   return errors
 }
 
@@ -50,20 +54,22 @@ class RegisterForm extends Component {
     const { handleSubmit } = this.props
 
     return (
-      <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
+      <Form warning error onSubmit={handleSubmit(this.handleFormSubmit)}>
         {this.props.authenticated ? (<Redirect push to='/dashboard' />) : null}
         {this.renderAlert()}
-        <Form.Group>
-          <Form.Field>
-            <label>Email</label>
-            <Field component={SemanticReduxFormField} as={Form.Input} name='email' placeholder='Email' />
-          </Form.Field>
-          <Form.Field>
-            <label>Password</label>
-            <Field component={SemanticReduxFormField} as={Form.Input} name='password' placeholder='Password' type='password' />
-          </Form.Field>
-        </Form.Group>
-        <Button type='submit'>Submit</Button>
+        <Form.Field>
+          <label>Email</label>
+          <Field component={SemanticReduxFormField} as={Form.Input} name='email' placeholder='Email' />
+        </Form.Field>
+        <Form.Field>
+          <label>Name</label>
+          <Field component={SemanticReduxFormField} as={Form.Input} name='name' placeholder='What should we call you?' />
+        </Form.Field>
+        <Form.Field>
+          <label>Password</label>
+          <Field component={SemanticReduxFormField} as={Form.Input} name='password' placeholder='Password' type='password' />
+        </Form.Field>
+        <Button type='submit' positive>Sign Up</Button>
       </Form>
     )
   }
