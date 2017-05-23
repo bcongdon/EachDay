@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { PropTypes } from 'prop-types'
-import { Button, Form, Rating } from 'semantic-ui-react'
+import { Button, Form, Rating, Message } from 'semantic-ui-react'
 import SemanticReduxFormField from '../form/SemanticReduxFormField'
 import RatingFormField from '../form/RatingFormField'
+import DatePickerFormField from '../form/DatePickerFormField'
+import ErrorMessage from '../ErrorMessage'
+
 
 const form = reduxForm({
   form: 'create-entry',
@@ -31,9 +34,7 @@ class EntryForm extends Component {
 
   renderAlert() {
     return (
-      <div>
-        <span><strong>Error!</strong>Something went wrong... :(</span>
-      </div>
+      <ErrorMessage message='Lorem ipsum dolor sit amet, consectetur adipiscing elit.' />
     )
   }
 
@@ -43,10 +44,16 @@ class EntryForm extends Component {
     return (
       <Form warning error onSubmit={handleSubmit(this.handleFormSubmit)}>
         {this.renderAlert()}
-        <Form.Field>
-          <label>Rating</label>
-          <Field component={RatingFormField} as={Rating} name='email' />
-        </Form.Field>
+        <Form.Group>
+          <Form.Field>
+            <label>Rating</label>
+            <Field component={RatingFormField} name='rating' />
+          </Form.Field>
+          <Form.Field style={{marginLeft: 'auto'}}>
+            <label>Date</label>
+            <Field component={DatePickerFormField} name='date' />
+          </Form.Field>
+        </Form.Group>
         <Form.Field>
           <label>Notes</label>
           <Field component={SemanticReduxFormField} as={Form.TextArea} name='name' placeholder={'How\'d the day go?'} />
