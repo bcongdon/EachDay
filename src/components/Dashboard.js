@@ -5,7 +5,7 @@ import CalendarHeatmap from 'react-calendar-heatmap'
 import { chain } from 'lodash'
 import './Dashboard.css'
 import { PropTypes } from 'prop-types'
-import { loadEntries } from '../actions'
+import { loadEntries, openEntryModal } from '../actions'
 import UserNavbar from './UserNavbar'
 import EntryComposer from './entry/EntryComposer'
 import Entry from './entry/Entry'
@@ -41,12 +41,20 @@ class Dashboard extends Component {
     .filter(e => { return e.count !== undefined })
     .value()
 
+    const composeEntryButton = (
+      <Button
+        icon='plus'
+        content='Compose Entry'
+        onClick={this.props.openEntryModal}
+        />
+    )
+
     return (
       <div>
         <UserNavbar />
         <Grid centered verticalAlign='middle' columns={1}>
           <Grid.Column style={{'maxWidth': 600}}>
-            <EntryComposer trigger={<Button icon='plus' content='Compose Entry' />} />
+            <EntryComposer trigger={composeEntryButton} />
             <Divider />
             <CalendarHeatmap
               numDays={366}
@@ -73,11 +81,12 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ loadEntries }, dispatch)
+  return bindActionCreators({ loadEntries, openEntryModal }, dispatch)
 }
 
 Dashboard.propTypes = {
   loadEntries: PropTypes.func.isRequired,
+  openEntryModal: PropTypes.func.isRequired,
   entries: PropTypes.array
 }
 
