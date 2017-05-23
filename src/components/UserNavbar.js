@@ -4,6 +4,9 @@ import Gravatar from './Gravatar'
 import { connect } from 'react-redux'
 import { logoutUser } from '../actions'
 import { PropTypes } from 'prop-types'
+import Logo from './Logo'
+import { Link } from 'react-router-dom'
+import './UserNavbar.css'
 
 class UserNavbar extends Component {
   constructor(props) {
@@ -30,6 +33,9 @@ class UserNavbar extends Component {
   render() {
     return (
       <Menu size='large' borderless>
+        <Menu.Item>
+          <Link className='navbar-logo-link' to='/dashboard'><Logo /></Link>
+        </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
             <Dropdown trigger={this.getTrigger()} pointing='top left' icon={null}>

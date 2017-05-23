@@ -7,7 +7,7 @@ import './Dashboard.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries } from '../actions'
 import UserNavbar from './UserNavbar'
-import EntryComposer from './EntryComposer'
+import EntryComposer from './entry/EntryComposer'
 import { Button } from 'semantic-ui-react'
 
 class Dashboard extends Component {

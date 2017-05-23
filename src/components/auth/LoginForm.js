@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import { loginUser } from '../../actions'
 import { Button, Form } from 'semantic-ui-react'
-import SemanticReduxFormField from '../SemanticReduxFormField'
+import SemanticReduxFormField from '../form/SemanticReduxFormField'
 
 const form = reduxForm({
   form: 'login'

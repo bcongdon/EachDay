@@ -5,7 +5,7 @@ import { registerUser } from '../../actions'
 import { Redirect } from 'react-router'
 import { PropTypes } from 'prop-types'
 import { Button, Form } from 'semantic-ui-react'
-import SemanticReduxFormField from '../SemanticReduxFormField'
+import SemanticReduxFormField from '../form/SemanticReduxFormField'
 
 const form = reduxForm({
   form: 'register',
