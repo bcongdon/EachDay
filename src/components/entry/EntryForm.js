@@ -28,7 +28,8 @@ class EntryForm extends Component {
     isNewEntry: PropTypes.bool.isRequired,
     createEntry: PropTypes.func.isRequired,
     closeEntryModal: PropTypes.func.isRequired,
-    editEntry: PropTypes.func.isRequired
+    editEntry: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string
   }
 
   constructor(props) {
@@ -46,8 +47,12 @@ class EntryForm extends Component {
   }
 
   renderAlert() {
+    if (!this.props.errorMessage) {
+      return null
+    }
+
     return (
-      <ErrorMessage message='Lorem ipsum dolor sit amet, consectetur adipiscing elit.' />
+      <ErrorMessage message={this.props.errorMessage} />
     )
   }
 
@@ -84,4 +89,10 @@ class EntryForm extends Component {
   }
 }
 
-export default connect(null, { createEntry, closeEntryModal, editEntry })(form(EntryForm))
+function mapStateToProps(state) {
+  return {
+    errorMessage: state.entry.error
+  }
+}
+
+export default connect(mapStateToProps, { createEntry, closeEntryModal, editEntry })(form(EntryForm))

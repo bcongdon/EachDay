@@ -68,6 +68,6 @@ export function createEntry({ date, rating, notes }) {
 
 export function editEntry({ id, date, rating, notes }) {
   return function(dispatch) {
-    dispatch({ type: EDIT_ENTRY })
+    dispatch({ type: EDIT_ENTRY, payload: { id, date, rating, notes } })
   }
 }

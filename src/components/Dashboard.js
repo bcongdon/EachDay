@@ -18,7 +18,7 @@ class Dashboard extends Component {
 
   getEntries() {
     const entries = this.props.entries.map((e) => {
-      return (<Entry key={e.id} rating={e.rating} date={e.date} notes={e.notes} />)
+      return (<Entry key={e.id} id={e.id} rating={e.rating} date={e.date} notes={e.notes} />)
     })
 
     if (entries.length === 0) {

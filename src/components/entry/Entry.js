@@ -10,7 +10,8 @@ class Entry extends Component {
     rating: PropTypes.number.isRequired,
     notes: PropTypes.string,
     date: PropTypes.string.isRequired,
-    openEntryModal: PropTypes.func.isRequired
+    openEntryModal: PropTypes.func.isRequired,
+    id: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -22,7 +23,8 @@ class Entry extends Component {
     this.props.openEntryModal({
       rating: this.props.rating,
       notes: this.props.notes,
-      date: this.props.date
+      date: this.props.date,
+      id: this.props.id
     })
   }
 
