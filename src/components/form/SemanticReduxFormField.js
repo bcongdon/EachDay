@@ -15,7 +15,7 @@ class SemanticReduxFormField extends Component {
   }
 
   render() {
-    const { input, label, meta, defaultValue, ...props } = this.props
+    const { input, label, meta, ...props } = this.props
     const { touched, error } = meta
 
     return (
@@ -31,8 +31,7 @@ SemanticReduxFormField.propTypes = {
   as: PropTypes.any,
   input: PropTypes.any,
   label: PropTypes.any,
-  meta: PropTypes.any,
-  defaultValue: PropTypes.any
+  meta: PropTypes.any
 }
 
 export default SemanticReduxFormField

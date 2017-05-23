@@ -55,4 +55,3 @@ export function logoutUser() {
     window.location.href = CLIENT_ROOT_URL
   }
 }
-

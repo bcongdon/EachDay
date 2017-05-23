@@ -12,7 +12,6 @@ export function errorHandler(dispatch, error, type) {
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
     })
-    logoutUser()
   } else {
     dispatch({
       type: type,

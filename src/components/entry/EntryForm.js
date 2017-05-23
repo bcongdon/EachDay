@@ -30,8 +30,11 @@ class EntryForm extends Component {
   }
 
   handleFormSubmit(formProps) {
-    // TODO: Trigger action
-    // TODO: Trigger close
+    if(this.props.isNewEntry) {
+      this.props.createEntry(formProps)
+    } else {
+      this.props.editEntry(formProps)
+    }
     this.props.closeEntryModal()
   }
 
@@ -76,7 +79,8 @@ class EntryForm extends Component {
 
 EntryForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.object
+  initialValues: PropTypes.object,
+  isNewEntry: PropTypes.bool.isRequired
 }
 
 export default connect(null, { createEntry, closeEntryModal, editEntry })(form(EntryForm))

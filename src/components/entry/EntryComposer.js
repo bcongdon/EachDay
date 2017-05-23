@@ -25,13 +25,18 @@ class EntryComposer extends Component {
 
   render() {
     const { defaultRating, defaultNotes, defaultDate } = this.props
-    const actionText = this.props.initialModalValues === {} ? 'Edit' : 'Create'
+
+    // Test for null/undefined or empty object
+    const isNewEntry = !this.props.initialModalValues || Object.keys(this.props.initialModalValues).length == 0
+    
+    const actionText = isNewEntry ? 'Edit' : 'Create'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
         <Modal.Header>{actionText} an Entry</Modal.Header>
         <Modal.Content>
           <EntryForm
-            initialValues={this.props.initialModalValues} />
+            initialValues={this.props.initialModalValues}
+            isNewEntry={isNewEntry} />
         </Modal.Content>
       </Modal>
     )

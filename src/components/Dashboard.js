@@ -10,7 +10,6 @@ import UserNavbar from './UserNavbar'
 import EntryComposer from './entry/EntryComposer'
 import Entry from './entry/Entry'
 import { Button, Grid, Divider, Message } from 'semantic-ui-react'
-import moment from 'moment'
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -45,7 +44,7 @@ class Dashboard extends Component {
       <Button
         icon='plus'
         content='Compose Entry'
-        onClick={this.props.openEntryModal}
+        onClick={() => this.props.openEntryModal() }
         />
     )
 

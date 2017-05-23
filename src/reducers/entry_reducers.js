@@ -15,8 +15,7 @@ export default function (state = INITIAL_STATE, action) {
     case LOAD_ENTRIES:
       return { ...state, entries: action.payload }
     case CREATE_ENTRY:
-      state.entries.push(action.payload)
-      return state
+      return { ...state, entries: [...state.entries, action.payload] }
     case EDIT_ENTRY:
       return {
         ...state,

@@ -4,14 +4,12 @@ import Cookies from 'universal-cookie'
 import { LOAD_ENTRIES,
          OPEN_ENTRY_MODAL,
          CLOSE_ENTRY_MODAL,
-         ENTRY_ERROR,
          ENTRY_API_ERROR,
          CREATE_ENTRY,
          EDIT_ENTRY } from './types'
 const cookie = new Cookies()
 
 const API_URL = 'http://localhost:5000'
-const CLIENT_ROOT_URL = 'http://localhost:9000'
 
 export function loadEntries() {
   return function(dispatch) {
@@ -51,7 +49,9 @@ export function closeEntryModal() {
 
 export function createEntry({ date, rating, notes }) {
   return function(dispatch) {
-    axios.post(`${API_URL}/entry`, { date, rating, notes })
+    axios.post(`${API_URL}/entry`, { date, rating, notes },
+      { headers: { 'Authorization': 'Bearer ' + cookie.get('token') } }
+    )
     .then(response => {
       if (response.data.status !== 'success') {
         errorHandler(dispatch, response, ENTRY_API_ERROR)
@@ -68,5 +68,6 @@ export function createEntry({ date, rating, notes }) {
 
 export function editEntry({ id, date, rating, notes }) {
   return function(dispatch) {
+    dispatch({ type: EDIT_ENTRY })
   }
 }
