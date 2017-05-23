@@ -8,9 +8,10 @@ import RatingFormField from '../form/RatingFormField'
 import DatePickerFormField from '../form/DatePickerFormField'
 import ErrorMessage from '../ErrorMessage'
 import moment from 'moment'
+import { closeEntryModal, createEntry, editEntry } from '../../actions'
 
 const form = reduxForm({
-  form: 'create-entry',
+  form: 'createEntry',
   validate
 })
 
@@ -31,6 +32,7 @@ class EntryForm extends Component {
   handleFormSubmit(formProps) {
     // TODO: Trigger action
     // TODO: Trigger close
+    this.props.closeEntryModal()
   }
 
   renderAlert() {
@@ -40,23 +42,19 @@ class EntryForm extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
-
     return (
-      <Form warning error onSubmit={handleSubmit(this.handleFormSubmit)}>
+      <Form warning error onSubmit={this.props.handleSubmit(this.handleFormSubmit)}>
         {this.renderAlert()}
         <Form.Group>
           <Form.Field>
             <label>Rating</label>
             <Field
-              defaultValue={this.props.defaultRating}
               component={RatingFormField} name='rating'
               />
           </Form.Field>
           <Form.Field style={{marginLeft: 'auto'}}>
             <label>Date</label>
             <Field
-              defaultValue={this.props.defaultDate}
               component={DatePickerFormField}
               name='date'
               />
@@ -65,10 +63,9 @@ class EntryForm extends Component {
         <Form.Field>
           <label>Notes</label>
           <Field
-            defaultValue={this.props.defaultNotes}
             component={SemanticReduxFormField}
             as={Form.TextArea}
-            name='note'
+            name='notes'
             placeholder={'How\'d the day go?'} />
         </Form.Field>
         <Button type='submit' primary>Save</Button>
@@ -79,9 +76,7 @@ class EntryForm extends Component {
 
 EntryForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  defaultRating: PropTypes.number,
-  defaultNotes: PropTypes.string,
-  defaultDate: PropTypes.instanceOf(moment)
+  initialValues: PropTypes.object
 }
 
-export default connect()(form(EntryForm))
+export default connect(null, { createEntry, closeEntryModal, editEntry })(form(EntryForm))

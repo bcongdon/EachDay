@@ -26,14 +26,15 @@ class EntryComposer extends Component {
   }
 
   render() {
+    const { defaultRating, defaultNotes, defaultDate } = this.props
+    const hasDefault = defaultDate || defaultNotes || defaultRating
+    const actionText = hasDefault ? 'Edit' : 'Create'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
-        <Modal.Header>Create an Entry</Modal.Header>
+        <Modal.Header>{actionText} an Entry</Modal.Header>
         <Modal.Content>
           <EntryForm
-            defaultRating={this.props.defaultRating}
-            defaultNotes={this.props.defaultNotes}
-            defaultDate={this.props.defaultDate} />
+            initialValues={this.props.initialModalValues} />
         </Modal.Content>
       </Modal>
     )
@@ -43,9 +44,7 @@ class EntryComposer extends Component {
 function mapStateToProps(state) {
   return {
     open: state.entry.entryModalOpen,
-    defaultRating: state.entry.defaultRating,
-    defaultNotes: state.entry.defaultNotes,
-    defaultDate: state.entry.defaultDate
+    initialModalValues: state.entry.initialModalValues
   }
 }
 

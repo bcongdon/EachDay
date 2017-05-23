@@ -6,9 +6,8 @@ function RatingFormField(props) {
   function handleChange(e, { rating, maxRating }) {
     props.input.onChange(rating)
   }
-  const value = props.meta.touched ? props.input.value : props.defaultValue
   return (
-    <Rating rating={value} onRate={handleChange} maxRating={5} size='large' />
+    <Rating rating={props.input.value} onRate={handleChange} maxRating={5} size='large' />
   )
 }
 

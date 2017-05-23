@@ -1,20 +1,33 @@
 import { OPEN_ENTRY_MODAL,
-         CLOSE_ENTRY_MODAL } from '../actions/types'
+         CLOSE_ENTRY_MODAL,
+         CREATE_ENTRY,
+         EDIT_ENTRY,
+         LOAD_ENTRIES } from '../actions/types'
 
-const INITIAL_STATE = { entryModalOpen: false, defaultRating: '', defaultDate: '', defaultNotes: '' }
+const INITIAL_STATE = { entries: [], entryModalOpen: false, initialModalValues: {} }
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case OPEN_ENTRY_MODAL:
+      return { ...state, initialModalValues: action.payload, entryModalOpen: true }
+    case CLOSE_ENTRY_MODAL:
+      return { ...state, initialModalValues: {}, entryModalOpen: false }
+    case LOAD_ENTRIES:
+      return { ...state, entries: action.payload }
+    case CREATE_ENTRY:
+      state.entries.push(action.payload)
+      return state
+    case EDIT_ENTRY:
       return {
         ...state,
-        entryModalOpen: true,
-        defaultRating: action.payload.rating,
-        defaultDate: action.payload.date,
-        defaultNotes: action.payload.notes
+        entries: state.entries.map(e => {
+          if(e.id == action.payload.id) {
+            return action.payload
+          } else {
+            return e
+          }
+        })
       }
-    case CLOSE_ENTRY_MODAL:
-      return { ...state, entryModalOpen: false, defaultRating: '', defaultDate: '', defaultNotes: '' }
   }
 
   return state

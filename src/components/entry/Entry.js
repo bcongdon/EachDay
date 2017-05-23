@@ -9,7 +9,7 @@ class Entry extends Component {
   static propTypes = {
     rating: PropTypes.number.isRequired,
     notes: PropTypes.string,
-    date: PropTypes.instanceOf(moment),
+    date: PropTypes.string.isRequired,
     openEntryModal: PropTypes.func.isRequired
   }
 
@@ -32,7 +32,7 @@ class Entry extends Component {
         <Item.Group>
           <Item>
             <Item.Content>
-              <Item.Header>{this.props.date.format('YYYY-MM-DD')}</Item.Header>
+              <Item.Header>{moment(this.props.date).format('YYYY-MM-DD')}</Item.Header>
               <Item.Meta><Rating disabled maxRating={5} rating={this.props.rating} /></Item.Meta>
               <Item.Description>
                 {this.props.notes}
