@@ -9,9 +9,7 @@ import { bindActionCreators } from 'redux'
 class EntryComposer extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
-    defaultRating: PropTypes.any,
-    defaultNotes: PropTypes.any,
-    defaultDate: PropTypes.any,
+    initialModalValues: PropTypes.object,
     closeEntryModal: PropTypes.func,
     trigger: PropTypes.element
   }
@@ -27,8 +25,7 @@ class EntryComposer extends Component {
 
   render() {
     const { defaultRating, defaultNotes, defaultDate } = this.props
-    const hasDefault = defaultDate || defaultNotes || defaultRating
-    const actionText = hasDefault ? 'Edit' : 'Create'
+    const actionText = this.props.initialModalValues === {} ? 'Edit' : 'Create'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
         <Modal.Header>{actionText} an Entry</Modal.Header>
@@ -48,8 +45,4 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ openEntryModal, closeEntryModal }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EntryComposer)
+export default connect(mapStateToProps, { openEntryModal, closeEntryModal })(EntryComposer)

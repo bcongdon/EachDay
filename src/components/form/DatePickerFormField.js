@@ -21,11 +21,6 @@ class DatePickerFormField extends React.Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-
-    // Default input to today
-    if(this.props.input.value === '') {
-      this.handleChange(moment())
-    }
   }
 
   handleChange (date) {
@@ -34,11 +29,11 @@ class DatePickerFormField extends React.Component {
 
   render () {
     const { input, meta: {touched, error}, defaultValue } = this.props
-
+    const value = input.value === '' ? moment() : moment(input.value)
     return (
       <div>
         <DatePicker
-          selected={moment(input.value)}
+          selected={value}
           dateFormat='YYYY-MM-DD'
           todayButton={'Today'}
           onChange={this.handleChange}
