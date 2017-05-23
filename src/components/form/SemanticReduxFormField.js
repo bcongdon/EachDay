@@ -15,12 +15,13 @@ class SemanticReduxFormField extends Component {
   }
 
   render() {
-    const { input, label, meta, ...props } = this.props
+    const { input, label, meta, defaultValue, ...props } = this.props
     const { touched, error } = meta
+    const value = touched ? input.value : defaultValue
 
     return (
       <div>
-        <this.props.as {...input} value={input.value} {...props} onChange={this.handleChange} error={Boolean(touched && error)} />
+        <this.props.as {...input} value={value} {...props} onChange={this.handleChange} error={Boolean(touched && error)} />
         {touched && (error && <Message error content={error} />)}
       </div>
     )
@@ -31,7 +32,8 @@ SemanticReduxFormField.propTypes = {
   as: PropTypes.any,
   input: PropTypes.any,
   label: PropTypes.any,
-  meta: PropTypes.any
+  meta: PropTypes.any,
+  defaultValue: PropTypes.any
 }
 
 export default SemanticReduxFormField

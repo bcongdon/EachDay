@@ -9,12 +9,24 @@ import { loadEntries } from '../actions'
 import UserNavbar from './UserNavbar'
 import EntryComposer from './entry/EntryComposer'
 import Entry from './entry/Entry'
-import { Button, Grid, Divider } from 'semantic-ui-react'
+import { Button, Grid, Divider, Message } from 'semantic-ui-react'
 import moment from 'moment'
 
 class Dashboard extends Component {
   componentWillMount() {
     this.props.loadEntries()
+  }
+
+  getEntries() {
+    const entries = this.props.entries.map((e) => {
+      return (<Entry key={e.id} rating={e.rating} date={moment(e.date)} notes={e.notes} />)
+    })
+
+    if (entries.length === 0) {
+      return <Message compact>You don't have any entries yet!</Message>
+    } else {
+      return entries
+    }
   }
 
   render() {
@@ -34,7 +46,7 @@ class Dashboard extends Component {
         <UserNavbar />
         <Grid centered verticalAlign='middle' columns={1}>
           <Grid.Column style={{'maxWidth': 600}}>
-            <EntryComposer trigger={<Button>Compose Entry</Button>} />
+            <EntryComposer trigger={<Button icon='plus' content='Compose Entry' />} />
             <Divider />
             <CalendarHeatmap
               numDays={366}
@@ -45,7 +57,8 @@ class Dashboard extends Component {
                 }
                 return `color-scale-${value.count}`
               }} />
-            <Entry rating={3} date={moment()} notes={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris efficitur placerat nisi, ut semper dui porttitor sed. Etiam ut feugiat purus. Sed accumsan placerat turpis at finibus. Nunc pellentesque, tellus a rhoncus luctus, est lectus commodo eros, sed pulvinar arcu enim sit amet risus. Integer condimentum, dolor vitae gravida lacinia, nunc metus bibendum metus, at euismod lorem orci at nisi. Etiam nibh enim, dictum pellentesque facilisis sit amet, dapibus sed urna. Mauris et eros quis erat tempor ultricies vitae ac lectus. Integer vulputate sapien vel interdum tristique. Fusce vitae risus et nisl varius fermentum. Etiam aliquet nunc id fermentum lacinia. Vestibulum non purus magna. Aliquam maximus sit amet justo at efficitur. Morbi sit amet orci vel lorem faucibus fringilla.'} />
+            <Divider />
+            {this.getEntries()}
           </Grid.Column>
         </Grid>
       </div>

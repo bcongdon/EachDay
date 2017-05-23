@@ -7,6 +7,7 @@ import SemanticReduxFormField from '../form/SemanticReduxFormField'
 import RatingFormField from '../form/RatingFormField'
 import DatePickerFormField from '../form/DatePickerFormField'
 import ErrorMessage from '../ErrorMessage'
+import moment from 'moment'
 
 const form = reduxForm({
   form: 'create-entry',
@@ -29,6 +30,7 @@ class EntryForm extends Component {
 
   handleFormSubmit(formProps) {
     // TODO: Trigger action
+    // TODO: Trigger close
   }
 
   renderAlert() {
@@ -46,16 +48,28 @@ class EntryForm extends Component {
         <Form.Group>
           <Form.Field>
             <label>Rating</label>
-            <Field component={RatingFormField} name='rating' />
+            <Field
+              defaultValue={this.props.defaultRating}
+              component={RatingFormField} name='rating'
+              />
           </Form.Field>
           <Form.Field style={{marginLeft: 'auto'}}>
             <label>Date</label>
-            <Field component={DatePickerFormField} name='date' />
+            <Field
+              defaultValue={this.props.defaultDate}
+              component={DatePickerFormField}
+              name='date'
+              />
           </Form.Field>
         </Form.Group>
         <Form.Field>
           <label>Notes</label>
-          <Field component={SemanticReduxFormField} as={Form.TextArea} name='name' placeholder={'How\'d the day go?'} />
+          <Field
+            defaultValue={this.props.defaultNotes}
+            component={SemanticReduxFormField}
+            as={Form.TextArea}
+            name='note'
+            placeholder={'How\'d the day go?'} />
         </Form.Field>
         <Button type='submit' primary>Save</Button>
       </Form>
@@ -64,7 +78,10 @@ class EntryForm extends Component {
 }
 
 EntryForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  defaultRating: PropTypes.number,
+  defaultNotes: PropTypes.string,
+  defaultDate: PropTypes.instanceOf(moment)
 }
 
 export default connect()(form(EntryForm))

@@ -4,7 +4,9 @@ import jwtDecode from 'jwt-decode'
 import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER,
-         LOAD_ENTRIES } from './types'
+         LOAD_ENTRIES,
+         OPEN_ENTRY_MODAL,
+         CLOSE_ENTRY_MODAL } from './types'
 
 const API_URL = 'http://localhost:5000'
 const CLIENT_ROOT_URL = 'http://localhost:9000'
@@ -94,6 +96,23 @@ export function loadEntries() {
       if (error) {
         errorHandler(dispatch, error.response, AUTH_ERROR)
       }
+    })
+  }
+}
+
+export function openEntryModal(defaultValues) {
+  return function(dispatch) {
+    dispatch({
+      type: OPEN_ENTRY_MODAL,
+      payload: defaultValues
+    })
+  }
+}
+
+export function closeEntryModal() {
+  return function(dispatch) {
+    dispatch({
+      type: CLOSE_ENTRY_MODAL
     })
   }
 }
