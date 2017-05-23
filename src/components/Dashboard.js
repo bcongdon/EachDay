@@ -7,6 +7,8 @@ import './Dashboard.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries } from '../actions'
 import UserNavbar from './UserNavbar'
+import EntryComposer from './EntryComposer'
+import { Button } from 'semantic-ui-react'
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -38,6 +40,7 @@ class Dashboard extends Component {
             }
             return `color-scale-${value.count}`
           }} />
+        <EntryComposer trigger={<Button>Compose Entry</Button>} />
       </div>
     )
   }
