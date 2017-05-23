@@ -5,26 +5,24 @@ import moment from 'moment'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-class renderDatePicker extends React.Component {
+class DatePickerFormField extends React.Component {
   static propTypes = {
     input: PropTypes.shape({
       onChange: PropTypes.func.isRequired,
-      value: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     }).isRequired,
     meta: PropTypes.shape({
       touched: PropTypes.bool,
-      error: PropTypes.bool,
-    }),
-    placeholder: PropTypes.string,
-  }
-
-  static defaultProps = {
-    placeholder: ''
+      error: PropTypes.bool
+    })
   }
 
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
+
+    // Default to today
+    this.handleChange(moment())
   }
 
   handleChange (date) {
@@ -32,15 +30,13 @@ class renderDatePicker extends React.Component {
   }
 
   render () {
-    const { input, placeholder, meta: {touched, error} } = this.props
+    const { input, meta: {touched, error} } = this.props
 
     return (
       <div>
         <DatePicker
           {...input}
-          placeholder={placeholder}
           dateFormat='YYYY-MM-DD'
-          selected={input.value ? moment(input.value, 'YYYY-MM-DD') : null}
           todayButton={'Today'}
           onChange={this.handleChange}
         />
@@ -50,4 +46,4 @@ class renderDatePicker extends React.Component {
   }
 }
 
-export default renderDatePicker
+export default DatePickerFormField

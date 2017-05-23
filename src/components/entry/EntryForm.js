@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { PropTypes } from 'prop-types'
-import { Button, Form, Rating, Message } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import SemanticReduxFormField from '../form/SemanticReduxFormField'
 import RatingFormField from '../form/RatingFormField'
 import DatePickerFormField from '../form/DatePickerFormField'
 import ErrorMessage from '../ErrorMessage'
-
 
 const form = reduxForm({
   form: 'create-entry',
