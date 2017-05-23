@@ -4,9 +4,8 @@ import { PropTypes } from 'prop-types'
 import EntryForm from './EntryForm'
 import { openEntryModal, closeEntryModal } from '../../actions'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
-class EntryComposer extends Component {
+class EntryModal extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     initialModalValues: PropTypes.object,
@@ -24,11 +23,9 @@ class EntryComposer extends Component {
   }
 
   render() {
-    const { defaultRating, defaultNotes, defaultDate } = this.props
-
     // Test for null/undefined or empty object
-    const isNewEntry = !this.props.initialModalValues || Object.keys(this.props.initialModalValues).length == 0
-    
+    const isNewEntry = !this.props.initialModalValues || Object.keys(this.props.initialModalValues).length === 0
+
     const actionText = isNewEntry ? 'Edit' : 'Create'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
@@ -50,4 +47,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { openEntryModal, closeEntryModal })(EntryComposer)
+export default connect(mapStateToProps, { openEntryModal, closeEntryModal })(EntryModal)

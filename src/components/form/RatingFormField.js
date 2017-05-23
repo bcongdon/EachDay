@@ -12,9 +12,7 @@ function RatingFormField(props) {
 }
 
 RatingFormField.propTypes = {
-  input: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired,
-  defaultValue: PropTypes.number
+  input: PropTypes.object.isRequired
 }
 
 export default RatingFormField

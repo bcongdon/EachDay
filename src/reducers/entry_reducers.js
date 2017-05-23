@@ -20,7 +20,7 @@ export default function (state = INITIAL_STATE, action) {
       return {
         ...state,
         entries: state.entries.map(e => {
-          if(e.id == action.payload.id) {
+          if (e.id === action.payload.id) {
             return action.payload
           } else {
             return e

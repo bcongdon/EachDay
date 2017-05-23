@@ -7,7 +7,6 @@ import SemanticReduxFormField from '../form/SemanticReduxFormField'
 import RatingFormField from '../form/RatingFormField'
 import DatePickerFormField from '../form/DatePickerFormField'
 import ErrorMessage from '../ErrorMessage'
-import moment from 'moment'
 import { closeEntryModal, createEntry, editEntry } from '../../actions'
 
 const form = reduxForm({
@@ -24,13 +23,21 @@ function validate(formProps) {
 }
 
 class EntryForm extends Component {
+  static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    isNewEntry: PropTypes.bool.isRequired,
+    createEntry: PropTypes.func.isRequired,
+    closeEntryModal: PropTypes.func.isRequired,
+    editEntry: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
   handleFormSubmit(formProps) {
-    if(this.props.isNewEntry) {
+    if (this.props.isNewEntry) {
       this.props.createEntry(formProps)
     } else {
       this.props.editEntry(formProps)
@@ -75,12 +82,6 @@ class EntryForm extends Component {
       </Form>
     )
   }
-}
-
-EntryForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.object,
-  isNewEntry: PropTypes.bool.isRequired
 }
 
 export default connect(null, { createEntry, closeEntryModal, editEntry })(form(EntryForm))

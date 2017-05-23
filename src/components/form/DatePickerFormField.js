@@ -14,8 +14,7 @@ class DatePickerFormField extends React.Component {
     meta: PropTypes.shape({
       touched: PropTypes.bool,
       error: PropTypes.bool
-    }),
-    defaultValue: PropTypes.instanceOf(moment)
+    })
   }
 
   constructor (props) {
@@ -23,7 +22,7 @@ class DatePickerFormField extends React.Component {
     this.handleChange = this.handleChange.bind(this)
 
     // Default input to today
-    if(this.props.input.value === '') {
+    if (this.props.input.value === '') {
       this.handleChange(moment())
     }
   }
@@ -33,7 +32,7 @@ class DatePickerFormField extends React.Component {
   }
 
   render () {
-    const { input, meta: {touched, error}, defaultValue } = this.props
+    const { input, meta: {touched, error} } = this.props
     return (
       <div>
         <DatePicker

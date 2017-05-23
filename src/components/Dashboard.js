@@ -7,7 +7,7 @@ import './Dashboard.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries, openEntryModal } from '../actions'
 import UserNavbar from './UserNavbar'
-import EntryComposer from './entry/EntryComposer'
+import EntryModal from './entry/EntryModal'
 import Entry from './entry/Entry'
 import { Button, Grid, Divider, Message } from 'semantic-ui-react'
 
@@ -44,7 +44,7 @@ class Dashboard extends Component {
       <Button
         icon='plus'
         content='Compose Entry'
-        onClick={() => this.props.openEntryModal() }
+        onClick={() => this.props.openEntryModal()}
         />
     )
 
@@ -53,7 +53,7 @@ class Dashboard extends Component {
         <UserNavbar />
         <Grid centered verticalAlign='middle' columns={1}>
           <Grid.Column style={{'maxWidth': 600}}>
-            <EntryComposer trigger={composeEntryButton} />
+            <EntryModal trigger={composeEntryButton} />
             <Divider />
             <CalendarHeatmap
               numDays={366}
