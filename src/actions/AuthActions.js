@@ -14,13 +14,11 @@ export const loginUser = ({ email, password }) => (dispatch) =>
     cookie.set('token', response.data.auth_token, { path: '/' })
     let payload = jwtDecode(response.data.auth_token)
     dispatch({ type: AUTH_USER, payload: payload })
-    // window.location.href = CLIENT_ROOT_URL + '/dashboard'
-    Promise.resolve()
+    window.location.href = CLIENT_ROOT_URL + '/dashboard'
   })
   .catch((error) => {
     if (error) {
       errorHandler(dispatch, error.response, AUTH_ERROR)
-      Promise.reject(error)
     }
   })
 
