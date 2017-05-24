@@ -1,6 +1,5 @@
-import { errorHandler } from './utils'
+import { errorHandler, cookie } from './utils'
 import axios from 'axios'
-import Cookies from 'universal-cookie'
 import { LOAD_ENTRIES,
          OPEN_ENTRY_MODAL,
          CLOSE_ENTRY_MODAL,
@@ -8,7 +7,6 @@ import { LOAD_ENTRIES,
          CREATE_ENTRY,
          DELETE_ENTRY,
          EDIT_ENTRY } from './types'
-const cookie = new Cookies()
 
 const API_URL = 'http://localhost:5000'
 

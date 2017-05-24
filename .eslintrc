@@ -3,5 +3,9 @@
   "extends": ["standard", "standard-react"],
   "rules": {
     "space-before-function-paren": "off"
+  },
+  "env": {
+      "browser": true,
+      "jest": true
   }
 }

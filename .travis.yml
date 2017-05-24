@@ -19,6 +19,7 @@ matrix:
         - npm install
       script:
         - npm run lint
+        - npm test
 
 env:
   - SECRET_KEY="super_secret_key"

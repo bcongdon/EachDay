@@ -1,3 +1,27 @@
+import Cookies from 'universal-cookie'
+
+function cookieManager() {
+  if (process.env.NODE_ENV === 'test') {
+    return new class CookieMock {
+      constructor() {
+        this.data = {}
+      }
+
+      set(k, v) {
+        this.data[k] = v
+      }
+
+      get(k) {
+        return this.data[k]
+      }
+    }()
+  } else {
+    return new Cookies()
+  }
+}
+const cookie = cookieManager()
+export { cookie }
+
 export function errorHandler(dispatch, error, type) {
   let errorMessage = ''
 
