@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Item, Segment, Label, Icon, Rating, Dropdown} from 'semantic-ui-react'
+import { Item, Segment, Rating, Dropdown } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 import moment from 'moment'
 import { openEntryModal, deleteEntry } from '../../actions'
@@ -11,7 +11,8 @@ class Entry extends Component {
     notes: PropTypes.string,
     date: PropTypes.string.isRequired,
     openEntryModal: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired
+    id: PropTypes.number.isRequired,
+    deleteEntry: PropTypes.func
   }
 
   constructor(props) {
@@ -59,4 +60,4 @@ class Entry extends Component {
   }
 }
 
-export default connect(null, { openEntryModal })(Entry)
+export default connect(null, { openEntryModal, deleteEntry })(Entry)

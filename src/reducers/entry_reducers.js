@@ -8,7 +8,7 @@ import { OPEN_ENTRY_MODAL,
          LOAD_ENTRIES,
          ENTRY_API_ERROR } from '../actions/types'
 
-const INITIAL_STATE = { entries: [], entryModalOpen: false, initialModalValues: {}, error: '' }
+const INITIAL_STATE = { entries: [], entryModalOpen: false, initialModalValues: {}, error: '', loading: true }
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -17,7 +17,7 @@ export default function (state = INITIAL_STATE, action) {
     case CLOSE_ENTRY_MODAL:
       return { ...state, initialModalValues: {}, entryModalOpen: false }
     case LOAD_ENTRIES:
-      return { ...state, entries: action.payload, error: '' }
+      return { ...state, entries: action.payload, error: '', loading: false }
     case CREATE_ENTRY:
       return {
         ...state,

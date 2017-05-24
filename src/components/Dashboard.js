@@ -9,11 +9,19 @@ import { loadEntries, openEntryModal } from '../actions'
 import UserNavbar from './UserNavbar'
 import EntryModal from './entry/EntryModal'
 import Entry from './entry/Entry'
-import { Button, Grid, Divider, Message } from 'semantic-ui-react'
+import { Button, Grid, Divider, Message, Loader } from 'semantic-ui-react'
 
 class Dashboard extends Component {
   componentWillMount() {
     this.props.loadEntries()
+  }
+
+  getLoader() {
+    return <Loader size='medium' active inline='centered'>Loading</Loader>
+  }
+
+  getEmptyEntriesMessage() {
+    return <Message compact>You don't have any entries yet!</Message>
   }
 
   getEntries() {
@@ -22,7 +30,7 @@ class Dashboard extends Component {
     })
 
     if (entries.length === 0) {
-      return <Message compact>You don't have any entries yet!</Message>
+      this.getEmptyEntriesMessage()
     } else {
       return entries
     }
@@ -64,7 +72,7 @@ class Dashboard extends Component {
                 return `color-scale-${value.count}`
               }} />
             <Divider />
-            {this.getEntries()}
+            {this.props.loading ? this.getLoader() : this.getEntries()}
           </Grid.Column>
         </Grid>
       </div>
@@ -74,7 +82,8 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    entries: state.entry.entries
+    entries: state.entry.entries,
+    loading: state.entry.loading
   }
 }
 
@@ -85,7 +94,8 @@ function mapDispatchToProps(dispatch) {
 Dashboard.propTypes = {
   loadEntries: PropTypes.func.isRequired,
   openEntryModal: PropTypes.func.isRequired,
-  entries: PropTypes.array
+  entries: PropTypes.array,
+  loading: PropTypes.bool
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

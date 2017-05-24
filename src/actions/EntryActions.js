@@ -6,6 +6,7 @@ import { LOAD_ENTRIES,
          CLOSE_ENTRY_MODAL,
          ENTRY_API_ERROR,
          CREATE_ENTRY,
+         DELETE_ENTRY,
          EDIT_ENTRY } from './types'
 const cookie = new Cookies()
 
