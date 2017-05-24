@@ -15,9 +15,15 @@ class TestEntryResource(BaseTestCase):
             email='foo@bar.com',
             password='test'
         )
+        user2 = User(
+            email='baz@bar.com',
+            password='test2'
+        )
         db.session.add(user)
+        db.session.add(user2)
         db.session.commit()
         self.user = user
+        self.user2 = user2
         self.auth_token = user.encode_auth_token(user.id).decode()
 
     def test_entry_creation(self):
@@ -177,6 +183,70 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(10, data['data']['rating'])
         self.assertEqual('changed', data['data']['notes'])
         self.assertEqual(resp.status_code, 200)
+
+        # Test invalid edit by other user
+        user2_auth_token = self.user2.encode_auth_token(self.user2.id).decode()
+        resp = self.client.put(
+            '/entry/{}'.format(entry1.id),
+            data=json.dumps({
+                'rating': 5,
+                'notes': 'malicious change'
+            }),
+            headers={
+                'Authorization': 'Bearer ' + user2_auth_token
+            },
+            content_type='application/json'
+        )
+        data = json.loads(resp.data.decode())
+        self.assertTrue(data['status'] == 'error')
+        self.assertIn('message', data)
+        self.assertEqual(data['message'], 'Invalid entry id')
+        self.assertEqual(resp.status_code, 404)
+
+    def test_entry_deletion(self):
+        # Test deleting with DELETE
+        entry = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today())
+        db.session.add(entry)
+        db.session.commit()
+
+        resp = self.client.delete(
+            '/entry/{}'.format(entry.id),
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            },
+            content_type='application/json'
+        )
+        data = json.loads(resp.data.decode())
+        self.assertTrue(data['status'] == 'success')
+        self.assertIn('message', data)
+        self.assertEqual(data['message'], 'Successfully deleted entry.')
+        self.assertEqual(resp.status_code, 200)
+
+        # Test invalid deletion by other user
+        entry = Entry(user_id=self.user.id,
+                      rating=1,
+                      notes='foobar',
+                      date=date.today())
+        db.session.add(entry)
+        db.session.commit()
+        user2_auth_token = self.user2.encode_auth_token(self.user2.id).decode()
+        resp = self.client.delete(
+            '/entry/{}'.format(entry.id),
+            headers={
+                'Authorization': 'Bearer ' + user2_auth_token
+            },
+            content_type='application/json'
+        )
+        data = json.loads(resp.data.decode())
+        self.assertTrue(data['status'] == 'error')
+        self.assertIn('message', data)
+        self.assertEqual(data['message'], 'Invalid entry id')
+        self.assertEqual(resp.status_code, 404)
+
+
 
 
 if __name__ == '__main__':

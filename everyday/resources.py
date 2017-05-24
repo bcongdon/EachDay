@@ -85,11 +85,11 @@ class EntryResource(Resource):
         entries = db.session.query(Entry).filter_by(user_id=user_id)
 
         if not entry_id:
-            return send_data(EntrySchema(many=True).dump(entries.all()).data)
+            return send_data(EntrySchema(many=True).dump(entries.order_by(Entry.date.desc()).all()).data)
 
         entry = entries.filter_by(id=entry_id).first()
         if not entry:
-            send_error('Invalid entry id', 404)
+            return send_error('Invalid entry id', 404)
 
         return send_data(EntrySchema().dump(entry).data)
 
@@ -109,7 +109,7 @@ class EntryResource(Resource):
             user_id=user_id, id=entry_id).first()
 
         if not entry:
-            send_error('Invalid entry id', 404)
+            return send_error('Invalid entry id', 404)
 
         entry_dict = EntrySchema().dump(entry).data
         entry_dict.update(request.get_json())
@@ -125,6 +125,18 @@ class EntryResource(Resource):
         db.session.commit()
 
         return send_data(EntrySchema().dump(entry).data, 200)
+
+    def delete(self, entry_id, user_id=None):
+        entry = db.session.query(Entry).filter_by(
+            user_id=user_id, id=entry_id).first()
+
+        if not entry:
+            return send_error('Invalid entry id', 404)
+
+        db.session.delete(entry)
+        db.session.commit()
+
+        return send_success('Successfully deleted entry.', 200)
 
 
 def create_apis(api):
