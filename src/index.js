@@ -8,7 +8,6 @@ import reduxThunk from 'redux-thunk'
 import reducers from './reducers'
 import Cookies from 'universal-cookie'
 import { AUTH_USER } from './actions/types'
-import App from './components/App'
 import jwtDecode from 'jwt-decode'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
@@ -24,9 +23,7 @@ if (token && jwtDecode(token) && jwtDecode(token).exp > Math.floor(Date.now() / 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <App>
-        {routes}
-      </App>
+      {routes}
     </Router>
   </Provider>,
   document.getElementById('root')

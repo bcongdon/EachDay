@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Item, Segment, Label, Icon, Rating } from 'semantic-ui-react'
+import { Item, Segment, Label, Icon, Rating, Dropdown} from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 import moment from 'moment'
-import { openEntryModal } from '../../actions'
+import { openEntryModal, deleteEntry } from '../../actions'
 import { connect } from 'react-redux'
 
 class Entry extends Component {
@@ -17,6 +17,7 @@ class Entry extends Component {
   constructor(props) {
     super(props)
     this.onEditClick = this.onEditClick.bind(this)
+    this.onDeleteClick = this.onDeleteClick.bind(this)
   }
 
   onEditClick() {
@@ -28,9 +29,13 @@ class Entry extends Component {
     })
   }
 
+  onDeleteClick() {
+    this.props.deleteEntry(this.props.id)
+  }
+
   render() {
     return (
-      <Segment textAlign='left' style={{maxWidth: 600}}>
+      <Segment textAlign='left'>
         <Item.Group>
           <Item>
             <Item.Content>
@@ -39,12 +44,16 @@ class Entry extends Component {
               <Item.Description>
                 {this.props.notes}
               </Item.Description>
+              <Dropdown style={{float: 'right'}} icon='setting'>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={this.onEditClick} icon='edit' content='Edit' />
+                  <Dropdown.Item onClick={this.onDeleteClick} icon='delete' content='Delete' />
+                </Dropdown.Menu>
+              </Dropdown>
             </Item.Content>
-            <Label attached='bottom right' size='small' as='a' onClick={this.onEditClick}>
-              Edit <Icon name='edit' />
-            </Label>
           </Item>
         </Item.Group>
+
       </Segment>
     )
   }

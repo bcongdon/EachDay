@@ -68,6 +68,38 @@ export function createEntry({ date, rating, notes }) {
 
 export function editEntry({ id, date, rating, notes }) {
   return function(dispatch) {
-    dispatch({ type: EDIT_ENTRY, payload: { id, date, rating, notes } })
+    axios.put(`${API_URL}/entry/${id}`, { date, rating, notes },
+      { headers: { 'Authorization': 'Bearer ' + cookie.get('token') } }
+    )
+    .then(response => {
+      if (response.data.status !== 'success') {
+        errorHandler(dispatch, response, ENTRY_API_ERROR)
+      }
+      dispatch({ type: EDIT_ENTRY, payload: response.data.data })
+    })
+    .catch((error) => {
+      if (error) {
+        errorHandler(dispatch, error, ENTRY_API_ERROR)
+      }
+    })
+  }
+}
+
+export function deleteEntry(id) {
+  return function(dispatch) {
+    axios.delete(`${API_URL}/entry/${id}`, {
+      headers: { 'Authorization': 'Bearer ' + cookie.get('token') }
+    })
+    .then(response => {
+      if (response.data.status !== 'success') {
+        errorHandler(dispatch, response, ENTRY_API_ERROR)
+      }
+      dispatch({ type: DELETE_ENTRY, id })
+    })
+    .catch((error) => {
+      if (error) {
+        errorHandler(dispatch, error, ENTRY_API_ERROR)
+      }
+    })
   }
 }

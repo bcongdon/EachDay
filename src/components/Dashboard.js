@@ -29,12 +29,11 @@ class Dashboard extends Component {
   }
 
   render() {
-    const values = chain(this.props.entries)
+    const calendarValues = chain(this.props.entries)
     .map(e => {
       return {
         date: e.date,
-        count: e.rating,
-        title: e.notes
+        count: e.rating
       }
     })
     .filter(e => { return e.count !== undefined })
@@ -52,12 +51,12 @@ class Dashboard extends Component {
       <div>
         <UserNavbar />
         <Grid centered verticalAlign='middle' columns={1}>
-          <Grid.Column style={{'maxWidth': 600}}>
+          <Grid.Column style={{'maxWidth': 900}}>
             <EntryModal trigger={composeEntryButton} />
             <Divider />
             <CalendarHeatmap
               numDays={366}
-              values={values}
+              values={calendarValues}
               classForValue={(value) => {
                 if (!value) {
                   return 'color-empty'

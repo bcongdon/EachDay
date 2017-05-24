@@ -1,7 +1,10 @@
+import { orderBy } from 'lodash'
+import moment from 'moment'
 import { OPEN_ENTRY_MODAL,
          CLOSE_ENTRY_MODAL,
          CREATE_ENTRY,
          EDIT_ENTRY,
+         DELETE_ENTRY,
          LOAD_ENTRIES,
          ENTRY_API_ERROR } from '../actions/types'
 
@@ -16,7 +19,11 @@ export default function (state = INITIAL_STATE, action) {
     case LOAD_ENTRIES:
       return { ...state, entries: action.payload, error: '' }
     case CREATE_ENTRY:
-      return { ...state, entries: [...state.entries, action.payload], error: '' }
+      return {
+        ...state,
+        entries: orderBy([...state.entries, action.payload], [(e) => moment(e.date)], ['desc']),
+        error: ''
+      }
     case EDIT_ENTRY:
       return {
         ...state,
@@ -28,6 +35,12 @@ export default function (state = INITIAL_STATE, action) {
             return e
           }
         })
+      }
+    case DELETE_ENTRY:
+      return {
+        ...state,
+        error: '',
+        entries: state.entries.filter(e => e.id !== action.id)
       }
     case ENTRY_API_ERROR:
       return { ...state, error: action.payload }
