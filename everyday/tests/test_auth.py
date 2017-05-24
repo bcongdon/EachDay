@@ -44,7 +44,7 @@ class TestAuthRoutes(BaseTestCase):
         data = json.loads(response.data.decode())
         self.assertTrue(data['status'] == 'error')
         self.assertTrue(
-            data['message'] == 'User already exists.')
+            data['error'] == 'User already exists.')
         self.assertTrue(response.content_type == 'application/json')
         self.assertEqual(response.status_code, 202)
 
@@ -115,7 +115,7 @@ class TestAuthRoutes(BaseTestCase):
         )
         data = json.loads(response.data.decode())
         self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data['message'] == 'Invalid login.')
+        self.assertTrue(data['error'] == 'Invalid login.')
         self.assertTrue('auth_token' not in data)
         self.assertTrue(response.content_type == 'application/json')
         self.assertEqual(response.status_code, 401)
@@ -132,7 +132,7 @@ class TestAuthRoutes(BaseTestCase):
         )
         data = json.loads(response.data.decode())
         self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data['message'] == 'User does not exist.')
+        self.assertTrue(data['error'] == 'User does not exist.')
         self.assertTrue(response.content_type == 'application/json')
         self.assertEqual(response.status_code, 404)
 

@@ -62,7 +62,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue('rating' in data['message'])
+        self.assertTrue('rating' in data['error'])
         self.assertEqual(resp.status_code, 400)
 
         # Test date validation
@@ -79,7 +79,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue('date' in data['message'])
+        self.assertTrue('date' in data['error'])
         self.assertEqual(resp.status_code, 400)
 
         # Test rating required
@@ -198,17 +198,17 @@ class TestEntryResource(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertIn('message', data)
-        self.assertEqual(data['message'], 'Invalid entry id')
+        self.assertEqual(data['status'], 'error')
+        self.assertIn('error', data)
+        self.assertEqual(data['error'], 'Invalid entry id')
         self.assertEqual(resp.status_code, 404)
 
     def test_entry_deletion(self):
         # Test deleting with DELETE
         entry = Entry(user_id=self.user.id,
-                       rating=1,
-                       notes='foobar',
-                       date=date.today())
+                      rating=1,
+                      notes='foobar',
+                      date=date.today())
         db.session.add(entry)
         db.session.commit()
 
@@ -220,7 +220,7 @@ class TestEntryResource(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['status'], 'success')
         self.assertIn('message', data)
         self.assertEqual(data['message'], 'Successfully deleted entry.')
         self.assertEqual(resp.status_code, 200)
@@ -241,12 +241,10 @@ class TestEntryResource(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertIn('message', data)
-        self.assertEqual(data['message'], 'Invalid entry id')
+        self.assertEqual(data['status'], 'error')
+        self.assertIn('error', data)
+        self.assertEqual(data['error'], 'Invalid entry id')
         self.assertEqual(resp.status_code, 404)
-
-
 
 
 if __name__ == '__main__':

@@ -85,7 +85,8 @@ class EntryResource(Resource):
         entries = db.session.query(Entry).filter_by(user_id=user_id)
 
         if not entry_id:
-            return send_data(EntrySchema(many=True).dump(entries.order_by(Entry.date.desc()).all()).data)
+            return send_data(EntrySchema(many=True).dump(
+                entries.order_by(Entry.date.desc()).all()).data)
 
         entry = entries.filter_by(id=entry_id).first()
         if not entry:
