@@ -39,7 +39,7 @@ describe('Async Auth Actions', () => {
     const store = mockStore({})
 
     return store.dispatch(actions.loginUser(login))
-      .then(() => { // return of async actions
+      .then(() => {
         expect(store.getActions()).toEqual(expectedActions)
         expect(Cookie.mock.instances.length).toEqual(1)
         expect(Cookie.mock.instances[0].set.mock.calls).toContain(['token', fakeToken, { path: '/' }])
@@ -64,10 +64,42 @@ describe('Async Auth Actions', () => {
     const store = mockStore({})
 
     return store.dispatch(actions.registerUser(login))
-      .then(() => { // return of async actions
+      .then(() => {
         expect(store.getActions()).toEqual(expectedActions)
         expect(Cookie.mock.instances.length).toEqual(1)
         expect(Cookie.mock.instances[0].set.mock.calls).toContain(['token', fakeToken, { path: '/' }])
+      })
+  })
+
+  it('creates AUTH_ERROR after a bad request', () => {
+    const login = {
+      email: 'foo@bar.baz',
+      password: 'test'
+    }
+
+    nock('http://localhost:5000/')
+      .post('/login')
+      .reply(400, { status: 'error', error: 'Invalid login' })
+
+    const expectedActions = [
+      { type: types.AUTH_ERROR, payload: 'Invalid login' }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.loginUser(login))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
+
+  it('creates a UNAUTH_USER on logoutUser', () => {
+    const expectedActions = [
+      { type: types.UNAUTH_USER }
+    ]
+    const store = mockStore({})
+    return store.dispatch(actions.logoutUser())
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
       })
   })
 })

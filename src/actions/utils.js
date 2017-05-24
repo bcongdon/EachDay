@@ -3,24 +3,18 @@ import Cookies from 'universal-cookie'
 const cookie = new Cookies()
 export { cookie }
 
-export function errorHandler(dispatch, error, type) {
+export function errorHandler(dispatch, request, type) {
   let errorMessage = ''
+  const data = request.data
 
-  if (error.data && error.data.message) {
-    errorMessage = JSON.stringify(error.data.message)
+  if (data && data.error) {
+    errorMessage = typeof data.error === 'string' ? data.error : 'Untracked error'
   } else {
-    errorMessage = JSON.stringify(error.data)
+    errorMessage = 'Something went wrong.'
   }
 
-  if (error.status === 403) {
-    dispatch({
-      type: type,
-      payload: 'You are not authorized to do this. Please login and try again.'
-    })
-  } else {
-    dispatch({
-      type: type,
-      payload: errorMessage
-    })
-  }
+  dispatch({
+    type: type,
+    payload: errorMessage
+  })
 }

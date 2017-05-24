@@ -17,9 +17,7 @@ export const loginUser = ({ email, password }) => (dispatch) =>
     window.location.href = CLIENT_ROOT_URL + '/dashboard'
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
-    }
+    errorHandler(dispatch, error.response, AUTH_ERROR)
   })
 
 export const registerUser = ({ email, password }) => (dispatch) =>
@@ -34,16 +32,15 @@ export const registerUser = ({ email, password }) => (dispatch) =>
     window.location.href = CLIENT_ROOT_URL + '/dashboard'
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error, AUTH_ERROR)
-    }
+    errorHandler(dispatch, error, AUTH_ERROR)
   })
 
-export function logoutUser() {
-  return function (dispatch) {
-    dispatch({ type: UNAUTH_USER })
-    cookie.remove('token', { path: '/' })
+export const logoutUser = () => (dispatch) => {
+  cookie.remove('token', { path: '/' })
 
-    window.location.href = CLIENT_ROOT_URL
-  }
+  // TODO: Client request so current auth_token is blacklisted
+
+  window.location.href = CLIENT_ROOT_URL
+  dispatch({ type: UNAUTH_USER })
+  return Promise.resolve()
 }
