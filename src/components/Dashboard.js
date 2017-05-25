@@ -65,12 +65,8 @@ class Dashboard extends Component {
             <CalendarHeatmap
               numDays={366}
               values={calendarValues}
-              classForValue={(value) => {
-                if (!value) {
-                  return 'color-empty'
-                }
-                return `color-scale-${value.count}`
-              }} />
+              classForValue={(value) => (value && value.count) ? `color-scale-${value.count}` : 'color-empty'}
+              />
             <Divider />
             {this.props.loading ? this.getLoader() : this.getEntries()}
           </Grid.Column>

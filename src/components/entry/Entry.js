@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 class Entry extends Component {
   static propTypes = {
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.number,
     notes: PropTypes.string,
     date: PropTypes.string.isRequired,
     openEntryModal: PropTypes.func.isRequired,
@@ -41,7 +41,7 @@ class Entry extends Component {
           <Item>
             <Item.Content>
               <Item.Header>{moment(this.props.date).format('YYYY-MM-DD')}</Item.Header>
-              <Item.Meta><Rating disabled maxRating={5} rating={this.props.rating} /></Item.Meta>
+              {this.props.rating ? <Item.Meta><Rating disabled maxRating={5} rating={this.props.rating} /></Item.Meta> : null}
               <Item.Description>
                 {this.props.notes}
               </Item.Description>

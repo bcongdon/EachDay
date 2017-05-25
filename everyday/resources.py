@@ -115,6 +115,9 @@ class EntryResource(Resource):
         entry_dict = EntrySchema().dump(entry).data
         entry_dict.update(request.get_json())
 
+        if entry_dict['rating'] == 0:
+            entry_dict['rating'] = None
+
         args, errors = EntrySchema().load(entry_dict)
         if errors:
             return send_error(errors)

@@ -6,13 +6,15 @@ function RatingFormField(props) {
   function handleChange(e, { rating, maxRating }) {
     props.input.onChange(rating)
   }
+  const { input } = props
   return (
-    <Rating rating={props.input.value} onRate={handleChange} maxRating={5} size='large' />
+    <Rating rating={input.value} clearable={props.clearable} onRate={handleChange} maxRating={5} size='large' />
   )
 }
 
 RatingFormField.propTypes = {
-  input: PropTypes.object.isRequired
+  input: PropTypes.object.isRequired,
+  clearable: PropTypes.bool
 }
 
 export default RatingFormField

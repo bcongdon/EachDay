@@ -8,6 +8,7 @@ import RatingFormField from '../form/RatingFormField'
 import DatePickerFormField from '../form/DatePickerFormField'
 import ErrorMessage from '../ErrorMessage'
 import { closeEntryModal, createEntry, editEntry } from '../../actions'
+import moment from 'moment'
 
 const form = reduxForm({
   form: 'createEntry',
@@ -17,7 +18,9 @@ const form = reduxForm({
 function validate(formProps) {
   const errors = {}
 
-  // TODO: Validation code
+  if (!formProps.date || !moment(formProps.date).isValid()) {
+    errors.date = 'Please enter a date'
+  }
 
   return errors
 }
@@ -64,7 +67,7 @@ class EntryForm extends Component {
           <Form.Field>
             <label>Rating</label>
             <Field
-              component={RatingFormField} name='rating'
+              component={RatingFormField} clearable name='rating'
               />
           </Form.Field>
           <Form.Field style={{marginLeft: 'auto'}}>

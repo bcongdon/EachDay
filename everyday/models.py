@@ -68,7 +68,7 @@ class Entry(db.Model):
 
     @validates('rating')
     def validate_rating(self, key, rating):
-        if not 1 <= rating <= 10:
+        if rating is not None and not 1 <= rating <= 10:
             raise ValueError('Rating must be between 1 and 10')
         return rating
 
@@ -84,11 +84,11 @@ class EntrySchema(Schema):
     id = fields.Int()
     user_id = fields.Int()
     date = fields.Date(required=True)
-    notes = fields.Str()
-    rating = fields.Int(required=True)
+    notes = fields.Str(allow_none=True)
+    rating = fields.Int(allow_none=True)
 
     @marshmallow.validates('rating')
     def validate_rating(self, data):
-        if not 1 <= data <= 10:
+        if data is not None and not 1 <= data <= 10:
             raise ValidationError('Rating must be between 1 and 10')
         return data
