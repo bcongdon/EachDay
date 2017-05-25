@@ -8,6 +8,7 @@ import httpAdapter from 'axios/lib/adapters/http'
 import axios from 'axios'
 import expect from 'expect'
 import Cookie from 'universal-cookie'
+import { push } from 'react-router-redux'
 
 const middlewares = [ thunk ]
 const mockStore = configureStore(middlewares)
@@ -34,7 +35,8 @@ describe('Async Auth Actions', () => {
       .reply(200, { status: 'success', auth_token: fakeToken })
 
     const expectedActions = [
-      { type: types.AUTH_USER, payload: authObject }
+      { type: types.AUTH_USER, payload: authObject },
+      push('/dashboard') // Redirect to dashboard
     ]
     const store = mockStore({})
 
@@ -59,7 +61,8 @@ describe('Async Auth Actions', () => {
       .reply(200, { status: 'success', auth_token: fakeToken })
 
     const expectedActions = [
-      { type: types.AUTH_USER, payload: authObject }
+      { type: types.AUTH_USER, payload: authObject },
+      push('/dashboard') // Redirect to dashboard
     ]
     const store = mockStore({})
 
@@ -94,6 +97,7 @@ describe('Async Auth Actions', () => {
 
   it('creates a UNAUTH_USER on logoutUser', () => {
     const expectedActions = [
+      push('/'), // Redirect to home page
       { type: types.UNAUTH_USER }
     ]
     const store = mockStore({})

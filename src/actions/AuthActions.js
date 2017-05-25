@@ -7,7 +7,6 @@ import { AUTH_USER,
          UNAUTH_USER } from './types'
 
 const API_URL = 'http://localhost:5000'
-const CLIENT_ROOT_URL = 'http://localhost:9000'
 
 export const loginUser = ({ email, password }) => (dispatch) =>
   axios.post(`${API_URL}/login`, { email, password })
