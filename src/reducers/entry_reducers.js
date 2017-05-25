@@ -43,7 +43,7 @@ export default function (state = INITIAL_STATE, action) {
         entries: state.entries.filter(e => e.id !== action.id)
       }
     case ENTRY_API_ERROR:
-      return { ...state, error: action.payload }
+      return { ...state, error: action.payload, loading: false }
   }
 
   return state

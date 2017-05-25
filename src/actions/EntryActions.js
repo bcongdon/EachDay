@@ -22,9 +22,7 @@ export function loadEntries() {
       })
     })
     .catch((error) => {
-      if (error) {
-        errorHandler(dispatch, error.response, ENTRY_API_ERROR)
-      }
+      errorHandler(dispatch, error, ENTRY_API_ERROR)
     })
   }
 }

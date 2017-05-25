@@ -9,7 +9,8 @@ import { loadEntries, openEntryModal } from '../actions'
 import UserNavbar from './UserNavbar'
 import EntryModal from './entry/EntryModal'
 import Entry from './entry/Entry'
-import { Button, Grid, Divider, Message, Loader } from 'semantic-ui-react'
+import { Button, Grid, Divider, Message, Loader, Dimmer } from 'semantic-ui-react'
+import ErrorMessage from './ErrorMessage'
 
 class Dashboard extends Component {
   componentWillMount() {
@@ -40,6 +41,12 @@ class Dashboard extends Component {
     }
   }
 
+  showError() {
+    return (
+      <ErrorMessage compact message={this.props.error} />
+    )
+  }
+
   render() {
     const calendarValues = chain(this.props.entries)
     .map(e => {
@@ -66,12 +73,18 @@ class Dashboard extends Component {
           <Grid.Column style={{'maxWidth': 950}}>
             <EntryModal trigger={composeEntryButton} />
             <Divider />
-            <CalendarHeatmap
-              numDays={366}
-              values={calendarValues}
-              classForValue={(value) => (value && value.count) ? `color-scale-${value.count}` : 'color-empty'}
-              />
+            <Dimmer.Dimmable dimmed={this.props.loading}>
+              <Dimmer active={this.props.loading} inverted>
+                <Loader>Loading</Loader>
+              </Dimmer>
+              <CalendarHeatmap
+                numDays={366}
+                values={calendarValues}
+                classForValue={(value) => (value && value.count) ? `color-scale-${value.count}` : 'color-empty'}
+                />
+            </Dimmer.Dimmable>
             <Divider />
+            {this.props.error ? this.showError() : null}
             {this.props.loading ? this.getLoader() : this.getEntries()}
           </Grid.Column>
         </Grid>
@@ -83,7 +96,8 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
   return {
     entries: state.entry.entries,
-    loading: state.entry.loading
+    loading: state.entry.loading,
+    error: state.entry.error
   }
 }
 
@@ -95,7 +109,8 @@ Dashboard.propTypes = {
   loadEntries: PropTypes.func.isRequired,
   openEntryModal: PropTypes.func.isRequired,
   entries: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  error: PropTypes.string
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

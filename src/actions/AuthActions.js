@@ -17,7 +17,7 @@ export const loginUser = ({ email, password }) => (dispatch) =>
     window.location.href = CLIENT_ROOT_URL + '/dashboard'
   })
   .catch((error) => {
-    errorHandler(dispatch, error.response, AUTH_ERROR)
+    errorHandler(dispatch, error, AUTH_ERROR)
   })
 
 export const registerUser = ({ email, password }) => (dispatch) =>

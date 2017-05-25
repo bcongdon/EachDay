@@ -3,14 +3,18 @@ import Cookies from 'universal-cookie'
 const cookie = new Cookies()
 export { cookie }
 
-export function errorHandler(dispatch, request, type) {
+export function errorHandler(dispatch, error, type) {
   let errorMessage = ''
-  const data = request.data
-
-  if (data && data.error) {
-    errorMessage = typeof data.error === 'string' ? data.error : 'Untracked error'
+  if (!error.response) {
+    errorMessage = 'There was an error connecting the Everyday server.'
   } else {
-    errorMessage = 'Something went wrong.'
+    const data = error.response.data
+    if (data && data.error) {
+      // TODO Support error text for validation errors
+      errorMessage = typeof data.error === 'string' ? data.error : 'Untracked error'
+    } else {
+      errorMessage = 'Something went wrong.'
+    }
   }
 
   dispatch({
