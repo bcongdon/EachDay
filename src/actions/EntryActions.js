@@ -68,7 +68,7 @@ export function createEntry({ date, rating, notes }) {
 export function editEntry({ id, date, rating, notes }) {
   return function(dispatch) {
     // Set rating to NULL if zero (to clear rating)
-    rating = rating === 0 ? rating : null
+    rating = rating === 0 ? null : rating
     axios.put(`${API_URL}/entry/${id}`, { date, rating, notes },
       { headers: { 'Authorization': 'Bearer ' + cookie.get('token') } }
     )

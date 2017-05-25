@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Item, Segment, Rating, Dropdown } from 'semantic-ui-react'
+import { Grid, Rating, Dropdown, Statistic } from 'semantic-ui-react'
 import { PropTypes } from 'prop-types'
 import moment from 'moment'
 import { openEntryModal, deleteEntry } from '../../actions'
@@ -36,26 +36,28 @@ class Entry extends Component {
 
   render() {
     return (
-      <Segment textAlign='left'>
-        <Item.Group>
-          <Item>
-            <Item.Content>
-              <Item.Header>{moment(this.props.date).format('YYYY-MM-DD')}</Item.Header>
-              {this.props.rating ? <Item.Meta><Rating disabled maxRating={5} rating={this.props.rating} /></Item.Meta> : null}
-              <Item.Description>
-                {this.props.notes}
-              </Item.Description>
-              <Dropdown style={{float: 'right'}} icon='setting'>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={this.onEditClick} icon='edit' content='Edit' />
-                  <Dropdown.Item onClick={this.onDeleteClick} icon='delete' content='Delete' />
-                </Dropdown.Menu>
-              </Dropdown>
-            </Item.Content>
-          </Item>
-        </Item.Group>
-
-      </Segment>
+      <Grid.Row>
+        <Grid.Column width={2} textAlign='center' style={{minWidth: 100}}>
+          <Statistic size='small'>
+            <Statistic.Label>{moment(this.props.date).format('MMM')}</Statistic.Label>
+            <Statistic.Value>{moment(this.props.date).format('DD')}</Statistic.Value>
+          </Statistic>
+          <div>
+            {this.props.rating ? <Rating style={{maxWidth: '100%'}} disabled size='tiny' maxRating={5} rating={this.props.rating} /> : null}
+          </div>
+        </Grid.Column>
+        <Grid.Column width={10} textAlign='left'>
+          {this.props.notes}
+        </Grid.Column>
+        <Grid.Column width={1} verticalAlign='bottom' floated='right' style={{marginBottom: 0}}>
+          <Dropdown icon='setting' className={'top right'}>
+            <Dropdown.Menu style={{right: 0, left: 'auto'}}>
+              <Dropdown.Item onClick={this.onEditClick} icon='edit' content='Edit' />
+              <Dropdown.Item onClick={this.onDeleteClick} icon='delete' content='Delete' />
+            </Dropdown.Menu>
+          </Dropdown>
+        </Grid.Column>
+      </Grid.Row>
     )
   }
 }

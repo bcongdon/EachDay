@@ -16,7 +16,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 
 
-from . import resources
+from . import resources  # nopep8
 resources.create_apis(api)
 
 if __name__ == '__main__':

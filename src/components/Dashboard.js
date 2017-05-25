@@ -32,7 +32,11 @@ class Dashboard extends Component {
     if (entries.length === 0) {
       this.getEmptyEntriesMessage()
     } else {
-      return entries
+      return (
+        <Grid divided='vertically' style={{margin: 10}}>
+          {entries}
+        </Grid>
+      )
     }
   }
 
@@ -59,7 +63,7 @@ class Dashboard extends Component {
       <div>
         <UserNavbar />
         <Grid centered verticalAlign='middle' columns={1}>
-          <Grid.Column style={{'maxWidth': 900}}>
+          <Grid.Column style={{'maxWidth': 950}}>
             <EntryModal trigger={composeEntryButton} />
             <Divider />
             <CalendarHeatmap
