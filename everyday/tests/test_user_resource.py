@@ -1,22 +1,24 @@
 import unittest
 
 import json
+from everyday import db
+from everyday.models import User
 from everyday.tests.base import BaseTestCase
 
 
-class TestUserModel(BaseTestCase):
-    def test_user_status(self):
+class TestUserResource(BaseTestCase):
+    def test_user_get(self):
         """ Test for user status """
         with self.client:
-            resp_register = self.client.post(
-                '/register',
-                data=json.dumps({
-                    'email': 'joe@gmail.com',
-                    'password': '123456'
-                }),
-                content_type='application/json'
+            user = User(
+                email='foo@bar.com',
+                password='test',
+                name='joe'
             )
-            token = json.loads(resp_register.data.decode())['auth_token']
+            db.session.add(user)
+            db.session.commit()
+
+            token = user.encode_auth_token(user.id).decode()
             response = self.client.get(
                 '/user',
                 headers={
@@ -26,7 +28,8 @@ class TestUserModel(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'success')
             self.assertTrue(data['data'] is not None)
-            self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+            self.assertTrue(data['data']['email'] == 'foo@bar.com')
+            self.assertTrue(data['data']['name'] == 'joe')
             self.assertTrue('password' not in data['data'])
             self.assertEqual(response.status_code, 200)
 

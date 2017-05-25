@@ -13,11 +13,13 @@ class TestEntryResource(BaseTestCase):
         super(TestEntryResource, self).setUp()
         user = User(
             email='foo@bar.com',
-            password='test'
+            password='test',
+            name='joe'
         )
         user2 = User(
             email='baz@bar.com',
-            password='test2'
+            password='test2',
+            name='moe'
         )
         db.session.add(user)
         db.session.add(user2)

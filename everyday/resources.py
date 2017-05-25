@@ -62,15 +62,14 @@ class RegisterResource(Resource):
 
 class LoginResource(Resource):
     def post(self):
-        args, errors = UserSchema().load(request.get_json())
-        if errors:
-            return send_error(errors)
+        data = request.get_json()
+        email, password = data['email'], data['password']
 
-        user = db.session.query(User).filter_by(email=args['email']).first()
+        user = db.session.query(User).filter_by(email=email).first()
         if not user:
             return send_error('User does not exist.', 404)
 
-        if bcrypt.check_password_hash(user.password, args['password']):
+        if bcrypt.check_password_hash(user.password, password):
             auth_token = user.encode_auth_token(user.id)
             return send_success('Successfully logged in.', 200,
                                 auth_token=auth_token.decode())

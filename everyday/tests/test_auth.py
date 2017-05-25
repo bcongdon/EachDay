@@ -13,7 +13,8 @@ class TestAuthRoutes(BaseTestCase):
             '/register',
             data=json.dumps(dict(
                 email='foo@bar.com',
-                password='123456'
+                password='123456',
+                name='joe'
             )),
             content_type='application/json'
         )
@@ -24,11 +25,29 @@ class TestAuthRoutes(BaseTestCase):
         self.assertTrue(response.content_type == 'application/json')
         self.assertEqual(response.status_code, 201)
 
+    def test_registration_missing_fields(self):
+        """ Test for user registration with missing fields """
+        response = self.client.post(
+            '/register',
+            data=json.dumps(dict(
+                email='foo@bar.com',
+            )),
+            content_type='application/json'
+        )
+        data = json.loads(response.data.decode())
+        self.assertTrue(data['status'] == 'error')
+        self.assertIn('error', data)
+        self.assertIn('password', data['error'])
+        self.assertIn('name', data['error'])
+        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(response.status_code, 400)
+
     def test_registered_with_already_registered_user(self):
         """ Test registration with already registered email"""
         user = User(
             email='foo@bar.com',
-            password='test'
+            password='test',
+            name='joe'
         )
         db.session.add(user)
         db.session.commit()
@@ -37,7 +56,8 @@ class TestAuthRoutes(BaseTestCase):
             '/register',
             data=json.dumps(dict(
                 email='foo@bar.com',
-                password='123456'
+                password='123456',
+                name='moe'
             )),
             content_type='application/json'
         )
@@ -55,7 +75,8 @@ class TestAuthRoutes(BaseTestCase):
             '/register',
             data=json.dumps({
                 'email': 'joe@gmail.com',
-                'password': '123456'
+                'password': '123456',
+                'name': 'joe'
             }),
             content_type='application/json',
         )
@@ -91,7 +112,8 @@ class TestAuthRoutes(BaseTestCase):
             '/register',
             data=json.dumps({
                 'email': 'joe@gmail.com',
-                'password': '123456'
+                'password': '123456',
+                'name': 'joe'
             }),
             content_type='application/json',
         )

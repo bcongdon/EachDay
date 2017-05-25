@@ -12,12 +12,14 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
 
-    def __init__(self, email, password):
+    def __init__(self, email, password, name):
         self.email = email
         self.password = bcrypt.generate_password_hash(
             password, app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
+        self.name = name
 
     def encode_auth_token(self, user_id):
         """
@@ -29,7 +31,7 @@ class User(db.Model):
                 'exp': datetime.utcnow() + timedelta(days=1),
                 'iat': datetime.utcnow(),
                 'sub': user_id,
-                'name': 'Sample Name',
+                'name': self.name,
                 'email': self.email
             }
             return jwt.encode(
@@ -77,7 +79,8 @@ class UserSchema(Schema):
     id = fields.Int()
     email = fields.Str(required=True,
                        validate=validate.Email(error='Invalid email address'))
-    password = fields.Str(load_only=True)
+    password = fields.Str(required=True, load_only=True)
+    name = fields.Str(required=True)
 
 
 class EntrySchema(Schema):
