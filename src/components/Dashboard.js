@@ -88,8 +88,7 @@ class Dashboard extends Component {
                 />
             </Dimmer.Dimmable>
             <Divider />
-            {this.props.error ? this.showError() : null}
-            {this.props.loading ? this.getLoader() : this.getEntries()}
+            {this.props.error ? this.showError() : (this.props.loading ? this.getLoader() : this.getEntries())}
           </Grid.Column>
         </Grid>
       </div>
