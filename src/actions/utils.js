@@ -11,7 +11,7 @@ export function errorHandler(dispatch, error, type) {
     const data = error.response.data
     if (data && data.error) {
       // TODO Support error text for validation errors
-      errorMessage = typeof data.error === 'string' ? data.error : 'Untracked error'
+      errorMessage = typeof data.error === 'string' ? data.error : JSON.stringify(data.error)
     } else {
       errorMessage = 'Something went wrong.'
     }

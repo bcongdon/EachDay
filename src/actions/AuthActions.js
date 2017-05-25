@@ -21,8 +21,8 @@ export const loginUser = ({ email, password }) => (dispatch) =>
     errorHandler(dispatch, error, AUTH_ERROR)
   })
 
-export const registerUser = ({ email, password }) => (dispatch) =>
-  axios.post(`${API_URL}/register`, { email, password })
+export const registerUser = ({ email, password, name }) => (dispatch) =>
+  axios.post(`${API_URL}/register`, { email, password, name })
   .then(response => {
     if (response.data.status !== 'success') {
       errorHandler(dispatch, response, AUTH_ERROR)

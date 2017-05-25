@@ -22,7 +22,11 @@ class Dashboard extends Component {
   }
 
   getEmptyEntriesMessage() {
-    return <Message compact>You don't have any entries yet!</Message>
+    return (
+      <Message compact>
+        You don't have any entries yet! Why don't you <a href='#' onClick={() => this.props.openEntryModal()}>write one</a>?
+      </Message>
+    )
   }
 
   getEntries() {
@@ -31,7 +35,7 @@ class Dashboard extends Component {
     })
 
     if (entries.length === 0) {
-      this.getEmptyEntriesMessage()
+      return this.getEmptyEntriesMessage()
     } else {
       return (
         <Grid divided='vertically' style={{margin: 10}}>
