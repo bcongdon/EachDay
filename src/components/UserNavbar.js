@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Menu, Dropdown } from 'semantic-ui-react'
 import Gravatar from './Gravatar'
 import { connect } from 'react-redux'
-import { logoutUser } from '../actions'
+import { logoutUser, pushPage } from '../actions'
 import { PropTypes } from 'prop-types'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
@@ -12,6 +12,8 @@ class UserNavbar extends Component {
   constructor(props) {
     super(props)
     this.logoutClick = this.logoutClick.bind(this)
+    this.profileClick = this.profileClick.bind(this)
+    this.dashboardClick = this.dashboardClick.bind(this)
   }
 
   getTrigger() {
@@ -27,7 +29,11 @@ class UserNavbar extends Component {
   }
 
   profileClick(event, data) {
+    this.props.pushPage('/profile')
+  }
 
+  dashboardClick(event, data) {
+    this.props.pushPage('/dashboard')
   }
 
   render() {
@@ -38,8 +44,9 @@ class UserNavbar extends Component {
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
-            <Dropdown trigger={this.getTrigger()} pointing='top left' icon={null}>
+            <Dropdown trigger={this.getTrigger()} pointing='top right' icon={null}>
               <Dropdown.Menu>
+                <Dropdown.Item text='Journal' icon='calendar outline' onClick={this.dashboardClick} />
                 <Dropdown.Item text='Account' icon='user' onClick={this.profileClick} />
                 <Dropdown.Item text='Sign Out' icon='sign out' onClick={this.logoutClick} />
               </Dropdown.Menu>
@@ -53,7 +60,8 @@ class UserNavbar extends Component {
 
 UserNavbar.propTypes = {
   user: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired,
+  pushPage: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -62,4 +70,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { logoutUser })(UserNavbar)
+export default connect(mapStateToProps, { logoutUser, pushPage })(UserNavbar)

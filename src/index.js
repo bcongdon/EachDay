@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import createHistory from 'history/createBrowserHistory'
 import routes from './routes'
 import { Provider } from 'react-redux'
 import reduxThunk from 'redux-thunk'
@@ -9,8 +9,11 @@ import reducers from './reducers'
 import Cookies from 'universal-cookie'
 import { AUTH_USER } from './actions/types'
 import jwtDecode from 'jwt-decode'
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
+const history = createHistory()
+
+const createStoreWithMiddleware = applyMiddleware(reduxThunk, routerMiddleware(history))(createStore)
 const store = createStoreWithMiddleware(reducers)
 
 const token = (new Cookies()).get('token')
@@ -22,9 +25,9 @@ if (token && jwtDecode(token) && jwtDecode(token).exp > Math.floor(Date.now() / 
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       {routes}
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
 )

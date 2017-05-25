@@ -3,12 +3,19 @@ import { Link } from 'react-router-dom'
 import { Button, Header, Icon, Container } from 'semantic-ui-react'
 import './HomePage.css'
 import PublicNavbar from '../PublicNavbar'
+import UserNavbar from '../UserNavbar'
+import { connect } from 'react-redux'
+import { PropTypes } from 'prop-types'
 
 class HomePage extends Component {
+  static propTypes = {
+    authenticated: PropTypes.bool.isRequired
+  }
+
   render() {
     return (
       <div>
-        <PublicNavbar />
+        {this.props.authenticated ? <UserNavbar /> : <PublicNavbar />}
         <Container text textAlign='center' className='welcome-container'>
           <Header as='h1' icon textAlign='center'>
             <Icon name='checked calendar' circular />
@@ -28,4 +35,10 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage
+function mapPropsToState(state) {
+  return {
+    authenticated: state.auth.authenticated
+  }
+}
+
+export default connect(mapPropsToState)(HomePage)

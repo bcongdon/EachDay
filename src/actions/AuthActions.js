@@ -1,5 +1,6 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
+import { push } from 'react-router-redux'
 import { errorHandler, cookie } from './utils'
 import { AUTH_USER,
          AUTH_ERROR,
@@ -14,7 +15,7 @@ export const loginUser = ({ email, password }) => (dispatch) =>
     cookie.set('token', response.data.auth_token, { path: '/' })
     let payload = jwtDecode(response.data.auth_token)
     dispatch({ type: AUTH_USER, payload: payload })
-    window.location.href = CLIENT_ROOT_URL + '/dashboard'
+    dispatch(push('/dashboard'))
   })
   .catch((error) => {
     errorHandler(dispatch, error, AUTH_ERROR)
@@ -29,7 +30,7 @@ export const registerUser = ({ email, password }) => (dispatch) =>
     cookie.set('token', response.data.auth_token, { path: '/' })
     let payload = jwtDecode(response.data.auth_token)
     dispatch({ type: AUTH_USER, payload: payload })
-    window.location.href = CLIENT_ROOT_URL + '/dashboard'
+    dispatch(push('/dashboard'))
   })
   .catch((error) => {
     errorHandler(dispatch, error, AUTH_ERROR)
@@ -40,7 +41,7 @@ export const logoutUser = () => (dispatch) => {
 
   // TODO: Client request so current auth_token is blacklisted
 
-  window.location.href = CLIENT_ROOT_URL
+  dispatch(push('/'))
   dispatch({ type: UNAUTH_USER })
   return Promise.resolve()
 }

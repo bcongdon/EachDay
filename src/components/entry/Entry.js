@@ -37,16 +37,16 @@ class Entry extends Component {
   render() {
     return (
       <Grid.Row>
-        <Grid.Column width={2} textAlign='center' style={{minWidth: 100}}>
+        <Grid.Column width={2} textAlign='center' style={{minWidth: 100, margin: '0 auto'}}>
           <Statistic size='small'>
             <Statistic.Label>{moment(this.props.date).format('MMM')}</Statistic.Label>
             <Statistic.Value>{moment(this.props.date).format('DD')}</Statistic.Value>
           </Statistic>
           <div>
-            {this.props.rating ? <Rating style={{maxWidth: '100%'}} disabled size='tiny' maxRating={5} rating={this.props.rating} /> : null}
+            {this.props.rating ? <Rating style={{maxWidth: '100%', marginBottom: 20}} disabled size='tiny' maxRating={5} rating={this.props.rating} /> : null}
           </div>
         </Grid.Column>
-        <Grid.Column width={10} textAlign='left'>
+        <Grid.Column textAlign='left' computer={10} tablet={10} mobile={16}>
           {this.props.notes}
         </Grid.Column>
         <Grid.Column width={1} verticalAlign='bottom' floated='right' style={{marginBottom: 0}}>
