@@ -9,7 +9,7 @@ class ErrorMessage extends Component {
     compact: PropTypes.bool
   }
 
-  render() {
+  render () {
     const header = this.props.header === undefined ? 'Something went wrong...' : this.props.header
     return (
       <Message negative compact={this.props.compact}>

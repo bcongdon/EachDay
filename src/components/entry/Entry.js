@@ -15,13 +15,13 @@ class Entry extends Component {
     deleteEntry: PropTypes.func
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.onEditClick = this.onEditClick.bind(this)
     this.onDeleteClick = this.onDeleteClick.bind(this)
   }
 
-  onEditClick() {
+  onEditClick () {
     this.props.openEntryModal({
       rating: this.props.rating,
       notes: this.props.notes,
@@ -30,11 +30,11 @@ class Entry extends Component {
     })
   }
 
-  onDeleteClick() {
+  onDeleteClick () {
     this.props.deleteEntry(this.props.id)
   }
 
-  render() {
+  render () {
     return (
       <Grid.Row>
         <Grid.Column width={2} textAlign='center' style={{minWidth: 100, margin: '0 auto'}}>

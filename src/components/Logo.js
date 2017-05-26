@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Icon } from 'semantic-ui-react'
 
 class Logo extends Component {
-  render() {
+  render () {
     return (
       <div><Icon name='checked calendar' /> Everyday</div>
     )

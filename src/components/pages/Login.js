@@ -5,7 +5,7 @@ import { Segment, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 class Login extends Component {
-  render() {
+  render () {
     return (
       <div>
         <PublicNavbar />

@@ -12,16 +12,16 @@ const form = reduxForm({
 })
 
 class LoginForm extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
-  handleFormSubmit(formProps) {
+  handleFormSubmit (formProps) {
     this.props.loginUser(formProps)
   }
 
-  renderAlert() {
+  renderAlert () {
     if (this.props.errorMessage) {
       return (
         <div>
@@ -31,7 +31,7 @@ class LoginForm extends Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <Form error warning onSubmit={this.props.handleSubmit(this.handleFormSubmit)}>
         {this.props.authenticated ? (<Redirect push to='/dashboard' />) : null}
@@ -57,7 +57,7 @@ LoginForm.propTypes = {
   authenticated: PropTypes.bool.isRequired
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     authenticated: state.auth.authenticated,
     errorMessage: state.auth.error,

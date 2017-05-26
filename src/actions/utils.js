@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie'
 const cookie = new Cookies()
 export { cookie }
 
-export function errorHandler(dispatch, error, type) {
+export function errorHandler (dispatch, error, type) {
   let errorMessage = ''
   if (!error.response) {
     errorMessage = 'There was an error connecting the Everyday server.'

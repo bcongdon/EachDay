@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types'
 import { Header } from 'semantic-ui-react'
 
 class NotFoundPage extends Component {
-  render() {
+  render () {
     return (
       <div>
         {this.props.authenticated ? (<UserNavbar />) : (<PublicNavbar />)}
@@ -27,7 +27,7 @@ NotFoundPage.propTypes = {
   authenticated: PropTypes.bool.isRequired
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     authenticated: state.auth.authenticated
   }

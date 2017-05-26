@@ -9,14 +9,14 @@ import { Link } from 'react-router-dom'
 import './UserNavbar.css'
 
 class UserNavbar extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.logoutClick = this.logoutClick.bind(this)
     this.profileClick = this.profileClick.bind(this)
     this.dashboardClick = this.dashboardClick.bind(this)
   }
 
-  getTrigger() {
+  getTrigger () {
     return (
       <span>
         <Gravatar email={this.props.user.email} /> {this.props.user.name}
@@ -24,19 +24,19 @@ class UserNavbar extends Component {
     )
   }
 
-  logoutClick(event, data) {
+  logoutClick (event, data) {
     this.props.logoutUser()
   }
 
-  profileClick(event, data) {
+  profileClick (event, data) {
     this.props.pushPage('/profile')
   }
 
-  dashboardClick(event, data) {
+  dashboardClick (event, data) {
     this.props.pushPage('/dashboard')
   }
 
-  render() {
+  render () {
     return (
       <Menu size='large' borderless>
         <Menu.Item>
@@ -64,7 +64,7 @@ UserNavbar.propTypes = {
   pushPage: PropTypes.func.isRequired
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     user: state.auth.user
   }

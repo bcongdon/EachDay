@@ -4,12 +4,12 @@ import { PropTypes } from 'prop-types'
 import md5 from 'js-md5'
 
 class Gravatar extends Component {
-  getUrl() {
+  getUrl () {
     const hash = md5(this.props.email)
     return `https://www.gravatar.com/avatar/${hash}?s=${this.props.size}&r=pg`
   }
 
-  render() {
+  render () {
     return (
       <Image avatar src={this.getUrl()} />
     )

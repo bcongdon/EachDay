@@ -13,16 +13,16 @@ class EntryModal extends Component {
     trigger: PropTypes.element
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleClose = this.handleClose.bind(this)
   }
 
-  handleClose() {
+  handleClose () {
     this.props.closeEntryModal()
   }
 
-  render() {
+  render () {
     // Test for null/undefined or empty object
     const isNewEntry = !this.props.initialModalValues || Object.keys(this.props.initialModalValues).length === 0
 
@@ -40,7 +40,7 @@ class EntryModal extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     open: state.entry.entryModalOpen,
     initialModalValues: state.entry.initialModalValues

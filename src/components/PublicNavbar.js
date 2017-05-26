@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react'
 import './PublicNavbar.css'
 
 class PublicNavbar extends Component {
-  render() {
+  render () {
     return (
       <Menu stackable borderless>
         <Menu.Item>

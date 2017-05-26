@@ -10,8 +10,8 @@ import { LOAD_ENTRIES,
 
 const API_URL = 'http://localhost:5000'
 
-export function loadEntries() {
-  return function(dispatch) {
+export function loadEntries () {
+  return function (dispatch) {
     axios.get(`${API_URL}/entry`, {
       headers: { 'Authorization': 'Bearer ' + cookie.get('token') }
     })
@@ -27,8 +27,8 @@ export function loadEntries() {
   }
 }
 
-export function openEntryModal(defaultValues) {
-  return function(dispatch) {
+export function openEntryModal (defaultValues) {
+  return function (dispatch) {
     dispatch({
       type: OPEN_ENTRY_MODAL,
       payload: defaultValues
@@ -36,16 +36,16 @@ export function openEntryModal(defaultValues) {
   }
 }
 
-export function closeEntryModal() {
-  return function(dispatch) {
+export function closeEntryModal () {
+  return function (dispatch) {
     dispatch({
       type: CLOSE_ENTRY_MODAL
     })
   }
 }
 
-export function createEntry({ date, rating, notes }) {
-  return function(dispatch) {
+export function createEntry ({ date, rating, notes }) {
+  return function (dispatch) {
     axios.post(`${API_URL}/entry`, { date, rating, notes },
       { headers: { 'Authorization': 'Bearer ' + cookie.get('token') } }
     )
@@ -63,8 +63,8 @@ export function createEntry({ date, rating, notes }) {
   }
 }
 
-export function editEntry({ id, date, rating, notes }) {
-  return function(dispatch) {
+export function editEntry ({ id, date, rating, notes }) {
+  return function (dispatch) {
     // Set rating to NULL if zero (to clear rating)
     rating = rating === 0 ? null : rating
     axios.put(`${API_URL}/entry/${id}`, { date, rating, notes },
@@ -84,8 +84,8 @@ export function editEntry({ id, date, rating, notes }) {
   }
 }
 
-export function deleteEntry(id) {
-  return function(dispatch) {
+export function deleteEntry (id) {
+  return function (dispatch) {
     axios.delete(`${API_URL}/entry/${id}`, {
       headers: { 'Authorization': 'Bearer ' + cookie.get('token') }
     })

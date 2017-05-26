@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { Message } from 'semantic-ui-react'
 
 class SemanticReduxFormField extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
   }
@@ -14,7 +14,7 @@ class SemanticReduxFormField extends Component {
     return this.props.input.onChange(value)
   }
 
-  render() {
+  render () {
     const { input, label, meta, ...props } = this.props
     const { touched, error } = meta
 

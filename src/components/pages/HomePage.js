@@ -12,7 +12,7 @@ class HomePage extends Component {
     authenticated: PropTypes.bool.isRequired
   }
 
-  render() {
+  render () {
     return (
       <div>
         {this.props.authenticated ? <UserNavbar /> : <PublicNavbar />}
@@ -35,7 +35,7 @@ class HomePage extends Component {
   }
 }
 
-function mapPropsToState(state) {
+function mapPropsToState (state) {
   return {
     authenticated: state.auth.authenticated
   }

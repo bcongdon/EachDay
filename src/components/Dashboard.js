@@ -11,17 +11,18 @@ import EntryModal from './entry/EntryModal'
 import Entry from './entry/Entry'
 import { Button, Grid, Divider, Message, Loader, Dimmer } from 'semantic-ui-react'
 import ErrorMessage from './ErrorMessage'
+import { Link } from 'react-router-dom'
 
 class Dashboard extends Component {
-  componentWillMount() {
+  componentWillMount () {
     this.props.loadEntries()
   }
 
-  getLoader() {
+  getLoader () {
     return <Loader size='medium' active inline='centered'>Loading</Loader>
   }
 
-  getEmptyEntriesMessage() {
+  getEmptyEntriesMessage () {
     return (
       <Message compact>
         You don't have any entries yet! Why don't you <a href='#' onClick={() => this.props.openEntryModal()}>write one</a>?
@@ -29,7 +30,7 @@ class Dashboard extends Component {
     )
   }
 
-  getEntries() {
+  getEntries () {
     const entries = this.props.entries.map((e) => {
       return (<Entry key={e.id} id={e.id} rating={e.rating} date={e.date} notes={e.notes} />)
     })
@@ -45,13 +46,13 @@ class Dashboard extends Component {
     }
   }
 
-  showError() {
+  showError () {
     return (
       <ErrorMessage compact message={this.props.error} />
     )
   }
 
-  render() {
+  render () {
     const calendarValues = chain(this.props.entries)
     .map(e => {
       return {
@@ -76,6 +77,7 @@ class Dashboard extends Component {
         <Grid centered verticalAlign='middle' columns={1}>
           <Grid.Column style={{'maxWidth': 950}}>
             <EntryModal trigger={composeEntryButton} />
+            <Link replace to='/dashboard'>Foo</Link>
             <Divider />
             <Dimmer.Dimmable dimmed={this.props.loading}>
               <Dimmer active={this.props.loading} inverted>
@@ -96,7 +98,7 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     entries: state.entry.entries,
     loading: state.entry.loading,
@@ -104,7 +106,7 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return bindActionCreators({ loadEntries, openEntryModal }, dispatch)
 }
 

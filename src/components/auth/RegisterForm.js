@@ -12,7 +12,7 @@ const form = reduxForm({
   validate
 })
 
-function validate(formProps) {
+function validate (formProps) {
   const errors = {}
 
   if (!formProps.email) {
@@ -31,16 +31,16 @@ function validate(formProps) {
 }
 
 class RegisterForm extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
-  handleFormSubmit(formProps) {
+  handleFormSubmit (formProps) {
     this.props.registerUser(formProps)
   }
 
-  renderAlert() {
+  renderAlert () {
     if (this.props.errorMessage) {
       return (
         <div>
@@ -50,7 +50,7 @@ class RegisterForm extends Component {
     }
   }
 
-  render() {
+  render () {
     const { handleSubmit } = this.props
 
     return (
@@ -82,7 +82,7 @@ RegisterForm.propTypes = {
   authenticated: PropTypes.bool
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     errorMessage: state.auth.error,
     message: state.auth.message,

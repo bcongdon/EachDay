@@ -98,7 +98,7 @@ class EntryResource(Resource):
         if errors:
             return send_error(errors)
 
-        entry = Entry(**args, user_id=user_id)
+        entry = Entry(user_id=user_id, **args)
         db.session.add(entry)
         db.session.commit()
 

@@ -15,7 +15,7 @@ const form = reduxForm({
   validate
 })
 
-function validate(formProps) {
+function validate (formProps) {
   const errors = {}
 
   if (!formProps.date || !moment(formProps.date).isValid()) {
@@ -35,12 +35,12 @@ class EntryForm extends Component {
     errorMessage: PropTypes.string
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
-  handleFormSubmit(formProps) {
+  handleFormSubmit (formProps) {
     if (this.props.isNewEntry) {
       this.props.createEntry(formProps)
     } else {
@@ -49,7 +49,7 @@ class EntryForm extends Component {
     this.props.closeEntryModal()
   }
 
-  renderAlert() {
+  renderAlert () {
     if (!this.props.errorMessage) {
       return null
     }
@@ -59,7 +59,7 @@ class EntryForm extends Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <Form warning error onSubmit={this.props.handleSubmit(this.handleFormSubmit)}>
         {this.renderAlert()}
@@ -92,7 +92,7 @@ class EntryForm extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     errorMessage: state.entry.error
   }
