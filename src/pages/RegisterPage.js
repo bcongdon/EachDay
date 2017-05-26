@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import PublicNavbar from '../PublicNavbar'
-import LoginForm from '../auth/LoginForm'
+import PublicNavbar from '../components/PublicNavbar'
+import RegisterForm from '../components/auth/RegisterForm'
 import { Segment, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-class Login extends Component {
+class RegisterPage extends Component {
   render () {
     return (
       <div>
@@ -12,10 +12,10 @@ class Login extends Component {
         <Grid centered verticalAlign='middle' columns={1}>
           <Grid.Column style={{'maxWidth': 450}}>
             <Segment textAlign='left' stacked secondary>
-              <LoginForm />
+              <RegisterForm />
             </Segment>
             <Segment stacked secondary>
-              Don't have an account? Register one <Link to='/register'>here</Link>.
+              Gave an account? Click <Link to='/login'>here</Link> to log in.
             </Segment>
           </Grid.Column>
         </Grid>
@@ -24,4 +24,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default RegisterPage

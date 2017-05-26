@@ -11,18 +11,20 @@ class Gravatar extends Component {
 
   render () {
     return (
-      <Image avatar src={this.getUrl()} />
+      <Image avatar={this.props.avatar} src={this.getUrl()} />
     )
   }
 }
 
 Gravatar.propTypes = {
   email: PropTypes.string.isRequired,
-  size: PropTypes.number
+  size: PropTypes.number,
+  avatar: PropTypes.bool
 }
 
 Gravatar.defaultProps = {
-  size: 80
+  size: 80,
+  avatar: true
 }
 
 export default Gravatar

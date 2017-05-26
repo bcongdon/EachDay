@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PublicNavbar from '../PublicNavbar'
-import UserNavbar from '../UserNavbar'
+import PublicNavbar from '../components/PublicNavbar'
+import UserNavbar from '../components/UserNavbar'
 import { PropTypes } from 'prop-types'
 import { Header } from 'semantic-ui-react'
 

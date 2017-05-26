@@ -3,17 +3,16 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CalendarHeatmap from 'react-calendar-heatmap'
 import { chain } from 'lodash'
-import './Dashboard.css'
+import './DashboardPage.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries, openEntryModal } from '../actions'
-import UserNavbar from './UserNavbar'
-import EntryModal from './entry/EntryModal'
-import Entry from './entry/Entry'
+import UserNavbar from '../components/UserNavbar'
+import EntryModal from '../components/entry/EntryModal'
+import Entry from '../components/entry/Entry'
 import { Button, Grid, Divider, Message, Loader, Dimmer } from 'semantic-ui-react'
-import ErrorMessage from './ErrorMessage'
-import { Link } from 'react-router-dom'
+import ErrorMessage from '../components/ErrorMessage'
 
-class Dashboard extends Component {
+class DashboardPage extends Component {
   componentWillMount () {
     this.props.loadEntries()
   }
@@ -52,6 +51,10 @@ class Dashboard extends Component {
     )
   }
 
+  getCalendarLinks () {
+
+  }
+
   render () {
     const calendarValues = chain(this.props.entries)
     .map(e => {
@@ -74,10 +77,9 @@ class Dashboard extends Component {
     return (
       <div>
         <UserNavbar />
-        <Grid centered verticalAlign='middle' columns={1}>
+        <Grid centered verticalAlign='middle'>
           <Grid.Column style={{'maxWidth': 950}}>
             <EntryModal trigger={composeEntryButton} />
-            <Link replace to='/dashboard'>Foo</Link>
             <Divider />
             <Dimmer.Dimmable dimmed={this.props.loading}>
               <Dimmer active={this.props.loading} inverted>
@@ -110,7 +112,7 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators({ loadEntries, openEntryModal }, dispatch)
 }
 
-Dashboard.propTypes = {
+DashboardPage.propTypes = {
   loadEntries: PropTypes.func.isRequired,
   openEntryModal: PropTypes.func.isRequired,
   entries: PropTypes.array,
@@ -118,4 +120,4 @@ Dashboard.propTypes = {
   error: PropTypes.string
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)

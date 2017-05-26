@@ -1,20 +1,21 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import NotFoundPage from './components/pages/NotFoundPage'
-
-import HomePage from './components/pages/HomePage'
-import Register from './components/pages/Register'
-import Login from './components/pages/Login'
-import Dashboard from './components/Dashboard'
+import NotFoundPage from './pages/NotFoundPage'
+import HomePage from './pages/HomePage'
+import RegisterPage from './pages/RegisterPage'
+import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
+import ProfilePage from './pages/ProfilePage'
 import RequireAuth from './components/auth/require-auth'
 
 export default (
   <Switch>
     <Route exact path='/' component={HomePage} />
-    <Route path='/register' component={Register} />
-    <Route path='/login' component={Login} />
-    <Route path='/dashboard' component={RequireAuth(Dashboard)} />
+    <Route path='/register' component={RegisterPage} />
+    <Route path='/login' component={LoginPage} />
+    <Route path='/dashboard' component={RequireAuth(DashboardPage)} />
+    <Route path='/profile' component={RequireAuth(ProfilePage)} />
 
     <Route path='*' component={NotFoundPage} />
   </Switch>
