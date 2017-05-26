@@ -1,8 +1,8 @@
 import unittest
 
-from everyday import db
-from everyday.models import User
-from everyday.tests.base import BaseTestCase
+from eachday import db
+from eachday.models import User
+from eachday.tests.base import BaseTestCase
 
 
 class TestUserModel(BaseTestCase):

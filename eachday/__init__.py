@@ -8,7 +8,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-settings = os.getenv('APP_SETTINGS', 'everyday.config.DevelopmentConfig')
+settings = os.getenv('APP_SETTINGS', 'eachday.config.DevelopmentConfig')
 app.config.from_object(settings)
 
 db = SQLAlchemy(app)

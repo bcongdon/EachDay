@@ -3,4 +3,4 @@
 npm run test && \
 npm run lint && \
 python manage.py test && \
-pep8 everyday
+pep8 eachday

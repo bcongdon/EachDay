@@ -1,8 +1,8 @@
 import unittest
 
-from everyday import db
-from everyday.models import User, Entry
-from everyday.tests.base import BaseTestCase
+from eachday import db
+from eachday.models import User, Entry
+from eachday.tests.base import BaseTestCase
 from datetime import date, timedelta
 
 import json

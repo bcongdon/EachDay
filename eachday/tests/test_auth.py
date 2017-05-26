@@ -1,9 +1,9 @@
 import unittest
 
 import json
-from everyday.tests.base import BaseTestCase
-from everyday.models import User
-from everyday import db
+from eachday.tests.base import BaseTestCase
+from eachday.models import User
+from eachday import db
 
 
 class TestAuthRoutes(BaseTestCase):

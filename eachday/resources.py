@@ -3,7 +3,7 @@ from flask_restful import Resource, wraps
 from .models import User, Entry, UserSchema, EntrySchema
 from .utils import send_error, send_success, send_data
 
-from everyday import db, bcrypt
+from eachday import db, bcrypt
 
 
 def json_load_failed(self):

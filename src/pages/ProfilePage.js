@@ -22,7 +22,7 @@ class ProfilePage extends Component {
               <Card.Content>
                 <Card.Header>{this.props.user.name}</Card.Header>
                 <Card.Meta>Joined in 2017</Card.Meta>
-                <Card.Description>{this.props.user.name} has composed {5} entries on EveryDay.</Card.Description>
+                <Card.Description>{this.props.user.name} has composed {5} entries on EachDay.</Card.Description>
               </Card.Content>
             </Card>
           </Grid.Column>

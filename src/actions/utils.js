@@ -6,7 +6,7 @@ export { cookie }
 export function errorHandler (dispatch, error, type) {
   let errorMessage = ''
   if (!error.response) {
-    errorMessage = 'There was an error connecting the Everyday server.'
+    errorMessage = 'There was an error connecting the EachDay server.'
   } else {
     const data = error.response.data
     if (data && data.error) {

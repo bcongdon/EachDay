@@ -1,4 +1,4 @@
-from everyday import app, db
+from eachday import app, db
 from flask_testing import TestCase
 
 
@@ -6,7 +6,7 @@ class BaseTestCase(TestCase):
     """ Base Tests for setup/config """
 
     def create_app(self):
-        app.config.from_object('everyday.config.TestingConfig')
+        app.config.from_object('eachday.config.TestingConfig')
         return app
 
     def setUp(self):

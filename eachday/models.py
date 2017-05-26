@@ -1,6 +1,6 @@
 from sqlalchemy.orm import validates
 from sqlalchemy import UniqueConstraint
-from everyday import app, db, bcrypt
+from eachday import app, db, bcrypt
 from datetime import datetime, timedelta
 import jwt
 import marshmallow

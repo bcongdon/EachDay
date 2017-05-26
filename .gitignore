@@ -7,6 +7,6 @@ backend/venv
 backend/__pycache__
 *.pyc
 venv
-everyday.sublime-workspace
+eachday.sublime-workspace
 coverage
 venv2.7

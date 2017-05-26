@@ -1,9 +1,9 @@
 import unittest
 
 import json
-from everyday import db
-from everyday.models import User
-from everyday.tests.base import BaseTestCase
+from eachday import db
+from eachday.models import User
+from eachday.tests.base import BaseTestCase
 
 
 class TestUserResource(BaseTestCase):

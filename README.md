@@ -1,5 +1,5 @@
-# Everyday
-[![Build Status](https://travis-ci.org/bcongdon/EveryDay.svg?branch=master)](https://travis-ci.org/bcongdon/EveryDay)
+# EachDay
+[![Build Status](https://travis-ci.org/bcongdon/EachDay.svg?branch=master)](https://travis-ci.org/bcongdon/EachDay)
 ![python-versions](https://img.shields.io/badge/python-2.7%2C%203.6-blue.svg)
 ![npm-version](https://img.shields.io/badge/npm-4.6.1-blue.svg)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)

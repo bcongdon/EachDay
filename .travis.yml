@@ -2,12 +2,12 @@ language: python
 services:
   - postgresql
 before_script:
-  - psql -c 'create database everyday_test;' -U postgres
+  - psql -c 'create database eachday_test;' -U postgres
 python:
   - "3.6"
   - "2.7"
 install:
-  - pip install -r everyday/requirements.txt
+  - pip install -r eachday/requirements.txt
 script:
   - python manage.py test
 

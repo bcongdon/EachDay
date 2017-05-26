@@ -4,7 +4,7 @@ import { Icon } from 'semantic-ui-react'
 class Logo extends Component {
   render () {
     return (
-      <div><Icon name='checked calendar' /> Everyday</div>
+      <div><Icon name='checked calendar' /> EachDay</div>
     )
   }
 }

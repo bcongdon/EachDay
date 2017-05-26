@@ -7,16 +7,16 @@ from flask_migrate import Migrate, MigrateCommand
 
 COV = coverage.coverage(
     branch=True,
-    include='everyday/*',
+    include='eachday/*',
     omit=[
-        'everyday/tests/*',
-        'everyday/config.py',
-        'everyday/__init__.py'
+        'eachday/tests/*',
+        'eachday/config.py',
+        'eachday/__init__.py'
     ]
 )
 COV.start()
 
-from everyday import app, db
+from eachday import app, db
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -28,7 +28,7 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def test():
     """Runs the unit tests without test coverage."""
-    tests = unittest.TestLoader().discover('everyday/tests',
+    tests = unittest.TestLoader().discover('eachday/tests',
                                            pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
@@ -39,7 +39,7 @@ def test():
 @manager.command
 def cov():
     """Runs the unit tests with coverage."""
-    tests = unittest.TestLoader().discover('everyday/tests')
+    tests = unittest.TestLoader().discover('eachday/tests')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         COV.stop()

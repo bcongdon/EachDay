@@ -20,7 +20,7 @@ class HomePage extends Component {
           <Header as='h1' icon textAlign='center'>
             <Icon name='checked calendar' circular />
             <Header.Content>
-              Journal Something Everyday
+              Journal Something EachDay
             </Header.Content>
             <Header.Subheader>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
