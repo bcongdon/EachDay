@@ -1,6 +1,10 @@
 from flask import make_response, jsonify
 
 
+class InvalidJSONException(Exception):
+    pass
+
+
 def send_error(message, code=400, **kwargs):
     payload = {
         'status': 'error',

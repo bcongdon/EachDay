@@ -14,11 +14,14 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
 
-    def __init__(self, email, password, name):
-        self.email = email
+    def set_password(self, password):
         self.password = bcrypt.generate_password_hash(
             password, app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
+
+    def __init__(self, email, password, name):
+        self.email = email
+        self.set_password(password)
         self.name = name
 
     def encode_auth_token(self, user_id):

@@ -18,6 +18,7 @@ bcrypt = Bcrypt(app)
 
 from . import resources  # nopep8
 resources.create_apis(api)
+resources.register_error_handlers(app)
 
 if __name__ == '__main__':
     app.run()

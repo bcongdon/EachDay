@@ -1,15 +1,9 @@
-from flask import request, Request
+from flask import request
 from flask_restful import Resource, wraps
 from .models import User, Entry, UserSchema, EntrySchema
-from .utils import send_error, send_success, send_data
+from .utils import send_error, send_success, send_data, InvalidJSONException
 
 from eachday import db, bcrypt
-
-
-def json_load_failed(self):
-    return send_error('Invalid json body')
-
-Request.on_json_load_failure = json_load_failed
 
 
 def validate_auth(func):
@@ -30,6 +24,15 @@ def validate_auth(func):
     return wrapped
 
 
+def json_load_failed(self):
+    raise InvalidJSONException
+
+
+def get_json():
+    request.on_json_loading_failed = json_load_failed
+    return request.get_json(force=True)
+
+
 class UserResource(Resource):
     method_decorators = [validate_auth]
 
@@ -40,10 +43,32 @@ class UserResource(Resource):
 
         return send_data(UserSchema().dump(user).data)
 
+    def put(self, user_id=None):
+        user = db.session.query(User).filter_by(id=user_id).first()
+        if not user:
+            return send_error('Invalid user id', 404)
+
+        data = get_json()
+        if 'password' not in data:
+            return send_error('Must provide password', 401)
+        if not bcrypt.check_password_hash(user.password, data.get('password')):
+            return send_error('Invalid password.', 401)
+
+        if data.get('new_password'):
+            user.set_password(data['new_password'])
+
+        if data.get('email'):
+            user.email = data['email']
+
+        if data.get('name'):
+            user.name = data['name']
+
+        return send_data(UserSchema().dump(user).data)
+
 
 class RegisterResource(Resource):
     def post(self):
-        args, errors = UserSchema().load(request.get_json())
+        args, errors = UserSchema().load(get_json())
         if errors:
             return send_error(errors)
 
@@ -62,7 +87,7 @@ class RegisterResource(Resource):
 
 class LoginResource(Resource):
     def post(self):
-        data = request.get_json()
+        data = get_json()
         email, password = data['email'], data['password']
 
         user = db.session.query(User).filter_by(email=email).first()
@@ -94,7 +119,7 @@ class EntryResource(Resource):
         return send_data(EntrySchema().dump(entry).data)
 
     def post(self, user_id=None, entry_id=None):
-        args, errors = EntrySchema().load(request.get_json())
+        args, errors = EntrySchema().load(get_json())
         if errors:
             return send_error(errors)
 
@@ -112,7 +137,7 @@ class EntryResource(Resource):
             return send_error('Invalid entry id', 404)
 
         entry_dict = EntrySchema().dump(entry).data
-        entry_dict.update(request.get_json())
+        entry_dict.update(get_json())
 
         if entry_dict['rating'] == 0:
             entry_dict['rating'] = None
@@ -147,3 +172,9 @@ def create_apis(api):
     api.add_resource(EntryResource, '/entry/<int:entry_id>', '/entry')
     api.add_resource(LoginResource, '/login')
     api.add_resource(RegisterResource, '/register')
+
+
+def register_error_handlers(app):
+    @app.errorhandler(InvalidJSONException)
+    def invalid_json(error):
+        return send_error('Invalid JSON body')
