@@ -6,7 +6,7 @@ import { logoutUser, pushPage } from '../actions'
 import { PropTypes } from 'prop-types'
 import Logo from './Logo'
 
-class UserNavbar extends Component {
+export class UserNavbar extends Component {
   constructor (props) {
     super(props)
     this.logoutClick = this.logoutClick.bind(this)

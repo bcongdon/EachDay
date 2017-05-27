@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Message
+  negative={true}
+>
+  <MessageHeader>
+    Something went wrong...
+  </MessageHeader>
+  <p>
+    foo
+  </p>
+</Message>
+`;
+
+exports[`renders correctly with compact 1`] = `
+<Message
+  compact={true}
+  negative={true}
+>
+  <MessageHeader>
+    Something went wrong...
+  </MessageHeader>
+  <p>
+    foo
+  </p>
+</Message>
+`;
+
+exports[`renders correctly with custom header 1`] = `
+<Message
+  negative={true}
+>
+  <MessageHeader>
+    Something blew up!
+  </MessageHeader>
+  <p>
+    foo
+  </p>
+</Message>
+`;

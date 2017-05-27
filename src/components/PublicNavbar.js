@@ -15,15 +15,11 @@ class PublicNavbar extends Component {
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
-            <Link to='/register'>
-              Sign Up
-            </Link>
+            <Link to='/register'>Sign Up</Link>
           </Menu.Item>
         </Menu.Menu>
         <Menu.Item>
-          <Link to='/login'>
-            Log In
-          </Link>
+          <Link to='/login'>Log In</Link>
         </Menu.Item>
       </Menu>
     )

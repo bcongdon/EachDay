@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Menu
+  borderless={true}
+  size="large"
+>
+  <MenuItem
+    onClick={[Function]}
+  >
+    <Logo />
+  </MenuItem>
+  <MenuMenu
+    position="right"
+  >
+    <MenuItem>
+      <Dropdown
+        additionLabel="Add "
+        additionPosition="top"
+        closeOnBlur={true}
+        icon={null}
+        noResultsMessage="No results found."
+        openOnFocus={true}
+        pointing="top right"
+        renderLabel={[Function]}
+        selectOnBlur={true}
+        trigger={
+          <span>
+            <Gravatar
+              avatar={true}
+              email="bar@baz.com"
+              size={80}
+            />
+             
+            foo
+          </span>
+        }
+      >
+        <DropdownMenu>
+          <DropdownItem
+            icon="calendar outline"
+            onClick={[Function]}
+            text="Journal"
+          />
+          <DropdownItem
+            icon="user"
+            onClick={[Function]}
+            text="Account"
+          />
+          <DropdownItem
+            icon="sign out"
+            onClick={[Function]}
+            text="Sign Out"
+          />
+        </DropdownMenu>
+      </Dropdown>
+    </MenuItem>
+  </MenuMenu>
+</Menu>
+`;

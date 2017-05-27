@@ -1,6 +1,6 @@
 import expect from 'expect'
-import * as types from '../actions/types'
-import authReducer from '../reducers/auth_reducers'
+import * as types from '../../actions/types'
+import authReducer from '../auth_reducers'
 
 describe('Auth Reducers', () => {
   it('AUTH_USER should clear error and set authenticated and user object', () => {

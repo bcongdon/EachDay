@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Image
+  as="img"
+  avatar={true}
+  src="https://www.gravatar.com/avatar/f3ada405ce890b6f8204094deb12d8a8?s=80&r=pg"
+  ui={true}
+/>
+`;
+
+exports[`renders correctly with custom size 1`] = `
+<Image
+  as="img"
+  avatar={true}
+  src="https://www.gravatar.com/avatar/f3ada405ce890b6f8204094deb12d8a8?s=720&r=pg"
+  ui={true}
+/>
+`;
