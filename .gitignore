@@ -10,3 +10,4 @@ venv
 eachday.sublime-workspace
 coverage
 venv2.7
+webpack-stats.json

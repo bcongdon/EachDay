@@ -6,9 +6,10 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
-    "serve": "webpack-dev-server",
+    "serve": "webpack-dev-server --progress",
     "lint": "eslint src/",
-    "test": "NODE_ENV=test jest --coverage"
+    "test": "NODE_ENV=test jest --coverage",
+    "profile": "webpack --profile --json > webpack-stats.json"
   },
   "repository": {
     "type": "git",
@@ -26,8 +27,10 @@
     "react-datepicker": "^0.46.0",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
+    "react-responsive": "^1.3.0",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^5.0.0-alpha.6",
+    "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
     "redux-form": "^6.7.0",
     "redux-thunk": "^2.2.0",

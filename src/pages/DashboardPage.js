@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CalendarHeatmap from 'react-calendar-heatmap'
-import { chain } from 'lodash'
 import './DashboardPage.css'
 import { PropTypes } from 'prop-types'
 import { loadEntries, openEntryModal } from '../actions'
@@ -11,6 +10,16 @@ import EntryModal from '../components/entry/EntryModal'
 import Entry from '../components/entry/Entry'
 import { Button, Grid, Divider, Message, Loader, Dimmer } from 'semantic-ui-react'
 import ErrorMessage from '../components/ErrorMessage'
+import ReactTooltip from 'react-tooltip'
+import MediaQuery from 'react-responsive'
+import moment from 'moment'
+
+import _ from 'lodash/wrapperLodash'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
+import mixin from 'lodash/mixin'
+import chain from 'lodash/chain'
+mixin(_, {map: map, chain: chain, filter: filter})
 
 class DashboardPage extends Component {
   componentWillMount () {
@@ -51,12 +60,17 @@ class DashboardPage extends Component {
     )
   }
 
-  getCalendarLinks () {
-
+  customTootipTitle (value) {
+    if (!value.date) {
+      return {'data-tip': 'No Entries'}
+    }
+    const date = moment(value.date).format('MMM DD')
+    const stars = '⭐'.repeat(value.count)
+    return {'data-tip': `${date}: ${stars}`}
   }
 
   render () {
-    const calendarValues = chain(this.props.entries)
+    const calendarValues = _.chain(this.props.entries)
     .map(e => {
       return {
         date: e.date,
@@ -85,13 +99,20 @@ class DashboardPage extends Component {
               <Dimmer active={this.props.loading} inverted>
                 <Loader>Loading</Loader>
               </Dimmer>
-              <CalendarHeatmap
-                numDays={366}
-                values={calendarValues}
-                classForValue={(value) => (value && value.count) ? `color-scale-${value.count}` : 'color-empty'}
-                />
+              <MediaQuery component='div' minWidth={720} style={{width: 700, margin: '0 auto'}}>
+                <ReactTooltip
+                  effect='solid'
+                  offset={{right: 6}}
+                  />
+                <CalendarHeatmap
+                  numDays={366}
+                  values={calendarValues}
+                  classForValue={(value) => (value && value.count) ? `ui color-scale-${value.count}` : 'ui color-empty'}
+                  tooltipDataAttrs={this.customTootipTitle}
+                  />
+                <Divider />
+              </MediaQuery>
             </Dimmer.Dimmable>
-            <Divider />
             {this.props.error ? this.showError() : (this.props.loading ? this.getLoader() : this.getEntries())}
           </Grid.Column>
         </Grid>

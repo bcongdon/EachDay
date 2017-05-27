@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash'
+import orderBy from 'lodash/orderBy'
 import moment from 'moment'
 import { OPEN_ENTRY_MODAL,
          CLOSE_ENTRY_MODAL,
