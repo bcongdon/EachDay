@@ -7,7 +7,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
-import RequireAuth from './components/auth/require-auth'
+import RequireAuth from './components/auth/RequireAuth'
 
 export default (
   <Switch>
