@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 import { logoutUser, pushPage } from '../actions'
 import { PropTypes } from 'prop-types'
 import Logo from './Logo'
-import { Link } from 'react-router-dom'
-import './UserNavbar.css'
 
 class UserNavbar extends Component {
   constructor (props) {
@@ -33,14 +31,18 @@ class UserNavbar extends Component {
   }
 
   dashboardClick (event, data) {
-    this.props.pushPage('/dashboard')
+    if (this.props.location && this.props.location.pathname === '/dashboard') {
+      window.location.reload()
+    } else {
+      this.props.pushPage('/dashboard')
+    }
   }
 
   render () {
     return (
       <Menu size='large' borderless>
-        <Menu.Item>
-          <Link className='navbar-logo-link' to='/dashboard'><Logo /></Link>
+        <Menu.Item onClick={this.dashboardClick}>
+          <Logo />
         </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
@@ -60,8 +62,9 @@ class UserNavbar extends Component {
 
 UserNavbar.propTypes = {
   user: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired,
-  pushPage: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired,    // Action to call to logout user
+  pushPage: PropTypes.func.isRequired,      // Action to push page update
+  location: PropTypes.object                // Used to determine if force refresh is needed
 }
 
 function mapStateToProps (state) {

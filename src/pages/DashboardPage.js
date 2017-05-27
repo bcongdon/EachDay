@@ -14,13 +14,6 @@ import ReactTooltip from 'react-tooltip'
 import MediaQuery from 'react-responsive'
 import moment from 'moment'
 
-import _ from 'lodash/wrapperLodash'
-import map from 'lodash/map'
-import filter from 'lodash/filter'
-import mixin from 'lodash/mixin'
-import chain from 'lodash/chain'
-mixin(_, {map: map, chain: chain, filter: filter})
-
 class DashboardPage extends Component {
   componentWillMount () {
     this.props.loadEntries()
@@ -70,15 +63,13 @@ class DashboardPage extends Component {
   }
 
   render () {
-    const calendarValues = _.chain(this.props.entries)
-    .map(e => {
+    const calendarValues = this.props.entries.map(e => {
       return {
         date: e.date,
         count: e.rating
       }
     })
     .filter(e => { return e.count !== undefined })
-    .value()
 
     const composeEntryButton = (
       <Button
@@ -90,7 +81,7 @@ class DashboardPage extends Component {
 
     return (
       <div>
-        <UserNavbar />
+        <UserNavbar location={this.props.location} />
         <Grid centered verticalAlign='middle'>
           <Grid.Column style={{'maxWidth': 950}}>
             <EntryModal trigger={composeEntryButton} />
@@ -138,7 +129,8 @@ DashboardPage.propTypes = {
   openEntryModal: PropTypes.func.isRequired,
   entries: PropTypes.array,
   loading: PropTypes.bool,
-  error: PropTypes.string
+  error: PropTypes.string,
+  location: PropTypes.object
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
