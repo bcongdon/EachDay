@@ -1,0 +1,275 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard should render entries on calendar heatmap 1`] = `
+<Grid
+  centered={true}
+  verticalAlign="middle"
+>
+  <GridColumn
+    style={
+      Object {
+        "maxWidth": 950,
+      }
+    }
+  >
+    <Connect(EntryModal)
+      trigger={
+        <Button
+          as="button"
+          content="Compose Entry"
+          icon="plus"
+          onClick={[Function]}
+        />
+      }
+    />
+    <Divider />
+    <DimmerDimmable>
+      <Dimmer
+        inverted={true}
+      >
+        <Loader>
+          Loading
+        </Loader>
+      </Dimmer>
+      <MediaQuery
+        component="div"
+        minWidth={720}
+        style={
+          Object {
+            "margin": "0 auto",
+            "width": 700,
+          }
+        }
+        values={Object {}}
+      >
+        <ReactTooltip
+          effect="solid"
+          insecure={true}
+          offset={
+            Object {
+              "right": 6,
+            }
+          }
+          resizeHide={true}
+          wrapper="div"
+        />
+        <e
+          classForValue={[Function]}
+          endDate={1495984743025}
+          gutterSize={1}
+          horizontal={true}
+          numDays={366}
+          showMonthLabels={true}
+          showOutOfRangeDays={false}
+          tooltipDataAttrs={[Function]}
+          values={
+            Array [
+              Object {
+                "count": 3,
+                "date": "2017-05-01",
+              },
+              Object {
+                "count": 5,
+                "date": "2017-05-02",
+              },
+              Object {
+                "count": 4,
+                "date": "2017-05-03",
+              },
+            ]
+          }
+        />
+        <Divider />
+      </MediaQuery>
+    </DimmerDimmable>
+    <Grid
+      divided="vertically"
+      style={
+        Object {
+          "margin": 10,
+        }
+      }
+    >
+      <Connect(Entry)
+        date="2017-05-01"
+        id={1}
+        rating={3}
+      />
+      <Connect(Entry)
+        date="2017-05-02"
+        id={2}
+        rating={5}
+      />
+      <Connect(Entry)
+        date="2017-05-03"
+        id={3}
+        rating={4}
+      />
+    </Grid>
+  </GridColumn>
+</Grid>
+`;
+
+exports[`Dashboard should render errors 1`] = `
+<Grid
+  centered={true}
+  verticalAlign="middle"
+>
+  <GridColumn
+    style={
+      Object {
+        "maxWidth": 950,
+      }
+    }
+  >
+    <Connect(EntryModal)
+      trigger={
+        <Button
+          as="button"
+          content="Compose Entry"
+          icon="plus"
+          onClick={[Function]}
+        />
+      }
+    />
+    <Divider />
+    <DimmerDimmable
+      dimmed={false}
+    >
+      <Dimmer
+        active={false}
+        inverted={true}
+      >
+        <Loader>
+          Loading
+        </Loader>
+      </Dimmer>
+      <MediaQuery
+        component="div"
+        minWidth={720}
+        style={
+          Object {
+            "margin": "0 auto",
+            "width": 700,
+          }
+        }
+        values={Object {}}
+      >
+        <ReactTooltip
+          effect="solid"
+          insecure={true}
+          offset={
+            Object {
+              "right": 6,
+            }
+          }
+          resizeHide={true}
+          wrapper="div"
+        />
+        <e
+          classForValue={[Function]}
+          endDate={1495984743025}
+          gutterSize={1}
+          horizontal={true}
+          numDays={366}
+          showMonthLabels={true}
+          showOutOfRangeDays={false}
+          tooltipDataAttrs={[Function]}
+          values={Array []}
+        />
+        <Divider />
+      </MediaQuery>
+    </DimmerDimmable>
+    <ErrorMessage
+      compact={true}
+      message="foo"
+    />
+  </GridColumn>
+</Grid>
+`;
+
+exports[`Dashboard should show message when no entries exist 1`] = `
+<Grid
+  centered={true}
+  verticalAlign="middle"
+>
+  <GridColumn
+    style={
+      Object {
+        "maxWidth": 950,
+      }
+    }
+  >
+    <Connect(EntryModal)
+      trigger={
+        <Button
+          as="button"
+          content="Compose Entry"
+          icon="plus"
+          onClick={[Function]}
+        />
+      }
+    />
+    <Divider />
+    <DimmerDimmable
+      dimmed={false}
+    >
+      <Dimmer
+        active={false}
+        inverted={true}
+      >
+        <Loader>
+          Loading
+        </Loader>
+      </Dimmer>
+      <MediaQuery
+        component="div"
+        minWidth={720}
+        style={
+          Object {
+            "margin": "0 auto",
+            "width": 700,
+          }
+        }
+        values={Object {}}
+      >
+        <ReactTooltip
+          effect="solid"
+          insecure={true}
+          offset={
+            Object {
+              "right": 6,
+            }
+          }
+          resizeHide={true}
+          wrapper="div"
+        />
+        <e
+          classForValue={[Function]}
+          endDate={1495984743025}
+          gutterSize={1}
+          horizontal={true}
+          numDays={366}
+          showMonthLabels={true}
+          showOutOfRangeDays={false}
+          tooltipDataAttrs={[Function]}
+          values={Array []}
+        />
+        <Divider />
+      </MediaQuery>
+    </DimmerDimmable>
+    <Message
+      compact={true}
+    >
+      You don't have any entries yet! Why don't you 
+      <a
+        href="#"
+        onClick={[Function]}
+      >
+        write one
+      </a>
+      ?
+    </Message>
+  </GridColumn>
+</Grid>
+`;

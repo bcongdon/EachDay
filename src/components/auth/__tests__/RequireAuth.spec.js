@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import RequireAuth from '../RequireAuth'
 import { mount } from 'enzyme'
-import configureStore from 'redux-mock-store'
 import { PropTypes } from 'prop-types'
 import toJson from 'enzyme-to-json'
+import configureStore from 'redux-mock-store'
 const middlewares = []
 const mockStore = configureStore(middlewares)
 

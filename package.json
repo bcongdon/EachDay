@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --watch",
-    "build": "webpack --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
-    "serve": "webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress",
+    "build": "webpack --progress --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
     "lint": "eslint src/",
     "test": "NODE_ENV=test jest --coverage",
     "test:update": "NODE_ENV=test jest --coverage --updateSnapshot",
@@ -57,6 +56,7 @@
     "eslint-plugin-react": "^7.0.0",
     "eslint-plugin-standard": "^3.0.1",
     "expect": "^1.20.2",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^20.0.3",
     "jwt-simple": "^0.5.1",
     "nock": "^9.0.13",
@@ -71,5 +71,10 @@
   "bugs": {
     "url": "https://github.com/bcongdon/EachDay/issues"
   },
-  "homepage": "https://github.com/bcongdon/EachDay#readme"
+  "homepage": "https://github.com/bcongdon/EachDay#readme",
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
+  }
 }
