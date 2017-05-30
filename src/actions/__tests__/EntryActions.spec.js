@@ -52,4 +52,29 @@ describe('Entry action creators', () => {
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
+
+  it('should trigger OPEN_ENTRY_MODAL with default values', () => {
+    const defaultValues = { foo: 'bar' }
+    const expectedActions = [
+      { type: types.OPEN_ENTRY_MODAL, payload: defaultValues }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.openEntryModal(defaultValues))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
+
+  it('should trigger CLOSE_ENTRY_MODAL', () => {
+    const expectedActions = [
+      { type: types.CLOSE_ENTRY_MODAL }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.closeEntryModal())
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
 })

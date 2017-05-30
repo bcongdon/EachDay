@@ -24,21 +24,19 @@ export const loadEntries = () => (dispatch) =>
     errorHandler(dispatch, error, ENTRY_API_ERROR)
   })
 
-export function openEntryModal (defaultValues) {
-  return function (dispatch) {
-    dispatch({
-      type: OPEN_ENTRY_MODAL,
-      payload: defaultValues
-    })
-  }
+export const openEntryModal = (defaultValues) => (dispatch) => {
+  dispatch({
+    type: OPEN_ENTRY_MODAL,
+    payload: defaultValues
+  })
+  return Promise.resolve()
 }
 
-export function closeEntryModal () {
-  return function (dispatch) {
-    dispatch({
-      type: CLOSE_ENTRY_MODAL
-    })
-  }
+export const closeEntryModal = () => (dispatch) => {
+  dispatch({
+    type: CLOSE_ENTRY_MODAL
+  })
+  return Promise.resolve()
 }
 
 export const createEntry = ({ date, rating, notes }) => (dispatch) =>
