@@ -36,6 +36,40 @@ describe('Entry action creators', () => {
       })
   })
 
+  it('edits entries correctly', () => {
+    const payload = { id: 1, notes: 'hi', rating: 3 }
+    nock('http://localhost:5000')
+      .put('/entry/1')
+      .reply(200, { status: 'success', data: payload })
+
+    const expectedActions = [
+      { type: types.EDIT_ENTRY, payload: payload }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.editEntry(payload))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
+
+  it('deletes entries correctly', () => {
+    const id = 1
+    nock('http://localhost:5000')
+      .delete('/entry/1')
+      .reply(200, { status: 'success' })
+
+    const expectedActions = [
+      { type: types.DELETE_ENTRY, id }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.deleteEntry(id))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
+
   it('should dispatch error when entry loading fails', () => {
     const msg = 'api failed'
     nock('http://localhost:5000')
