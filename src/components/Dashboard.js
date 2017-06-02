@@ -12,8 +12,14 @@ import ErrorMessage from './ErrorMessage'
 import ReactTooltip from 'react-tooltip'
 import MediaQuery from 'react-responsive'
 import moment from 'moment'
+import { scroller } from 'react-scroll'
 
 export class Dashboard extends Component {
+  constructor (props) {
+    super(props)
+    this.onEntryClick = this.onEntryClick.bind(this)
+  }
+
   componentWillMount () {
     this.props.loadEntries()
   }
@@ -61,11 +67,21 @@ export class Dashboard extends Component {
     return {'data-tip': `${date}: ${stars}`}
   }
 
+  onEntryClick (entry) {
+    if (entry && entry.id) {
+      scroller.scrollTo(`entry-${entry.id}`, {
+        duration: 250,
+        smooth: true
+      })
+    }
+  }
+
   render () {
     const calendarValues = this.props.entries.map(e => {
       return {
         date: e.date,
-        count: e.rating
+        count: e.rating,
+        id: e.id
       }
     })
     .filter(e => { return e.count !== undefined })
@@ -98,6 +114,7 @@ export class Dashboard extends Component {
                 values={calendarValues}
                 classForValue={(value) => (value && value.count) ? `ui color-scale-${value.count}` : 'ui color-empty'}
                 tooltipDataAttrs={this.customTootipTitle}
+                onClick={this.onEntryClick}
                 />
               <Divider />
             </MediaQuery>

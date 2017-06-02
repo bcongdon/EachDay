@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types'
 import moment from 'moment'
 import { openEntryModal, deleteEntry } from '../../actions'
 import { connect } from 'react-redux'
+import { Element } from 'react-scroll'
 
 class Entry extends Component {
   static propTypes = {
@@ -38,6 +39,7 @@ class Entry extends Component {
     return (
       <Grid.Row>
         <Grid.Column width={2} textAlign='center' style={{minWidth: 100, margin: '0 auto'}}>
+          <Element name={`entry-${this.props.id}`} />
           <Statistic size='small'>
             <Statistic.Label>{moment(this.props.date).format('MMM')}</Statistic.Label>
             <Statistic.Value>{moment(this.props.date).format('DD')}</Statistic.Value>

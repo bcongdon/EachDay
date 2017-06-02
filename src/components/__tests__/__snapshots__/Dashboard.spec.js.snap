@@ -59,6 +59,7 @@ exports[`Dashboard should render entries on calendar heatmap 1`] = `
           gutterSize={1}
           horizontal={true}
           numDays={366}
+          onClick={[Function]}
           showMonthLabels={true}
           showOutOfRangeDays={false}
           tooltipDataAttrs={[Function]}
@@ -67,14 +68,17 @@ exports[`Dashboard should render entries on calendar heatmap 1`] = `
               Object {
                 "count": 3,
                 "date": "2017-05-01",
+                "id": 1,
               },
               Object {
                 "count": 5,
                 "date": "2017-05-02",
+                "id": 2,
               },
               Object {
                 "count": 4,
                 "date": "2017-05-03",
+                "id": 3,
               },
             ]
           }
@@ -172,6 +176,7 @@ exports[`Dashboard should render errors 1`] = `
           gutterSize={1}
           horizontal={true}
           numDays={366}
+          onClick={[Function]}
           showMonthLabels={true}
           showOutOfRangeDays={false}
           tooltipDataAttrs={[Function]}
@@ -250,6 +255,7 @@ exports[`Dashboard should show message when no entries exist 1`] = `
           gutterSize={1}
           horizontal={true}
           numDays={366}
+          onClick={[Function]}
           showMonthLabels={true}
           showOutOfRangeDays={false}
           tooltipDataAttrs={[Function]}
