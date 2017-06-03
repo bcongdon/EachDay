@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress",
-    "build": "webpack --progress --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
+    "build": "webpack --progress --optimize-minimize",
+    "build:production": "NODE_ENV=production npm run build",
     "lint": "eslint src/",
-    "test": "NODE_ENV=test jest --coverage",
+    "test": "NODE_ENV=test API_BASE_URL=\"http://localhost:5000\" jest --coverage",
     "test:update": "NODE_ENV=test jest --coverage --updateSnapshot",
     "profile": "webpack --profile --json > webpack-stats.json"
   },

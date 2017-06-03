@@ -8,7 +8,7 @@ import { LOAD_ENTRIES,
          DELETE_ENTRY,
          EDIT_ENTRY } from './types'
 
-const API_URL = 'http://localhost:5000'
+const API_URL = process.env.API_BASE_URL
 
 export const loadEntries = () => (dispatch) =>
   axios.get(`${API_URL}/entry`, {

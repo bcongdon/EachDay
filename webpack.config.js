@@ -3,6 +3,7 @@ var path = require('path');
 
 var BUILD_DIR = path.resolve(__dirname, 'public', 'dist');
 var APP_DIR = path.resolve(__dirname, 'src');
+var API_BASE_URL = process.env.NODE_ENV === 'production' ? 'http://api.eachday.life' : 'http://localhost:5000'
 
 var config = {
   entry: APP_DIR + '/index.js',
@@ -31,7 +32,13 @@ var config = {
     publicPath: "/dist/",
     port: 9000,
     historyApiFallback: true
-  }
+  },
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env.API_BASE_URL': `'${API_BASE_URL}'`,
+      'process.env.NODE_END': `'${process.env.NODE_END}'`
+    })
+  ]
 };
 
 module.exports = config;

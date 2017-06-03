@@ -6,7 +6,7 @@ import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER } from './types'
 
-const API_URL = 'http://localhost:5000'
+const API_URL = process.env.API_BASE_URL
 
 export const loginUser = ({ email, password }) => (dispatch) =>
   axios.post(`${API_URL}/login`, { email, password })
