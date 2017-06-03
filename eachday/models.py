@@ -9,6 +9,7 @@ from marshmallow import Schema, fields, validate, ValidationError
 
 class User(db.Model):
     __tablename__ = 'user'
+    TOKEN_EXPIRATION_DAYS = 1
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -30,8 +31,9 @@ class User(db.Model):
         :return: string
         """
         try:
+            td = timedelta(days=User.TOKEN_EXPIRATION_DAYS)
             payload = {
-                'exp': datetime.utcnow() + timedelta(days=1),
+                'exp': datetime.utcnow() + td,
                 'iat': datetime.utcnow(),
                 'sub': user_id,
                 'name': self.name,
@@ -56,9 +58,9 @@ class User(db.Model):
             payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
             return payload['sub']
         except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
+            raise Exception('Signature expired. Please log in again.')
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+            raise Exception('Invalid token. Please log in again.')
 
 
 class Entry(db.Model):

@@ -1,6 +1,8 @@
 import unittest
-
 import json
+from freezegun import freeze_time
+from datetime import datetime, timedelta
+
 from eachday.tests.base import BaseTestCase
 from eachday.models import User, BlacklistToken
 from eachday import db
@@ -183,6 +185,52 @@ class TestAuthRoutes(BaseTestCase):
 
         blacklist = BlacklistToken.query.filter_by(token=auth_token).first()
         self.assertTrue(blacklist is not None)
+
+    def test_invalid_token_rejection(self):
+        ''' Test that using an invalid token gives correct error '''
+        auth_token = 'not_an_auth_token ;)'
+
+        response = self.client.get(
+            '/user',
+            headers={
+                'Authorization': 'Bearer ' + auth_token
+            }
+        )
+        data = json.loads(response.data.decode())
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error'], 'Invalid token. Please log in again.')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.status_code, 401)
+
+    def test_expired_token_rejection(self):
+        ''' Test that using an expired token gives correct error '''
+        with freeze_time(datetime.utcnow()) as frozen_datetime:
+            user = User(
+                email='foo@bar.com',
+                password='test',
+                name='joe'
+            )
+            db.session.add(user)
+            db.session.commit()
+            auth_token = user.encode_auth_token(user.id).decode()
+
+            # Jump time to just after token has expired
+            td = timedelta(days=1, seconds=1)
+            frozen_datetime.move_to(datetime.utcnow() + td)
+
+            response = self.client.get(
+                '/user',
+                headers={
+                    'Authorization': 'Bearer ' + auth_token
+                }
+            )
+            data = json.loads(response.data.decode())
+            self.assertEqual(data['status'], 'error')
+            self.assertEqual(
+                data['error'], 'Signature expired. Please log in again.'
+            )
+            self.assertEqual(response.content_type, 'application/json')
+            self.assertEqual(response.status_code, 401)
 
 if __name__ == '__main__':
     unittest.main()

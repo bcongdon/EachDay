@@ -16,13 +16,19 @@ def validate_auth(func):
         else:
             return send_error('Please provide an auth token', 401)
 
-        resp = User.decode_auth_token(auth_token)
-        if not isinstance(resp, str):
-            user_id = resp
+        try:
+            user_id = User.decode_auth_token(auth_token)
+            blacklist_token = (BlacklistToken.query
+                               .filter_by(token=auth_token)
+                               .first())
+            if blacklist_token is not None:
+                return send_error(
+                    'Token blacklisted. Please log in again.', 401
+                )
             flask.g.auth_token = auth_token
             return func(user_id=user_id, *args, **kwargs)
-        else:
-            return send_error(resp, 401)
+        except Exception as e:
+            return send_error(str(e), 401)
     return wrapped
 
 
