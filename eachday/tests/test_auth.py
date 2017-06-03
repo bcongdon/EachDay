@@ -2,13 +2,13 @@ import unittest
 
 import json
 from eachday.tests.base import BaseTestCase
-from eachday.models import User
+from eachday.models import User, BlacklistToken
 from eachday import db
 
 
 class TestAuthRoutes(BaseTestCase):
     def test_registration(self):
-        """ Test for user registration """
+        ''' Test for user registration '''
         response = self.client.post(
             '/register',
             data=json.dumps(dict(
@@ -26,7 +26,7 @@ class TestAuthRoutes(BaseTestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_registration_missing_fields(self):
-        """ Test for user registration with missing fields """
+        ''' Test for user registration with missing fields '''
         response = self.client.post(
             '/register',
             data=json.dumps(dict(
@@ -43,7 +43,7 @@ class TestAuthRoutes(BaseTestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_registered_with_already_registered_user(self):
-        """ Test registration with already registered email"""
+        ''' Test registration with already registered email'''
         user = User(
             email='foo@bar.com',
             password='test',
@@ -66,10 +66,10 @@ class TestAuthRoutes(BaseTestCase):
         self.assertTrue(
             data['error'] == 'User already exists.')
         self.assertTrue(response.content_type == 'application/json')
-        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.status_code, 400)
 
     def test_registered_user_login(self):
-        """ Test for login of registered-user login """
+        ''' Test for login of registered-user login '''
         # user registration
         resp_register = self.client.post(
             '/register',
@@ -106,7 +106,7 @@ class TestAuthRoutes(BaseTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_incorrect_password(self):
-        """ Test for login rejection of registered-user with bad password """
+        ''' Test for login rejection of registered-user with bad password '''
         # user registration
         resp_register = self.client.post(
             '/register',
@@ -143,7 +143,7 @@ class TestAuthRoutes(BaseTestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_non_registered_user_login(self):
-        """ Test for login of non-registered user """
+        ''' Test for login of non-registered user '''
         response = self.client.post(
             '/login',
             data=json.dumps({
@@ -158,6 +158,31 @@ class TestAuthRoutes(BaseTestCase):
         self.assertTrue(response.content_type == 'application/json')
         self.assertEqual(response.status_code, 404)
 
+    def test_logout_blacklist_token(self):
+        ''' Test that logging out blacklists current token '''
+        user = User(
+            email='foo@bar.com',
+            password='test',
+            name='joe'
+        )
+        db.session.add(user)
+        db.session.commit()
+        auth_token = user.encode_auth_token(user.id).decode()
+
+        response = self.client.post(
+            '/logout',
+            headers={
+                'Authorization': 'Bearer ' + auth_token
+            }
+        )
+        data = json.loads(response.data.decode())
+        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['message'], 'Successfully logged out')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.status_code, 200)
+
+        blacklist = BlacklistToken.query.filter_by(token=auth_token).first()
+        self.assertTrue(blacklist is not None)
 
 if __name__ == '__main__':
     unittest.main()

@@ -78,6 +78,17 @@ class Entry(db.Model):
         return rating
 
 
+class BlacklistToken(db.Model):
+    __tablename__ = 'blacklist_token'
+    id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String, unique=True, nullable=False)
+    blacklisted_on = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, token):
+        self.token = token
+        self.blacklisted_on = datetime.utcnow()
+
+
 class UserSchema(Schema):
     id = fields.Int()
     email = fields.Str(required=True,

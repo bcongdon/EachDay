@@ -1,6 +1,7 @@
+import flask
 from flask import request
 from flask_restful import Resource, wraps
-from .models import User, Entry, UserSchema, EntrySchema
+from .models import User, Entry, BlacklistToken, UserSchema, EntrySchema
 from .utils import send_error, send_success, send_data, InvalidJSONException
 
 from eachday import db, bcrypt
@@ -18,6 +19,7 @@ def validate_auth(func):
         resp = User.decode_auth_token(auth_token)
         if not isinstance(resp, str):
             user_id = resp
+            flask.g.auth_token = auth_token
             return func(user_id=user_id, *args, **kwargs)
         else:
             return send_error(resp, 401)
@@ -74,15 +76,17 @@ class RegisterResource(Resource):
 
         user = db.session.query(User).filter_by(email=args['email']).first()
         if user:
-            return send_error('User already exists.', 202)
+            return send_error('User already exists.')
 
-        user = User(**args)
-        db.session.add(user)
-        db.session.commit()
-
-        auth_token = user.encode_auth_token(user.id)
-        return send_success('Successfully registered.', 201,
-                            auth_token=auth_token.decode())
+        try:
+            user = User(**args)
+            db.session.add(user)
+            db.session.commit()
+            auth_token = user.encode_auth_token(user.id)
+            return send_success('Successfully registered.', 201,
+                                auth_token=auth_token.decode())
+        except Exception as e:
+            return send_error(str(e))
 
 
 class LoginResource(Resource):
@@ -100,6 +104,20 @@ class LoginResource(Resource):
                                 auth_token=auth_token.decode())
         else:
             return send_error('Invalid login.', 401)
+
+
+class LogoutResource(Resource):
+    method_decorators = [validate_auth]
+
+    def post(self, user_id=None):
+        auth_token = flask.g.auth_token
+        blacklist_token = BlacklistToken(token=auth_token)
+        try:
+            db.session.add(blacklist_token)
+            db.session.commit()
+            return send_success('Successfully logged out')
+        except Exception as e:
+            return send_error(str(e))
 
 
 class EntryResource(Resource):
@@ -124,10 +142,12 @@ class EntryResource(Resource):
             return send_error(errors)
 
         entry = Entry(user_id=user_id, **args)
-        db.session.add(entry)
-        db.session.commit()
-
-        return send_data(EntrySchema().dump(entry).data, 201)
+        try:
+            db.session.add(entry)
+            db.session.commit()
+            return send_data(EntrySchema().dump(entry).data, 201)
+        except Exception as e:
+            return send_error(str(e))
 
     def put(self, entry_id, user_id=None):
         entry = db.session.query(Entry).filter_by(
@@ -149,10 +169,12 @@ class EntryResource(Resource):
         for k, v in args.items():
             setattr(entry, k, v)
 
-        db.session.add(entry)
-        db.session.commit()
-
-        return send_data(EntrySchema().dump(entry).data, 200)
+        try:
+            db.session.add(entry)
+            db.session.commit()
+            return send_data(EntrySchema().dump(entry).data, 200)
+        except Exception as e:
+            return send_error(str(e))
 
     def delete(self, entry_id, user_id=None):
         entry = db.session.query(Entry).filter_by(
@@ -161,16 +183,19 @@ class EntryResource(Resource):
         if not entry:
             return send_error('Invalid entry id', 404)
 
-        db.session.delete(entry)
-        db.session.commit()
-
-        return send_success('Successfully deleted entry.', 200)
+        try:
+            db.session.delete(entry)
+            db.session.commit()
+            return send_success('Successfully deleted entry.', 200)
+        except Exception as e:
+            return send_error(str(e))
 
 
 def create_apis(api):
     api.add_resource(UserResource, '/user')
     api.add_resource(EntryResource, '/entry/<int:entry_id>', '/entry')
     api.add_resource(LoginResource, '/login')
+    api.add_resource(LogoutResource, '/logout')
     api.add_resource(RegisterResource, '/register')
 
 
