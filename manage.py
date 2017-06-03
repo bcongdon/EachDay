@@ -1,4 +1,5 @@
 import os
+import binascii
 import unittest
 import coverage
 
@@ -70,6 +71,12 @@ def create_db():
 def drop_db():
     """Drops the db tables."""
     db.drop_all()
+
+
+@manager.command
+def generate_key():
+    """ Prints a random hex value (used for SECRET_KEY) """
+    print("Secret key: " + binascii.hexlify(os.urandom(24)).decode())
 
 
 if __name__ == '__main__':

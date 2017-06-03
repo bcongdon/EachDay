@@ -1,0 +1,18 @@
+{
+    "production": {
+        "app_function": "eachday.__init__.app",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "s3_bucket": "zappa-eachday",
+        "remote_env": "s3://eachday-config/eachday-env.json",
+        "exclude": [
+            "coverage",
+            "migrations",
+            "node_modules",
+            "public",
+            "readme_assets",
+            "src",
+            "webpack*"
+        ]
+    }
+}
