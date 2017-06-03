@@ -42,8 +42,8 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'success')
-        self.assertTrue(data['data'] is not None)
+        self.assertEqual(data['status'], 'success')
+        self.assertIsNotNone(data['data'])
         self.assertEqual(data['data']['notes'], 'Hello world')
         self.assertEqual(data['data']['rating'], 5)
         self.assertEqual(data['data']['date'], '2017-01-01')
@@ -64,7 +64,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue('rating' in data['error'])
+        self.assertIn('rating', data['error'])
         self.assertEqual(resp.status_code, 400)
 
         # Test date validation
@@ -81,7 +81,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue('date' in data['error'])
+        self.assertIn('date', data['error'])
         self.assertEqual(resp.status_code, 400)
 
         # Test rating required
@@ -108,14 +108,14 @@ class TestEntryResource(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data.get('data') is None)
+        self.assertEqual(data['status'], 'error')
+        self.assertIsNone(data.get('data'))
         self.assertEqual(resp.status_code, 401)
 
         resp = self.client.get('/entry')
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data.get('data') is None)
+        self.assertEqual(data['status'], 'error')
+        self.assertIsNone(data.get('data'))
         self.assertEqual(resp.status_code, 401)
 
     def test_entry_getting(self):
@@ -136,7 +136,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['status'], 'success')
         self.assertIn('data', data)
         entry_ids = [e.get('id') for e in data['data']]
         self.assertIn(entry1.id, entry_ids)
@@ -151,7 +151,7 @@ class TestEntryResource(BaseTestCase):
             }
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['status'], 'success')
         self.assertIn('data', data)
         self.assertEqual(entry1.id, data['data']['id'])
         self.assertEqual(entry1.rating, data['data']['rating'])
@@ -179,7 +179,7 @@ class TestEntryResource(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(resp.data.decode())
-        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['status'], 'success')
         self.assertIn('data', data)
         self.assertEqual(entry1.id, data['data']['id'])
         self.assertEqual(10, data['data']['rating'])

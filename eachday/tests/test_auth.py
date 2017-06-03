@@ -21,10 +21,10 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'success')
-        self.assertTrue(data['message'] == 'Successfully registered.')
-        self.assertTrue(data['auth_token'])
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['message'], 'Successfully registered.')
+        self.assertIn('auth_token', data)
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 201)
 
     def test_registration_missing_fields(self):
@@ -37,11 +37,11 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'error')
+        self.assertEqual(data['status'], 'error')
         self.assertIn('error', data)
         self.assertIn('password', data['error'])
         self.assertIn('name', data['error'])
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_registered_with_already_registered_user(self):
@@ -64,10 +64,10 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertTrue(
-            data['error'] == 'User already exists.')
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(
+            data['error'], 'User already exists.')
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_registered_user_login(self):
@@ -83,12 +83,12 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json',
         )
         data_register = json.loads(resp_register.data.decode())
-        self.assertTrue(data_register['status'] == 'success')
-        self.assertTrue(
-            data_register['message'] == 'Successfully registered.'
+        self.assertEqual(data_register['status'], 'success')
+        self.assertEqual(
+            data_register['message'], 'Successfully registered.'
         )
-        self.assertTrue(data_register['auth_token'])
-        self.assertTrue(resp_register.content_type == 'application/json')
+        self.assertIn('auth_token', data_register)
+        self.assertEqual(resp_register.content_type, 'application/json')
         self.assertEqual(resp_register.status_code, 201)
 
         # registered user login
@@ -101,10 +101,10 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'success')
-        self.assertTrue(data['message'] == 'Successfully logged in.')
-        self.assertTrue(data['auth_token'])
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['message'], 'Successfully logged in.')
+        self.assertIn('auth_token', data_register)
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 200)
 
     def test_incorrect_password(self):
@@ -120,12 +120,12 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json',
         )
         data_register = json.loads(resp_register.data.decode())
-        self.assertTrue(data_register['status'] == 'success')
-        self.assertTrue(
-            data_register['message'] == 'Successfully registered.'
+        self.assertEqual(data_register['status'], 'success')
+        self.assertEqual(
+            data_register['message'], 'Successfully registered.'
         )
-        self.assertTrue(data_register['auth_token'])
-        self.assertTrue(resp_register.content_type == 'application/json')
+        self.assertIn('auth_token', data_register)
+        self.assertEqual(resp_register.content_type, 'application/json')
         self.assertEqual(resp_register.status_code, 201)
 
         # login with bad password
@@ -138,10 +138,10 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data['error'] == 'Invalid login.')
-        self.assertTrue('auth_token' not in data)
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error'], 'Invalid login.')
+        self.assertNotIn('auth_token', data)
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 401)
 
     def test_non_registered_user_login(self):
@@ -155,9 +155,9 @@ class TestAuthRoutes(BaseTestCase):
             content_type='application/json'
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'error')
-        self.assertTrue(data['error'] == 'User does not exist.')
-        self.assertTrue(response.content_type == 'application/json')
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error'], 'User does not exist.')
+        self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 404)
 
     def test_logout_blacklist_token(self):
@@ -178,7 +178,7 @@ class TestAuthRoutes(BaseTestCase):
             }
         )
         data = json.loads(response.data.decode())
-        self.assertTrue(data['status'] == 'success')
+        self.assertEqual(data['status'], 'success')
         self.assertEqual(data['message'], 'Successfully logged out')
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 200)

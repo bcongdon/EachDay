@@ -10,11 +10,11 @@ class TestDevelopmentConfig(TestCase):
         return app
 
     def test_app_is_development(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'changeme')
-        self.assertTrue(app.config['DEBUG'] is True)
-        self.assertFalse(current_app is None)
+        self.assertNotEqual(app.config['SECRET_KEY'], 'changeme')
+        self.assertTrue(app.config['DEBUG'])
+        self.assertIsNotNone(current_app)
         dev_db = 'postgresql://postgres:@localhost/eachday'
-        self.assertTrue(app.config['SQLALCHEMY_DATABASE_URI'] == dev_db)
+        self.assertEqual(app.config['SQLALCHEMY_DATABASE_URI'], dev_db)
 
 
 class TestTestingConfig(TestCase):
@@ -23,10 +23,10 @@ class TestTestingConfig(TestCase):
         return app
 
     def test_app_is_testing(self):
-        self.assertFalse(app.config['SECRET_KEY'] is 'changeme')
-        self.assertTrue(app.config['DEBUG'])
+        self.assertNotEqual(app.config['SECRET_KEY'], 'changeme')
+        self.assertIn('DEBUG', app.config)
         test_db = 'postgresql://postgres:@localhost/eachday_test'
-        self.assertTrue(app.config['SQLALCHEMY_DATABASE_URI'] == test_db)
+        self.assertEqual(app.config['SQLALCHEMY_DATABASE_URI'], test_db)
 
 
 class TestProductionConfig(TestCase):
@@ -35,7 +35,7 @@ class TestProductionConfig(TestCase):
         return app
 
     def test_app_is_production(self):
-        self.assertTrue(app.config['DEBUG'] is False)
+        self.assertFalse(app.config['DEBUG'])
 
 
 if __name__ == '__main__':
