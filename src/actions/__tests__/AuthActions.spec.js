@@ -106,4 +106,15 @@ describe('Async Auth Actions', () => {
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
+
+  it('dispatches CLEAR_AUTH_ERROR for clearAuthError', () => {
+    const expectedActions = [
+      { type: types.CLEAR_AUTH_ERROR }
+    ]
+    const store = mockStore({})
+    return store.dispatch(actions.clearAuthError())
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
 })

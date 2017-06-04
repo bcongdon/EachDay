@@ -1,6 +1,7 @@
 import { AUTH_USER,
          UNAUTH_USER,
-         AUTH_ERROR } from '../actions/types'
+         AUTH_ERROR,
+         CLEAR_AUTH_ERROR } from '../actions/types'
 
 const INITIAL_STATE = { error: '', authenticated: false, user: {} }
 
@@ -12,6 +13,8 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, authenticated: false, user: {} }
     case AUTH_ERROR:
       return { ...state, error: action.payload }
+    case CLEAR_AUTH_ERROR:
+      return { ...state, error: '' }
   }
   return state
 }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { registerUser } from '../../actions'
+import { registerUser, clearAuthError } from '../../actions'
 import { Redirect } from 'react-router'
 import { PropTypes } from 'prop-types'
 import { Button, Form } from 'semantic-ui-react'
 import SemanticReduxFormField from '../form/SemanticReduxFormField'
+import ErrorMessage from '../ErrorMessage'
 
 const form = reduxForm({
   form: 'register',
@@ -36,18 +37,22 @@ class RegisterForm extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
+  componentWillMount () {
+    this.props.clearAuthError()
+  }
+
   handleFormSubmit (formProps) {
     this.props.registerUser(formProps)
   }
 
   renderAlert () {
-    if (this.props.errorMessage) {
-      return (
-        <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
-      )
+    if (!this.props.errorMessage) {
+      return null
     }
+
+    return (
+      <ErrorMessage message={this.props.errorMessage} />
+    )
   }
 
   render () {
@@ -56,7 +61,6 @@ class RegisterForm extends Component {
     return (
       <Form warning error onSubmit={handleSubmit(this.handleFormSubmit)}>
         {this.props.authenticated ? (<Redirect push to='/dashboard' />) : null}
-        {this.renderAlert()}
         <Form.Field>
           <label>Email</label>
           <Field component={SemanticReduxFormField} as={Form.Input} name='email' placeholder='Email' />
@@ -70,6 +74,7 @@ class RegisterForm extends Component {
           <Field component={SemanticReduxFormField} as={Form.Input} name='password' placeholder='Password' type='password' />
         </Form.Field>
         <Button type='submit' positive>Sign Up</Button>
+        {this.renderAlert()}
       </Form>
     )
   }
@@ -77,6 +82,7 @@ class RegisterForm extends Component {
 
 RegisterForm.propTypes = {
   registerUser: PropTypes.func.isRequired,
+  clearAuthError: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   authenticated: PropTypes.bool
@@ -90,4 +96,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps, { registerUser })(form(RegisterForm))
+export default connect(mapStateToProps, { registerUser, clearAuthError })(form(RegisterForm))

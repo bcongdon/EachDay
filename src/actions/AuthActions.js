@@ -4,7 +4,8 @@ import { push } from 'react-router-redux'
 import { errorHandler, cookie } from './utils'
 import { AUTH_USER,
          AUTH_ERROR,
-         UNAUTH_USER } from './types'
+         UNAUTH_USER,
+         CLEAR_AUTH_ERROR } from './types'
 
 const API_URL = process.env.API_BASE_URL
 
@@ -42,5 +43,10 @@ export const logoutUser = () => (dispatch) => {
 
   dispatch(push('/'))
   dispatch({ type: UNAUTH_USER })
+  return Promise.resolve()
+}
+
+export const clearAuthError = () => (dispatch) => {
+  dispatch({ type: CLEAR_AUTH_ERROR })
   return Promise.resolve()
 }

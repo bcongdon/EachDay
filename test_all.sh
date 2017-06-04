@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-npm run test && \
+npm test && \
 npm run lint && \
 python manage.py test && \
 pep8 eachday

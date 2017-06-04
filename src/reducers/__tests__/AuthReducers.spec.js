@@ -22,4 +22,10 @@ describe('Auth Reducers', () => {
     const newState = authReducer(initialState, { type: types.AUTH_ERROR, payload: 'danger! danger!' })
     expect(newState).toEqual({ error: 'danger! danger!' })
   })
+
+  it('CLEAR_AUTH_ERROR should reset error message', () => {
+    const initialState = { error: 'danger! danger!' }
+    const newState = authReducer(initialState, { type: types.CLEAR_AUTH_ERROR, payload: 'danger! danger!' })
+    expect(newState).toEqual({ error: '' })
+  })
 })
