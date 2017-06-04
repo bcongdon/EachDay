@@ -23,6 +23,7 @@
     "history": "^4.6.1",
     "js-md5": "^0.4.2",
     "jwt-decode": "^2.2.0",
+    "lodash.map": "^4.6.0",
     "react": "^15.5.4",
     "react-calendar-heatmap": "^1.1.0",
     "react-datepicker": "^0.46.0",

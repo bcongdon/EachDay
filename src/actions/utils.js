@@ -1,7 +1,15 @@
 import Cookies from 'universal-cookie'
+import map from 'lodash.map'
 
 const cookie = new Cookies()
 export { cookie }
+
+export function formatErrorObject (err) {
+  let messages = map(err, (key, msg) => {
+    return `${msg}: ${key}`
+  })
+  return messages.join(', ')
+}
 
 export function errorHandler (dispatch, error, type) {
   let errorMessage = ''
@@ -10,8 +18,8 @@ export function errorHandler (dispatch, error, type) {
   } else {
     const data = error.response.data
     if (data && data.error) {
-      // TODO Support error text for validation errors
-      errorMessage = typeof data.error === 'string' ? data.error : JSON.stringify(data.error)
+      // Support error text for validation errors
+      errorMessage = typeof data.error === 'string' ? data.error : formatErrorObject(data.error)
     } else {
       errorMessage = 'Something went wrong.'
     }
@@ -21,4 +29,5 @@ export function errorHandler (dispatch, error, type) {
     type: type,
     payload: errorMessage
   })
+  return Promise.resolve()
 }
