@@ -30,7 +30,7 @@ describe('Async Auth Actions', () => {
     const authObject = {foo: 'bar'}
     const fakeToken = jwt.encode(authObject, 'secret')
 
-    nock('http://localhost:5000/')
+    const endpoint = nock('http://localhost:5000/')
       .post('/login')
       .reply(200, { status: 'success', auth_token: fakeToken })
 
@@ -42,6 +42,7 @@ describe('Async Auth Actions', () => {
 
     return store.dispatch(actions.loginUser(login))
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
         expect(Cookie.mock.instances.length).toEqual(1)
         expect(Cookie.mock.instances[0].set.mock.calls).toContain(['token', fakeToken, { path: '/' }])
@@ -56,7 +57,7 @@ describe('Async Auth Actions', () => {
     const authObject = {foo: 'bar'}
     const fakeToken = jwt.encode(authObject, 'secret')
 
-    nock('http://localhost:5000/')
+    const endpoint = nock('http://localhost:5000/')
       .post('/register')
       .reply(200, { status: 'success', auth_token: fakeToken })
 
@@ -68,6 +69,7 @@ describe('Async Auth Actions', () => {
 
     return store.dispatch(actions.registerUser(login))
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
         expect(Cookie.mock.instances.length).toEqual(1)
         expect(Cookie.mock.instances[0].set.mock.calls).toContain(['token', fakeToken, { path: '/' }])
@@ -80,7 +82,7 @@ describe('Async Auth Actions', () => {
       password: 'test'
     }
 
-    nock('http://localhost:5000/')
+    const endpoint = nock('http://localhost:5000/')
       .post('/login')
       .reply(400, { status: 'error', error: 'Invalid login' })
 
@@ -91,11 +93,16 @@ describe('Async Auth Actions', () => {
 
     return store.dispatch(actions.loginUser(login))
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
 
   it('creates a UNAUTH_USER on logoutUser', () => {
+    const endpoint = nock('http://localhost:5000/')
+      .post('/logout')
+      .reply(200, { status: 'success', error: 'Successfully logged out.' })
+
     const expectedActions = [
       push('/'), // Redirect to home page
       { type: types.UNAUTH_USER }
@@ -103,6 +110,7 @@ describe('Async Auth Actions', () => {
     const store = mockStore({})
     return store.dispatch(actions.logoutUser())
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })

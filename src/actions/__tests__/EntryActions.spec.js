@@ -21,7 +21,7 @@ describe('Entry action creators', () => {
 
   it('fetches entries correctly', () => {
     const payload = [{ id: 1, notes: 'hi', rating: 3 }]
-    nock('http://localhost:5000')
+    const endpoint = nock('http://localhost:5000')
       .get('/entry')
       .reply(200, { status: 'success', data: payload })
 
@@ -32,13 +32,14 @@ describe('Entry action creators', () => {
 
     return store.dispatch(actions.loadEntries())
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
 
   it('edits entries correctly', () => {
     const payload = { id: 1, notes: 'hi', rating: 3 }
-    nock('http://localhost:5000')
+    const endpoint = nock('http://localhost:5000')
       .put('/entry/1')
       .reply(200, { status: 'success', data: payload })
 
@@ -49,13 +50,14 @@ describe('Entry action creators', () => {
 
     return store.dispatch(actions.editEntry(payload))
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
 
   it('deletes entries correctly', () => {
     const id = 1
-    nock('http://localhost:5000')
+    const endpoint = nock('http://localhost:5000')
       .delete('/entry/1')
       .reply(200, { status: 'success' })
 
@@ -66,13 +68,14 @@ describe('Entry action creators', () => {
 
     return store.dispatch(actions.deleteEntry(id))
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
 
   it('should dispatch error when entry loading fails', () => {
     const msg = 'api failed'
-    nock('http://localhost:5000')
+    const endpoint = nock('http://localhost:5000')
       .get('/entry')
       .reply(400, { status: 'error', error: msg })
 
@@ -83,6 +86,7 @@ describe('Entry action creators', () => {
 
     return store.dispatch(actions.loadEntries())
       .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
       })
   })

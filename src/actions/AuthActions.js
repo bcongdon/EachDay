@@ -37,13 +37,16 @@ export const registerUser = ({ email, password, name }) => (dispatch) =>
   })
 
 export const logoutUser = () => (dispatch) => {
+  const token = cookie.get('token')
   cookie.remove('token', { path: '/' })
-
-  // TODO: Client request so current auth_token is blacklisted
 
   dispatch(push('/'))
   dispatch({ type: UNAUTH_USER })
-  return Promise.resolve()
+
+  // Logout request so current auth_token is blacklisted
+  return axios.post(`${API_URL}/logout`, {}, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
 }
 
 export const clearAuthError = () => (dispatch) => {
