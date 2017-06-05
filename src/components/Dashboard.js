@@ -13,6 +13,7 @@ import ReactTooltip from 'react-tooltip'
 import MediaQuery from 'react-responsive'
 import moment from 'moment'
 import { scroller } from 'react-scroll'
+import Mousetrap from 'mousetrap'
 
 export class Dashboard extends Component {
   constructor (props) {
@@ -22,6 +23,11 @@ export class Dashboard extends Component {
 
   componentWillMount () {
     this.props.loadEntries()
+    Mousetrap.bind('ctrl+n', this.props.openEntryModal)
+  }
+
+  componentWillUnount () {
+    Mousetrap.unbind('ctrl+n', this.props.openEntryModal)
   }
 
   getLoader () {
