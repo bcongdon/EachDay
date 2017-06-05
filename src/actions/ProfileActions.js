@@ -7,7 +7,7 @@ import { USER_UPDATE,
 export const updateProfile = ({ id, email, name, new_password, password }) => (dispatch) => {
   // Clear outstanding errors
   dispatch({ type: CLEAR_PROFILE_API_ERROR })
-  axios.put(`${API_URL}/user`,
+  return axios.put(`${API_URL}/user`,
     { email, name, new_password, password },
     {
       headers: { 'Authorization': 'Bearer ' + cookie.get('token') }
