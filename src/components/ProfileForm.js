@@ -15,6 +15,16 @@ const form = reduxForm({
 function validate (formProps) {
   const errors = {}
 
+  if (!formProps.email) {
+    errors.email = 'Please enter an email'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formProps.email)) {
+    errors.email = 'Invalid email address.'
+  }
+
+  if (formProps.new_password && formProps.new_password.length < 8) {
+    errors.new_password = 'Your password must be 8 characters or longer.'
+  }
+
   return errors
 }
 
