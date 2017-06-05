@@ -9,8 +9,23 @@ import SemanticReduxFormField from '../form/SemanticReduxFormField'
 import ErrorMessage from '../ErrorMessage'
 
 const form = reduxForm({
-  form: 'login'
+  form: 'login',
+  validate
 })
+
+function validate (formProps) {
+  const errors = {}
+
+  if (!formProps.email) {
+    errors.email = 'Please enter an email'
+  }
+
+  if (!formProps.password) {
+    errors.password = 'Please enter a password'
+  }
+
+  return errors
+}
 
 class LoginForm extends Component {
   constructor (props) {

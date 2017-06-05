@@ -23,7 +23,7 @@ class HomePage extends Component {
               Journal Something EachDay
             </Header.Content>
             <Header.Subheader>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Get personal insights by writing a small journal entry each day.
             </Header.Subheader>
           </Header>
           <Link to='/register'>
