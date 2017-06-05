@@ -1,4 +1,4 @@
-import { errorHandler, cookie } from './utils'
+import { errorHandler, cookie, API_URL } from './utils'
 import axios from 'axios'
 import { LOAD_ENTRIES,
          OPEN_ENTRY_MODAL,
@@ -7,8 +7,6 @@ import { LOAD_ENTRIES,
          CREATE_ENTRY,
          DELETE_ENTRY,
          EDIT_ENTRY } from './types'
-
-const API_URL = process.env.API_BASE_URL
 
 export const loadEntries = () => (dispatch) =>
   axios.get(`${API_URL}/entry`, {

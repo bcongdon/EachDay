@@ -4,6 +4,8 @@ import map from 'lodash.map'
 const cookie = new Cookies()
 export { cookie }
 
+export const API_URL = process.env.API_BASE_URL
+
 export function formatErrorObject (err) {
   let messages = map(err, (key, msg) => {
     return `${msg}: ${key}`

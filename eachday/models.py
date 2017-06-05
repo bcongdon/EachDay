@@ -37,7 +37,8 @@ class User(db.Model):
                 'iat': datetime.utcnow(),
                 'sub': user_id,
                 'name': self.name,
-                'email': self.email
+                'email': self.email,
+                'id': self.id
             }
             return jwt.encode(
                 payload,

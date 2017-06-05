@@ -1,13 +1,11 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import { push } from 'react-router-redux'
-import { errorHandler, cookie } from './utils'
+import { errorHandler, cookie, API_URL } from './utils'
 import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER,
          CLEAR_AUTH_ERROR } from './types'
-
-const API_URL = process.env.API_BASE_URL
 
 export const loginUser = ({ email, password }) => (dispatch) =>
   axios.post(`${API_URL}/login`, { email, password })

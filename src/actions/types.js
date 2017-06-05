@@ -5,6 +5,7 @@ export const AUTH_ERROR = 'auth_error'
 export const FORGOT_PASSWORD_REQUEST = 'forgot_password_request'
 export const RESET_PASSWORD_REQUEST = 'reset_password_request'
 export const CLEAR_AUTH_ERROR = 'clear_auth_error'
+export const USER_UPDATE = 'user_update'
 
 // Entry Types
 export const LOAD_ENTRIES = 'load_entries'
@@ -14,3 +15,7 @@ export const CREATE_ENTRY = 'create_entry'
 export const EDIT_ENTRY = 'edit_entry'
 export const DELETE_ENTRY = 'delete_entry'
 export const ENTRY_API_ERROR = 'entry_api_error'
+
+// Profile Types
+export const CLEAR_PROFILE_API_ERROR = 'clear_profile_api_error'
+export const PROFILE_API_ERROR = 'profile_api_error'

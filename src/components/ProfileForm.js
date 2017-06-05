@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import { Button, Form, Divider } from 'semantic-ui-react'
 import SemanticReduxFormField from './form/SemanticReduxFormField'
 import ErrorMessage from './ErrorMessage'
+import { updateProfile } from '../actions'
 
 const form = reduxForm({
   form: 'editProfile',
@@ -20,7 +21,8 @@ function validate (formProps) {
 class EntryForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    errorMessage: PropTypes.string
+    errorMessage: PropTypes.string,
+    updateProfile: PropTypes.func
   }
 
   constructor (props) {
@@ -29,7 +31,7 @@ class EntryForm extends Component {
   }
 
   handleFormSubmit (formProps) {
-    // TODO: Connect to profile edit action
+    this.props.updateProfile(formProps)
   }
 
   renderAlert () {
@@ -61,7 +63,7 @@ class EntryForm extends Component {
         <Divider section />
         <Form.Field>
           <label>Password</label>
-          <Field component={SemanticReduxFormField} as={Form.Input} name='old_password' placeholder='Password' type='password' />
+          <Field component={SemanticReduxFormField} as={Form.Input} name='password' placeholder='Password' type='password' />
         </Form.Field>
         <Button type='submit' primary>Save</Button>
       </Form>
@@ -71,8 +73,8 @@ class EntryForm extends Component {
 
 function mapStateToProps (state) {
   return {
-    errorMessage: state.entry.error
+    errorMessage: state.profile.error
   }
 }
 
-export default connect(mapStateToProps)(form(EntryForm))
+export default connect(mapStateToProps, { updateProfile })(form(EntryForm))
