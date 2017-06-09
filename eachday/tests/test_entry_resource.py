@@ -248,6 +248,33 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual(data['error'], 'Invalid entry id')
         self.assertEqual(resp.status_code, 404)
 
+    def test_entry_export(self):
+        # Test exporting entries to a CSV
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date(2017, 1, 1))
+        entry2 = Entry(user_id=self.user.id,
+                       rating=5,
+                       notes='deadbeef',
+                       date=date(2017, 1, 2))
+        db.session.add(entry1)
+        db.session.add(entry2)
+        db.session.commit()
+
+        resp = self.client.get(
+            '/export',
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            }
+        )
+        self.assertEqual(resp.content_type, 'text/csv; charset=utf-8')
+        self.assertEqual(resp.status_code, 200)
+        expected = ('Date,Rating,Notes\r\n'
+                    '2017-01-01,1,foobar\r\n'
+                    '2017-01-02,5,deadbeef\r\n')
+        self.assertEqual(resp.data.decode(), expected)
+
 
 if __name__ == '__main__':
     unittest.main()
