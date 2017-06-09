@@ -1,8 +1,10 @@
 import flask
-from flask import request
+from flask import request, Response
 from flask_restful import Resource, wraps
 from .models import User, Entry, BlacklistToken, UserSchema, EntrySchema
 from .utils import send_error, send_success, send_data, InvalidJSONException
+import six
+import csv
 
 from eachday import db, bcrypt
 
@@ -197,12 +199,31 @@ class EntryResource(Resource):
             return send_error(str(e))
 
 
+class ExportResource(Resource):
+    method_decorators = [validate_auth]
+
+    def get(self, user_id):
+        ''' Returns a CSV version of entries '''
+        entries = Entry.query.filter_by(user_id=user_id).all()
+        buf = six.StringIO()
+        writer = csv.writer(buf)
+        writer.writerow(['Date', 'Rating', 'Notes'])
+        for e in entries:
+            writer.writerow([e.date, e.rating, e.notes])
+
+        return Response(buf.getvalue(),
+                        mimetype='text/csv',
+                        headers={'Content-disposition':
+                                 'attachment; filename=export.csv'})
+
+
 def create_apis(api):
     api.add_resource(UserResource, '/user')
     api.add_resource(EntryResource, '/entry/<int:entry_id>', '/entry')
     api.add_resource(LoginResource, '/login')
     api.add_resource(LogoutResource, '/logout')
     api.add_resource(RegisterResource, '/register')
+    api.add_resource(ExportResource, '/export')
 
 
 def register_error_handlers(app):
