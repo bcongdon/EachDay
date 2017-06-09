@@ -1,6 +1,6 @@
 import expect from 'expect'
 import * as types from '../../actions/types'
-import entryReducer from '../entry_reducers'
+import entryReducer from '../EntryReducers'
 
 describe('Entry Reducers', () => {
   it('OPEN_ENTRY_MODAL should set initial modal values correctly', () => {

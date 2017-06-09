@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-import authReducer from './auth_reducers'
-import entryReducer from './entry_reducers'
-import profileReducers from './profile_reducers.js'
+import authReducer from './AuthReducers'
+import entryReducer from './EntryReducers'
+import profileReducers from './ProfileReducers'
 import { routerReducer } from 'react-router-redux'
 
 const rootReducer = combineReducers({

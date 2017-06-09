@@ -1,6 +1,6 @@
 import expect from 'expect'
 import * as types from '../../actions/types'
-import profileReducer from '../profile_reducers'
+import profileReducer from '../ProfileReducers'
 
 describe('Entry Reducers', () => {
   it('CLEAR_PROFILE_API_ERROR should clear any set errors', () => {
