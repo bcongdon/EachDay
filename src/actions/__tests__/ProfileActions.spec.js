@@ -6,6 +6,7 @@ import nock from 'nock'
 import httpAdapter from 'axios/lib/adapters/http'
 import axios from 'axios'
 import expect from 'expect'
+import Cookie from 'universal-cookie'
 
 const middlewares = [ thunk ]
 const mockStore = configureStore(middlewares)
@@ -23,13 +24,15 @@ describe('Entry action creators', () => {
   })
 
   it('submits profile changes correctly', () => {
+    const fakeToken = 'foobarbaz'
+    const authedProfile = { ...profile, auth_token: fakeToken }
     const endpoint = nock('http://localhost:5000/')
       .put('/user')
-      .reply(200, { status: 'success', data: profile })
+      .reply(200, { status: 'success', data: authedProfile })
 
     const expectedActions = [
       { type: types.CLEAR_PROFILE_API_ERROR },
-      { type: types.USER_UPDATE, payload: profile }
+      { type: types.USER_UPDATE, payload: authedProfile }
     ]
     const store = mockStore({})
 
@@ -37,6 +40,8 @@ describe('Entry action creators', () => {
       .then(() => {
         expect(endpoint.isDone()).toBeTruthy()
         expect(store.getActions()).toEqual(expectedActions)
+        expect(Cookie.mock.instances.length).toEqual(1)
+        expect(Cookie.mock.instances[0].set.mock.calls).toContain(['token', fakeToken, { path: '/' }])
       })
   })
 

@@ -73,7 +73,10 @@ class UserResource(Resource):
         if data.get('name'):
             user.name = data['name']
 
-        return send_data(UserSchema().dump(user).data)
+        payload = UserSchema().dump(user).data
+        payload['auth_token'] = user.encode_auth_token(user.id)
+
+        return send_data(payload)
 
 
 class RegisterResource(Resource):
