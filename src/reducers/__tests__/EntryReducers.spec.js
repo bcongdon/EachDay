@@ -23,4 +23,25 @@ describe('Entry Reducers', () => {
     const newState = entryReducer(initialState, action)
     expect(newState).toEqual({ entries: [{id: 1, rating: 4}], loading: false, error: '' })
   })
+
+  it('ENTRY_API_ERROR should set error field and set loading to false', () => {
+    const initialState = { error: '', loading: true }
+    const action = { type: types.ENTRY_API_ERROR, payload: 'danger!' }
+    const newState = entryReducer(initialState, action)
+    expect(newState).toEqual({ loading: false, error: 'danger!' })
+  })
+
+  it('START_API_LOAD should set loading to true', () => {
+    const initialState = { loading: false }
+    const action = { type: types.START_API_LOAD }
+    const newState = entryReducer(initialState, action)
+    expect(newState).toEqual({ loading: true })
+  })
+
+  it('END_API_LOAD should set loading to false', () => {
+    const initialState = { loading: true }
+    const action = { type: types.END_API_LOAD }
+    const newState = entryReducer(initialState, action)
+    expect(newState).toEqual({ loading: false })
+  })
 })

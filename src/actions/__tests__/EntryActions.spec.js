@@ -6,6 +6,8 @@ import nock from 'nock'
 import httpAdapter from 'axios/lib/adapters/http'
 import axios from 'axios'
 import expect from 'expect'
+import Blob from 'blob'
+import FileSaver from 'file-saver'
 
 const middlewares = [ thunk ]
 const mockStore = configureStore(middlewares)
@@ -13,6 +15,9 @@ const mockStore = configureStore(middlewares)
 axios.defaults.adapter = httpAdapter
 
 jest.mock('universal-cookie')
+jest.mock('blob')
+jest.mock('file-saver')
+Date.now = jest.fn(() => 1487076708000)
 
 describe('Entry action creators', () => {
   afterEach(() => {
@@ -114,6 +119,28 @@ describe('Entry action creators', () => {
 
     return store.dispatch(actions.closeEntryModal())
       .then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+  })
+
+  it('should download exported entries correctly', () => {
+    const csvStr = 'Date,Rating,Notes\r\n2017-1-1,1,Hello world'
+    const endpoint = nock('http://localhost:5000')
+      .get('/export')
+      .reply(200, csvStr)
+
+    const expectedActions = [
+      { type: types.START_API_LOAD },
+      { type: types.END_API_LOAD }
+    ]
+    const store = mockStore({})
+
+    return store.dispatch(actions.downloadExport())
+      .then(() => {
+        expect(endpoint.isDone()).toBeTruthy()
+        expect(Blob.mock.instances.length).toEqual(1)
+        expect(Blob.mock.calls[0]).toEqual([[csvStr], { type: 'text/csv;charset=utf-8' }])
+        expect(FileSaver.saveAs.mock.calls[0][1]).toEqual('export-2017-02-14T04:51:48-08:00.csv')
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
