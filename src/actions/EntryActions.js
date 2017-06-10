@@ -55,9 +55,7 @@ export const createEntry = ({ date, rating, notes }) => (dispatch) =>
     dispatch({ type: CREATE_ENTRY, payload: response.data.data })
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error, ENTRY_API_ERROR)
-    }
+    errorHandler(dispatch, error, ENTRY_API_ERROR)
   })
 
 export const editEntry = ({ id, date, rating, notes }) => (dispatch) => {
@@ -73,9 +71,7 @@ export const editEntry = ({ id, date, rating, notes }) => (dispatch) => {
     dispatch({ type: EDIT_ENTRY, payload: response.data.data })
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error, ENTRY_API_ERROR)
-    }
+    errorHandler(dispatch, error, ENTRY_API_ERROR)
   })
 }
 
@@ -90,9 +86,7 @@ export const deleteEntry = (id) => (dispatch) =>
     dispatch({ type: DELETE_ENTRY, id })
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error, ENTRY_API_ERROR)
-    }
+    errorHandler(dispatch, error, ENTRY_API_ERROR)
   })
 
 export const downloadExport = () => (dispatch) => {
@@ -103,11 +97,9 @@ export const downloadExport = () => (dispatch) => {
   .then(response => {
     dispatch({ type: END_API_LOAD })
     var blob = new Blob([response.data], { type: 'text/csv;charset=utf-8' })
-    FileSaver.saveAs(blob, `export-${moment().format()}.csv`)
+    FileSaver.saveAs(blob, `export-${moment().toISOString()}.csv`)
   })
   .catch((error) => {
-    if (error) {
-      errorHandler(dispatch, error, ENTRY_API_ERROR)
-    }
+    errorHandler(dispatch, error, ENTRY_API_ERROR)
   })
 }

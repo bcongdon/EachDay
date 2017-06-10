@@ -140,7 +140,7 @@ describe('Entry action creators', () => {
         expect(endpoint.isDone()).toBeTruthy()
         expect(Blob.mock.instances.length).toEqual(1)
         expect(Blob.mock.calls[0]).toEqual([[csvStr], { type: 'text/csv;charset=utf-8' }])
-        expect(FileSaver.saveAs.mock.calls[0][1]).toEqual('export-2017-02-14T04:51:48-08:00.csv')
+        expect(FileSaver.saveAs.mock.calls[0][1]).toEqual('export-2017-02-14T12:51:48.000Z.csv')
         expect(store.getActions()).toEqual(expectedActions)
       })
   })
