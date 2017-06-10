@@ -69,7 +69,7 @@ export class Dashboard extends Component {
       return {'data-tip': 'No Entries'}
     }
     const date = moment(value.date).format('MMM DD')
-    const stars = '⭐'.repeat(value.count)
+    const stars = '⭐ '.repeat(value.count)
     return {'data-tip': `${date}: ${stars}`}
   }
 
