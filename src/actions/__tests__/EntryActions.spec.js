@@ -26,6 +26,7 @@ describe('Entry action creators', () => {
       .reply(200, { status: 'success', data: payload })
 
     const expectedActions = [
+      { type: types.START_API_LOAD },
       { type: types.LOAD_ENTRIES, payload: payload }
     ]
     const store = mockStore({})
@@ -80,6 +81,7 @@ describe('Entry action creators', () => {
       .reply(400, { status: 'error', error: msg })
 
     const expectedActions = [
+      { type: types.START_API_LOAD },
       { type: types.ENTRY_API_ERROR, payload: msg }
     ]
     const store = mockStore({})

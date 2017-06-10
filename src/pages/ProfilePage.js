@@ -1,14 +1,26 @@
 import React, { Component } from 'react'
-import { Card, Grid, Segment, Header } from 'semantic-ui-react'
+import { Card, Grid, Segment, Header, Button } from 'semantic-ui-react'
 import UserNavbar from '../components/UserNavbar'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import Gravatar from '../components/Gravatar'
 import ProfileForm from '../components/ProfileForm'
+import { downloadExport } from '../actions'
 
 class ProfilePage extends Component {
   static propTypes = {
-    user: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    downloadExport: PropTypes.func.isRequired
+  }
+
+  constructor (props) {
+    super(props)
+    this.handleExport = this.handleExport.bind(this)
+  }
+
+  handleExport () {
+    this.props.downloadExport()
   }
 
   render () {
@@ -31,6 +43,17 @@ class ProfilePage extends Component {
               <Header size='medium'>Edit Profile</Header>
               <ProfileForm initialValues={this.props.user} />
             </Segment>
+            <Segment>
+              <Header size='medium'>Export Entries</Header>
+              Download your entries as a CSV.
+              <br />
+              <Button
+                style={{marginTop: '1em'}}
+                size='small'
+                onClick={this.handleExport}
+                loading={this.props.loading}
+                content='Export' />
+            </Segment>
           </Grid.Column>
         </Grid>
       </div>
@@ -40,8 +63,9 @@ class ProfilePage extends Component {
 
 function mapPropsToState (state) {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    loading: state.entry.loading
   }
 }
 
-export default connect(mapPropsToState)(ProfilePage)
+export default connect(mapPropsToState, { downloadExport })(ProfilePage)

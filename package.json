@@ -18,8 +18,9 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "blob": "^0.0.4",
     "csvtojson": "^1.1.5",
+    "file-saver": "^1.3.3",
     "history": "^4.6.1",
     "js-md5": "^0.4.2",
     "jwt-decode": "^2.2.0",
@@ -48,6 +49,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.1",
     "enzyme": "^2.8.2",
     "enzyme-to-json": "^1.5.1",

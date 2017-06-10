@@ -15,6 +15,8 @@ export const CREATE_ENTRY = 'create_entry'
 export const EDIT_ENTRY = 'edit_entry'
 export const DELETE_ENTRY = 'delete_entry'
 export const ENTRY_API_ERROR = 'entry_api_error'
+export const START_API_LOAD = 'start_api_load'
+export const END_API_LOAD = 'end_api_load'
 
 // Profile Types
 export const CLEAR_PROFILE_API_ERROR = 'clear_profile_api_error'
