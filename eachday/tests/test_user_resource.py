@@ -55,6 +55,10 @@ class TestUserResource(BaseTestCase):
         self.assertEqual(data['data']['name'], 'Donald Knuth')
         self.assertNotIn('password', data['data'])
         self.assertEqual(response.status_code, 200)
+        # Test that service returns new auth token
+        self.assertIn('auth_token', data['data'])
+        token = data['data']['auth_token']
+        self.assertEqual(self.user.id, self.user.decode_auth_token(token))
 
     def test_user_put_invalid_auth(self):
         """ Test for editing user data with bad credentials """

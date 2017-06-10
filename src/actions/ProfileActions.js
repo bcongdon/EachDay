@@ -17,6 +17,7 @@ export const updateProfile = ({ id, email, name, new_password, password }) => (d
     if (response.data.status !== 'success') {
       return errorHandler(dispatch, response, PROFILE_API_ERROR)
     }
+    cookie.set('token', response.data.data.auth_token, { path: '/' })
     dispatch({ type: USER_UPDATE, payload: response.data.data })
   })
   .catch((error) => {
