@@ -2,5 +2,5 @@
 
 npm test && \
 npm run lint && \
-python manage.py test && \
+python manage.py cov && \
 pep8 eachday
