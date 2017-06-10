@@ -1,0 +1,267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entry component should render a basic entry correctly 1`] = `
+<GridRow>
+  <GridColumn
+    style={
+      Object {
+        "margin": "0 auto",
+        "minWidth": 100,
+      }
+    }
+    textAlign="center"
+    width={2}
+  >
+    <_
+      name="entry-1"
+    />
+    <Statistic
+      size="small"
+    >
+      <StatisticLabel>
+        Jan
+      </StatisticLabel>
+      <StatisticValue>
+        01
+      </StatisticValue>
+    </Statistic>
+    <div>
+      <Rating
+        clearable="auto"
+        disabled={true}
+        maxRating={5}
+        rating={5}
+        size="tiny"
+        style={
+          Object {
+            "marginBottom": 20,
+            "maxWidth": "100%",
+          }
+        }
+      />
+    </div>
+  </GridColumn>
+  <GridColumn
+    computer={10}
+    mobile={16}
+    tablet={10}
+    textAlign="left"
+  >
+    Foo bar baz
+  </GridColumn>
+  <GridColumn
+    floated="right"
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+    verticalAlign="bottom"
+    width={1}
+  >
+    <Dropdown
+      additionLabel="Add "
+      additionPosition="top"
+      className="top right"
+      closeOnBlur={true}
+      icon="setting"
+      noResultsMessage="No results found."
+      openOnFocus={true}
+      renderLabel={[Function]}
+      selectOnBlur={true}
+    >
+      <DropdownMenu
+        style={
+          Object {
+            "left": "auto",
+            "right": 0,
+          }
+        }
+      >
+        <DropdownItem
+          content="Edit"
+          icon="edit"
+          onClick={[Function]}
+        />
+        <DropdownItem
+          content="Delete"
+          icon="delete"
+          onClick={[Function]}
+        />
+      </DropdownMenu>
+    </Dropdown>
+  </GridColumn>
+</GridRow>
+`;
+
+exports[`entry component should render without a rating 1`] = `
+<GridRow>
+  <GridColumn
+    style={
+      Object {
+        "margin": "0 auto",
+        "minWidth": 100,
+      }
+    }
+    textAlign="center"
+    width={2}
+  >
+    <_
+      name="entry-1"
+    />
+    <Statistic
+      size="small"
+    >
+      <StatisticLabel>
+        Jan
+      </StatisticLabel>
+      <StatisticValue>
+        01
+      </StatisticValue>
+    </Statistic>
+    <div />
+  </GridColumn>
+  <GridColumn
+    computer={10}
+    mobile={16}
+    tablet={10}
+    textAlign="left"
+  >
+    Foo bar baz
+  </GridColumn>
+  <GridColumn
+    floated="right"
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+    verticalAlign="bottom"
+    width={1}
+  >
+    <Dropdown
+      additionLabel="Add "
+      additionPosition="top"
+      className="top right"
+      closeOnBlur={true}
+      icon="setting"
+      noResultsMessage="No results found."
+      openOnFocus={true}
+      renderLabel={[Function]}
+      selectOnBlur={true}
+    >
+      <DropdownMenu
+        style={
+          Object {
+            "left": "auto",
+            "right": 0,
+          }
+        }
+      >
+        <DropdownItem
+          content="Edit"
+          icon="edit"
+          onClick={[Function]}
+        />
+        <DropdownItem
+          content="Delete"
+          icon="delete"
+          onClick={[Function]}
+        />
+      </DropdownMenu>
+    </Dropdown>
+  </GridColumn>
+</GridRow>
+`;
+
+exports[`entry component should render without notes 1`] = `
+<GridRow>
+  <GridColumn
+    style={
+      Object {
+        "margin": "0 auto",
+        "minWidth": 100,
+      }
+    }
+    textAlign="center"
+    width={2}
+  >
+    <_
+      name="entry-1"
+    />
+    <Statistic
+      size="small"
+    >
+      <StatisticLabel>
+        Jan
+      </StatisticLabel>
+      <StatisticValue>
+        01
+      </StatisticValue>
+    </Statistic>
+    <div>
+      <Rating
+        clearable="auto"
+        disabled={true}
+        maxRating={5}
+        rating={5}
+        size="tiny"
+        style={
+          Object {
+            "marginBottom": 20,
+            "maxWidth": "100%",
+          }
+        }
+      />
+    </div>
+  </GridColumn>
+  <GridColumn
+    computer={10}
+    mobile={16}
+    tablet={10}
+    textAlign="left"
+  />
+  <GridColumn
+    floated="right"
+    style={
+      Object {
+        "marginBottom": 0,
+      }
+    }
+    verticalAlign="bottom"
+    width={1}
+  >
+    <Dropdown
+      additionLabel="Add "
+      additionPosition="top"
+      className="top right"
+      closeOnBlur={true}
+      icon="setting"
+      noResultsMessage="No results found."
+      openOnFocus={true}
+      renderLabel={[Function]}
+      selectOnBlur={true}
+    >
+      <DropdownMenu
+        style={
+          Object {
+            "left": "auto",
+            "right": 0,
+          }
+        }
+      >
+        <DropdownItem
+          content="Edit"
+          icon="edit"
+          onClick={[Function]}
+        />
+        <DropdownItem
+          content="Delete"
+          icon="delete"
+          onClick={[Function]}
+        />
+      </DropdownMenu>
+    </Dropdown>
+  </GridColumn>
+</GridRow>
+`;

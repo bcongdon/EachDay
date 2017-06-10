@@ -6,7 +6,7 @@ import { openEntryModal, deleteEntry } from '../../actions'
 import { connect } from 'react-redux'
 import { Element } from 'react-scroll'
 
-class Entry extends Component {
+export class Entry extends Component {
   static propTypes = {
     rating: PropTypes.number,
     notes: PropTypes.string,
