@@ -84,7 +84,8 @@ class EntryForm extends Component {
             component={SemanticReduxFormField}
             as={Form.TextArea}
             name='notes'
-            placeholder={'How\'d the day go?'} />
+            placeholder={'How\'d the day go?'}
+            autofocus />
         </Form.Field>
         <Button type='submit' primary>Save</Button>
       </Form>
