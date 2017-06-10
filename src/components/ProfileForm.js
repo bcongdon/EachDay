@@ -22,7 +22,11 @@ function validate (formProps) {
   }
 
   if (formProps.new_password && formProps.new_password.length < 8) {
-    errors.new_password = 'Your password must be 8 characters or longer.'
+    errors.new_password = 'Your new password must be 8 characters or longer.'
+  }
+
+  if(!formProps.password) {
+    errors.password = 'You must provide your password to edit your account.'
   }
 
   return errors
