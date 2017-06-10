@@ -73,8 +73,11 @@ class UserResource(Resource):
         if data.get('name'):
             user.name = data['name']
 
+        db.session.add(user)
+        db.session.commit()
+
         payload = UserSchema().dump(user).data
-        payload['auth_token'] = user.encode_auth_token(user.id)
+        payload['auth_token'] = user.encode_auth_token(user.id).decode()
 
         return send_data(payload)
 

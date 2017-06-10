@@ -8,6 +8,7 @@ import ErrorMessage from './ErrorMessage'
 import { updateProfile } from '../actions'
 
 const form = reduxForm({
+  touchOnBlur: false,
   form: 'editProfile',
   validate
 })
@@ -25,7 +26,7 @@ function validate (formProps) {
     errors.new_password = 'Your new password must be 8 characters or longer.'
   }
 
-  if(!formProps.password) {
+  if (!formProps.password) {
     errors.password = 'You must provide your password to edit your account.'
   }
 
