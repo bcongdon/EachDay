@@ -1,7 +1,7 @@
 from sqlalchemy.orm import validates
 from sqlalchemy import UniqueConstraint
 from eachday import app, db, bcrypt
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 import jwt
 import marshmallow
 from marshmallow import Schema, fields, validate, ValidationError
@@ -14,16 +14,18 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
+    joined_on = db.Column(db.Date, nullable=False)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(
             password, app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
 
-    def __init__(self, email, password, name):
+    def __init__(self, email, password, name, joined_on=None):
         self.email = email
         self.set_password(password)
         self.name = name
+        self.joined_on = joined_on or date.today()
 
     def encode_auth_token(self, user_id):
         """
@@ -98,6 +100,7 @@ class UserSchema(Schema):
                        validate=validate.Email(error='Invalid email address'))
     password = fields.Str(required=True, load_only=True)
     name = fields.Str(required=True)
+    joined_on = fields.Date(required=False)
 
 
 class EntrySchema(Schema):

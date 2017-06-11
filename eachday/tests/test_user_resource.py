@@ -1,4 +1,5 @@
 import unittest
+from datetime import date
 
 import json
 from eachday import db, bcrypt
@@ -12,12 +13,13 @@ class TestUserResource(BaseTestCase):
         user = User(
             email='foo@bar.com',
             password='test',
-            name='joe'
+            name='joe',
+            joined_on=date(2017, 1, 1)
         )
         db.session.add(user)
         db.session.commit()
         self.user = user
-        self.token = token = user.encode_auth_token(user.id).decode()
+        self.token = user.encode_auth_token(user.id).decode()
 
     def test_user_get(self):
         """ Test for getting user data """
@@ -33,6 +35,7 @@ class TestUserResource(BaseTestCase):
         self.assertEqual(data['data']['email'], 'foo@bar.com')
         self.assertEqual(data['data']['name'], 'joe')
         self.assertNotIn('password', ['data'])
+        self.assertEqual(data['data']['joined_on'], str(self.user.joined_on))
         self.assertEqual(response.status_code, 200)
 
     def test_user_put(self):
@@ -59,6 +62,25 @@ class TestUserResource(BaseTestCase):
         self.assertIn('auth_token', data['data'])
         token = data['data']['auth_token']
         self.assertEqual(self.user.id, self.user.decode_auth_token(token))
+
+    def test_cannot_change_joined_on(self):
+        """ Test that 'joined_on' cannot be edited """
+        response = self.client.put(
+            '/user',
+            headers={
+                'Authorization': 'Bearer ' + self.token
+            },
+            data=json.dumps({
+                'joined_on': '2018-01-01',
+                'password': 'test'
+            })
+        )
+        data = json.loads(response.data.decode())
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        # Should equal unchanged (original) date
+        self.assertEqual(data['data']['joined_on'], '2017-01-01')
+        self.assertEqual(response.status_code, 200)
 
     def test_user_put_invalid_auth(self):
         """ Test for editing user data with bad credentials """
