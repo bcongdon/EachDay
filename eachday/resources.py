@@ -5,6 +5,7 @@ from .models import User, Entry, BlacklistToken, UserSchema, EntrySchema
 from .utils import send_error, send_success, send_data, InvalidJSONException
 import six
 import csv
+from .log import log
 
 from eachday import db, bcrypt
 
@@ -16,6 +17,7 @@ def validate_auth(func):
         if auth_header:
             auth_token = auth_header.split(' ')[1]
         else:
+            log.info('Rejecting auth because no token provided')
             return send_error('Please provide an auth token', 401)
 
         try:
@@ -24,17 +26,21 @@ def validate_auth(func):
                                .filter_by(token=auth_token)
                                .first())
             if blacklist_token is not None:
+                log.info('Rejecting auth because token is blacklisted')
                 return send_error(
                     'Token blacklisted. Please log in again.', 401
                 )
             flask.g.auth_token = auth_token
+            log.debug('Authentication successful')
             return func(user_id=user_id, *args, **kwargs)
         except Exception as e:
+            log.info('Rejecting auth token: {}'.format(auth_token))
             return send_error(str(e), 401)
     return wrapped
 
 
 def json_load_failed(self):
+    log.warn('JSON loading failed')
     raise InvalidJSONException
 
 
@@ -47,6 +53,7 @@ class UserResource(Resource):
     method_decorators = [validate_auth]
 
     def get(self, user_id=None):
+        log.info('Getting user info for user: {}'.format(user_id))
         user = db.session.query(User).filter_by(id=user_id).first()
         if not user:
             return send_error('Invalid user id', 404)
@@ -54,6 +61,7 @@ class UserResource(Resource):
         return send_data(UserSchema().dump(user).data)
 
     def put(self, user_id=None):
+        log.info('Modifying user info for user: {}'.format(user_id))
         user = db.session.query(User).filter_by(id=user_id).first()
         if not user:
             return send_error('Invalid user id', 404)
@@ -62,6 +70,8 @@ class UserResource(Resource):
         if 'password' not in data:
             return send_error('Must provide password', 401)
         if not bcrypt.check_password_hash(user.password, data.get('password')):
+            log.info('Rejecting modifications because '
+                     'invalid password provided')
             return send_error('Invalid password.', 401)
 
         if data.get('new_password'):
@@ -73,13 +83,15 @@ class UserResource(Resource):
         if data.get('name'):
             user.name = data['name']
 
-        db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.add(user)
+            db.session.commit()
 
-        payload = UserSchema().dump(user).data
-        payload['auth_token'] = user.encode_auth_token(user.id).decode()
-
-        return send_data(payload)
+            payload = UserSchema().dump(user).data
+            payload['auth_token'] = user.encode_auth_token(user.id).decode()
+            return send_data(payload)
+        except Exception as e:
+            return send_error(str(e))
 
 
 class RegisterResource(Resource):

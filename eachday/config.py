@@ -1,4 +1,5 @@
 import os
+import logging
 basedir = os.path.abspath(os.path.dirname(__file__))
 postgres_local_base = 'postgresql://postgres:@localhost/'
 database_name = 'eachday'
@@ -10,6 +11,8 @@ class BaseConfig:
     DEBUG = False
     BCRYPT_LOG_ROUNDS = 13
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    LOGGER_NAME = 'eachday'
+    LOG_LEVEL = logging.INFO
 
 
 class DevelopmentConfig(BaseConfig):
@@ -27,6 +30,7 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name + '_test'
     SECRET_KEY = 'test_secret_key'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    LOG_LEVEL = logging.WARN
 
 
 class ProductionConfig(BaseConfig):

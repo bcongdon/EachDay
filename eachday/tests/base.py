@@ -7,6 +7,7 @@ class BaseTestCase(TestCase):
 
     def create_app(self):
         app.config.from_object('eachday.config.TestingConfig')
+        app.logger.setLevel('WARN')
         return app
 
     def setUp(self):
