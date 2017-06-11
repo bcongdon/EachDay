@@ -25,6 +25,7 @@ class TestingConfig(BaseConfig):
     TESTING = True
     BCRYPT_LOG_ROUNDS = 4
     SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name + '_test'
+    SECRET_KEY = 'test_secret_key'
     PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 

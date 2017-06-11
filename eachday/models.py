@@ -37,11 +37,9 @@ class User(db.Model):
             payload = {
                 'exp': datetime.utcnow() + td,
                 'iat': datetime.utcnow(),
-                'sub': user_id,
-                'name': self.name,
-                'email': self.email,
-                'id': self.id
+                'sub': self.id,
             }
+            payload.update(UserSchema().dump(self).data)
             return jwt.encode(
                 payload,
                 app.config.get('SECRET_KEY'),
