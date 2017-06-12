@@ -16,18 +16,35 @@ import { scroller } from 'react-scroll'
 import Mousetrap from 'mousetrap'
 
 export class Dashboard extends Component {
+  static propTypes = {
+    loadEntries: PropTypes.func.isRequired,
+    openEntryModal: PropTypes.func.isRequired,
+    entries: PropTypes.array,
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+    modalOpen: PropTypes.bool
+  }
+
   constructor (props) {
     super(props)
     this.onEntryClick = this.onEntryClick.bind(this)
+    this.onCtrlNKeystroke = this.onCtrlNKeystroke.bind(this)
   }
 
   componentWillMount () {
     this.props.loadEntries()
-    Mousetrap.bind('ctrl+n', this.props.openEntryModal)
+    Mousetrap.bind('ctrl+n', this.onCtrlNKeystroke)
   }
 
   componentWillUnount () {
-    Mousetrap.unbind('ctrl+n', this.props.openEntryModal)
+    Mousetrap.unbind('ctrl+n')
+  }
+
+  onCtrlNKeystroke () {
+    // Only open modal if it isn't already open
+    if (!this.props.modalOpen) {
+      this.props.openEntryModal()
+    }
   }
 
   getLoader () {
@@ -136,20 +153,13 @@ function mapStateToProps (state) {
   return {
     entries: state.entry.entries,
     loading: state.entry.loading,
-    error: state.entry.error
+    error: state.entry.error,
+    modalOpen: state.entry.entryModalOpen
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({ loadEntries, openEntryModal }, dispatch)
-}
-
-Dashboard.propTypes = {
-  loadEntries: PropTypes.func.isRequired,
-  openEntryModal: PropTypes.func.isRequired,
-  entries: PropTypes.array,
-  loading: PropTypes.bool,
-  error: PropTypes.string
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

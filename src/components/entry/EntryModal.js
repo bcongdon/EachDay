@@ -26,7 +26,7 @@ class EntryModal extends Component {
     // Test for null/undefined or empty object
     const isNewEntry = !this.props.initialModalValues || Object.keys(this.props.initialModalValues).length === 0
 
-    const actionText = isNewEntry ? 'Edit' : 'Create'
+    const actionText = isNewEntry ? 'Create' : 'Edit'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
         <Modal.Header>{actionText} an Entry</Modal.Header>

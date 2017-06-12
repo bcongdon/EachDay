@@ -85,7 +85,7 @@ class EntryForm extends Component {
             as={Form.TextArea}
             name='notes'
             placeholder={'How\'d the day go?'}
-            autofocus />
+            autoFocus />
         </Form.Field>
         <Button type='submit' primary>Save</Button>
       </Form>
