@@ -167,6 +167,10 @@ class EntryResource(Resource):
         if errors:
             return send_error(errors)
 
+        entry = Entry.query.filter_by(date=args['date']).first()
+        if entry:
+            return send_error('An entry for this date already exists!')
+
         entry = Entry(user_id=user_id, **args)
         try:
             db.session.add(entry)

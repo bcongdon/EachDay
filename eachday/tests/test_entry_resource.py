@@ -275,6 +275,36 @@ class TestEntryResource(BaseTestCase):
                     '2017-01-02,5,deadbeef\r\n')
         self.assertEqual(resp.data.decode(), expected)
 
+    def test_handle_reject_new_entry_on_day_with_entry(self):
+        # Test rejecting a new entry that occurs on a date
+        # where an entry has already been registered
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date(2017, 1, 1))
+        db.session.add(entry1)
+        db.session.commit()
+
+        resp = self.client.post(
+            '/entry',
+            data=json.dumps({
+                'notes': 'Hello world',
+                'rating': 5,
+                'date': '2017-01-01'
+            }),
+            content_type='application/json',
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            }
+        )
+        data = json.loads(resp.data.decode())
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error'],
+                         'An entry for this date already exists!')
+        entries = Entry.query.filter_by(date=entry1.date).count()
+        self.assertEqual(entries, 1)
+
 
 if __name__ == '__main__':
     unittest.main()
