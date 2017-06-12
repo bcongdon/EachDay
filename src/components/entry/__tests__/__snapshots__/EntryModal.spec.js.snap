@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entry component should display correct text for editing an entry 1`] = `
+<Modal
+  closeOnDimmerClick={true}
+  closeOnDocumentClick={false}
+  dimmer={true}
+  onClose={[Function]}
+  open={true}
+  trigger={<div />}
+>
+  <ModalHeader
+    content="Edit an Entry"
+  />
+  <ModalContent>
+    <Connect(ReduxForm)
+      initialValues={
+        Object {
+          "date": "2017-01-01",
+          "notes": "foo",
+          "rating": 5,
+        }
+      }
+      isNewEntry={false}
+    />
+  </ModalContent>
+</Modal>
+`;
+
+exports[`entry component should display correct text for new entry creation 1`] = `
+<Modal
+  closeOnDimmerClick={true}
+  closeOnDocumentClick={false}
+  dimmer={true}
+  onClose={[Function]}
+  open={true}
+  trigger={<div />}
+>
+  <ModalHeader
+    content="Create an Entry"
+  />
+  <ModalContent>
+    <Connect(ReduxForm)
+      initialValues={null}
+      isNewEntry={true}
+    />
+  </ModalContent>
+</Modal>
+`;

@@ -5,7 +5,7 @@ import EntryForm from './EntryForm'
 import { openEntryModal, closeEntryModal } from '../../actions'
 import { connect } from 'react-redux'
 
-class EntryModal extends Component {
+export class EntryModal extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     initialModalValues: PropTypes.object,
@@ -29,7 +29,7 @@ class EntryModal extends Component {
     const actionText = isNewEntry ? 'Create' : 'Edit'
     return (
       <Modal open={this.props.open} onClose={this.handleClose} trigger={this.props.trigger}>
-        <Modal.Header>{actionText} an Entry</Modal.Header>
+        <Modal.Header content={`${actionText} an Entry`} />
         <Modal.Content>
           <EntryForm
             initialValues={this.props.initialModalValues}
