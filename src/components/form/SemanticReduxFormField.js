@@ -5,6 +5,13 @@ import PropTypes from 'prop-types'
 import { Message } from 'semantic-ui-react'
 
 class SemanticReduxFormField extends Component {
+  static propTypes = {
+    as: PropTypes.any,
+    input: PropTypes.any,
+    label: PropTypes.any,
+    meta: PropTypes.any
+  }
+
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
@@ -25,13 +32,6 @@ class SemanticReduxFormField extends Component {
       </div>
     )
   }
-}
-
-SemanticReduxFormField.propTypes = {
-  as: PropTypes.any,
-  input: PropTypes.any,
-  label: PropTypes.any,
-  meta: PropTypes.any
 }
 
 export default SemanticReduxFormField

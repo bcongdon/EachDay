@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SemanticReduxForm component should not set error if not touched 1`] = `
+<div>
+  <FormTextArea
+    as={[Function]}
+    control={[Function]}
+    error={false}
+    onChange={[Function]}
+    value="foo bar"
+  />
+</div>
+`;
+
+exports[`SemanticReduxForm component should render correctly as a text area 1`] = `
+<div>
+  <FormTextArea
+    as={[Function]}
+    control={[Function]}
+    error={false}
+    onChange={[Function]}
+    value="foo bar"
+  />
+</div>
+`;
+
+exports[`SemanticReduxForm component should set error if touched and error 1`] = `
+<div>
+  <FormTextArea
+    as={[Function]}
+    control={[Function]}
+    error={true}
+    onChange={[Function]}
+    value="foo bar"
+  />
+  <Message
+    content="Warning!"
+    error={true}
+  />
+</div>
+`;
