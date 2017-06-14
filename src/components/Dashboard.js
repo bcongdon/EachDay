@@ -99,6 +99,10 @@ export class Dashboard extends Component {
     }
   }
 
+  classForValue (value) {
+    return (value && value.count) ? `ui color-scale-${value.count}` : 'ui color-empty'
+  }
+
   render () {
     const calendarValues = this.props.entries.map(e => {
       return {
@@ -132,10 +136,10 @@ export class Dashboard extends Component {
                 offset={{right: 6}}
                 />
               <CalendarHeatmap
-                numDays={366}
+                numDays={365}
                 endDate={Date.now()}
                 values={calendarValues}
-                classForValue={(value) => (value && value.count) ? `ui color-scale-${value.count}` : 'ui color-empty'}
+                classForValue={this.classForValue}
                 tooltipDataAttrs={this.customTootipTitle}
                 onClick={this.onEntryClick}
                 />
