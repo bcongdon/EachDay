@@ -186,6 +186,14 @@ class TestEntryResource(BaseTestCase):
         self.assertEqual('changed', data['data']['notes'])
         self.assertEqual(resp.status_code, 200)
 
+    def test_reject_unauthorized_edits(self):
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today())
+        db.session.add(entry1)
+        db.session.commit()
+
         # Test invalid edit by other user
         user2_auth_token = self.user2.encode_auth_token(self.user2.id).decode()
         resp = self.client.put(
@@ -204,6 +212,57 @@ class TestEntryResource(BaseTestCase):
         self.assertIn('error', data)
         self.assertEqual(data['error'], 'Invalid entry id')
         self.assertEqual(resp.status_code, 404)
+
+    def test_reject_bad_entry_edit_data(self):
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today())
+        db.session.add(entry1)
+        db.session.commit()
+
+        # Test editing an entry with PUT
+        resp = self.client.put(
+            '/entry/{}'.format(entry1.id),
+            data=json.dumps({
+                'rating': 15
+            }),
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            },
+            content_type='application/json'
+        )
+        data = json.loads(resp.data.decode())
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error']['rating'][0],
+                         'Rating must be between 1 and 10')
+        self.assertEqual(resp.status_code, 400)
+
+    def test_remove_entry_rating(self):
+        entry1 = Entry(user_id=self.user.id,
+                       rating=1,
+                       notes='foobar',
+                       date=date.today())
+        db.session.add(entry1)
+        db.session.commit()
+
+        # Test editing an entry with PUT
+        resp = self.client.put(
+            '/entry/{}'.format(entry1.id),
+            data=json.dumps({
+                'rating': 0
+            }),
+            headers={
+                'Authorization': 'Bearer ' + self.auth_token
+            },
+            content_type='application/json'
+        )
+        data = json.loads(resp.data.decode())
+        self.assertEqual(data['status'], 'success')
+        self.assertIn('data', data)
+        self.assertEqual(entry1.id, data['data']['id'])
+        self.assertEqual(None, data['data']['rating'])
+        self.assertEqual(resp.status_code, 200)
 
     def test_entry_deletion(self):
         # Test deleting with DELETE

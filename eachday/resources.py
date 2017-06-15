@@ -40,7 +40,6 @@ def validate_auth(func):
 
 
 def json_load_failed(self):
-    log.warn('JSON loading failed')
     raise InvalidJSONException
 
 
@@ -83,15 +82,12 @@ class UserResource(Resource):
         if data.get('name'):
             user.name = data['name']
 
-        try:
-            db.session.add(user)
-            db.session.commit()
+        db.session.add(user)
+        db.session.commit()
 
-            payload = UserSchema().dump(user).data
-            payload['auth_token'] = user.encode_auth_token(user.id).decode()
-            return send_data(payload)
-        except Exception as e:
-            return send_error(str(e))
+        payload = UserSchema().dump(user).data
+        payload['auth_token'] = user.encode_auth_token(user.id).decode()
+        return send_data(payload)
 
 
 class RegisterResource(Resource):
@@ -104,15 +100,13 @@ class RegisterResource(Resource):
         if user:
             return send_error('User already exists.')
 
-        try:
-            user = User(**args)
-            db.session.add(user)
-            db.session.commit()
-            auth_token = user.encode_auth_token(user.id)
-            return send_success('Successfully registered.', 201,
-                                auth_token=auth_token.decode())
-        except Exception as e:
-            return send_error(str(e))
+        log.info('Creating user with email {}'.format(args['email']))
+        user = User(**args)
+        db.session.add(user)
+        db.session.commit()
+        auth_token = user.encode_auth_token(user.id)
+        return send_success('Successfully registered.', 201,
+                            auth_token=auth_token.decode())
 
 
 class LoginResource(Resource):
@@ -122,6 +116,7 @@ class LoginResource(Resource):
 
         user = db.session.query(User).filter_by(email=email).first()
         if not user:
+            log.info('User with email "{}" does not exist'.format(email))
             return send_error('User does not exist.', 404)
 
         if bcrypt.check_password_hash(user.password, password):
@@ -138,12 +133,11 @@ class LogoutResource(Resource):
     def post(self, user_id=None):
         auth_token = flask.g.auth_token
         blacklist_token = BlacklistToken(token=auth_token)
-        try:
-            db.session.add(blacklist_token)
-            db.session.commit()
-            return send_success('Successfully logged out')
-        except Exception as e:
-            return send_error(str(e))
+
+        log.info('Blacklisting token {}'.format(auth_token))
+        db.session.add(blacklist_token)
+        db.session.commit()
+        return send_success('Successfully logged out')
 
 
 class EntryResource(Resource):
@@ -160,6 +154,7 @@ class EntryResource(Resource):
         if not entry:
             return send_error('Invalid entry id', 404)
 
+        log.info('Returning info for entry {}'.format(entry_id))
         return send_data(EntrySchema().dump(entry).data)
 
     def post(self, user_id=None, entry_id=None):
@@ -172,12 +167,11 @@ class EntryResource(Resource):
             return send_error('An entry for this date already exists!')
 
         entry = Entry(user_id=user_id, **args)
-        try:
-            db.session.add(entry)
-            db.session.commit()
-            return send_data(EntrySchema().dump(entry).data, 201)
-        except Exception as e:
-            return send_error(str(e))
+
+        db.session.add(entry)
+        db.session.commit()
+        log.info('Created new entry {}'.format(entry.id))
+        return send_data(EntrySchema().dump(entry).data, 201)
 
     def put(self, entry_id, user_id=None):
         entry = db.session.query(Entry).filter_by(
@@ -199,12 +193,10 @@ class EntryResource(Resource):
         for k, v in args.items():
             setattr(entry, k, v)
 
-        try:
-            db.session.add(entry)
-            db.session.commit()
-            return send_data(EntrySchema().dump(entry).data, 200)
-        except Exception as e:
-            return send_error(str(e))
+        log.info('Altering entry {}'.format(entry_id))
+        db.session.add(entry)
+        db.session.commit()
+        return send_data(EntrySchema().dump(entry).data, 200)
 
     def delete(self, entry_id, user_id=None):
         entry = db.session.query(Entry).filter_by(
@@ -213,12 +205,10 @@ class EntryResource(Resource):
         if not entry:
             return send_error('Invalid entry id', 404)
 
-        try:
-            db.session.delete(entry)
-            db.session.commit()
-            return send_success('Successfully deleted entry.', 200)
-        except Exception as e:
-            return send_error(str(e))
+        log.info('Deleting entry {}'.format(entry_id))
+        db.session.delete(entry)
+        db.session.commit()
+        return send_success('Successfully deleted entry.', 200)
 
 
 class ExportResource(Resource):
@@ -251,4 +241,12 @@ def create_apis(api):
 def register_error_handlers(app):
     @app.errorhandler(InvalidJSONException)
     def invalid_json(error):
+        log.info(error)
         return send_error('Invalid JSON body')
+
+    @app.errorhandler(Exception)
+    def generic_exception(error):
+        log.error(error)
+        db.session.rollback()
+        log.info('Rolled back current session')
+        return send_error('Something went wrong.', 500)

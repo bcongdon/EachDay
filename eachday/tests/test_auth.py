@@ -213,10 +213,10 @@ class TestAuthRoutes(BaseTestCase):
         )
         data = json.loads(response.data.decode())
         self.assertEqual(data['status'], 'error')
-        self.assertEqual(data['error'], 'Token blacklisted. Please log in again.')
+        self.assertEqual(data['error'],
+                         'Token blacklisted. Please log in again.')
         self.assertEqual(response.content_type, 'application/json')
         self.assertEqual(response.status_code, 401)
-
 
     def test_invalid_token_rejection(self):
         ''' Test that using an invalid token gives correct error '''
