@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatePickerFormField component should display error if touched 1`] = `
+<DatePickerFormField
+  input={
+    Object {
+      "onChange": [Function],
+      "value": "2017-01-01",
+    }
+  }
+  meta={
+    Object {
+      "error": "Warning!",
+      "touched": true,
+    }
+  }
+>
+  <div>
+    <t
+      dateFormat="YYYY-MM-DD"
+      dateFormatCalendar="MMMM YYYY"
+      disabled={false}
+      disabledKeyboardNavigation={false}
+      dropdownMode="scroll"
+      monthsShown={1}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClickOutside={[Function]}
+      onFocus={[Function]}
+      onMonthChange={[Function]}
+      onSelect={[Function]}
+      popoverAttachment="top left"
+      popoverTargetAttachment="bottom left"
+      popoverTargetOffset="10px 0"
+      selected={"2017-01-01T08:00:00.000Z"}
+      tetherConstraints={
+        Array [
+          Object {
+            "attachment": "together",
+            "to": "window",
+          },
+        ]
+      }
+      todayButton="Today"
+      utcOffset={-420}
+      withPortal={false}
+    >
+      <t
+        attachment="top left"
+        classPrefix="react-datepicker__tether"
+        constraints={
+          Array [
+            Object {
+              "attachment": "together",
+              "to": "window",
+            },
+          ]
+        }
+        renderElementTag="div"
+        renderElementTo={null}
+        targetAttachment="bottom left"
+        targetOffset="10px 0"
+      >
+        <div
+          className="react-datepicker__input-container"
+        >
+          <input
+            className=""
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value="2017-01-01"
+          />
+        </div>
+      </t>
+    </t>
+    <span>
+      Warning!
+    </span>
+  </div>
+</DatePickerFormField>
+`;
+
+exports[`DatePickerFormField component should not display error if not touched 1`] = `
+<DatePickerFormField
+  input={
+    Object {
+      "onChange": [Function],
+      "value": "2017-01-01",
+    }
+  }
+  meta={
+    Object {
+      "error": "Warning!",
+      "touched": false,
+    }
+  }
+>
+  <div>
+    <t
+      dateFormat="YYYY-MM-DD"
+      dateFormatCalendar="MMMM YYYY"
+      disabled={false}
+      disabledKeyboardNavigation={false}
+      dropdownMode="scroll"
+      monthsShown={1}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClickOutside={[Function]}
+      onFocus={[Function]}
+      onMonthChange={[Function]}
+      onSelect={[Function]}
+      popoverAttachment="top left"
+      popoverTargetAttachment="bottom left"
+      popoverTargetOffset="10px 0"
+      selected={"2017-01-01T08:00:00.000Z"}
+      tetherConstraints={
+        Array [
+          Object {
+            "attachment": "together",
+            "to": "window",
+          },
+        ]
+      }
+      todayButton="Today"
+      utcOffset={-420}
+      withPortal={false}
+    >
+      <t
+        attachment="top left"
+        classPrefix="react-datepicker__tether"
+        constraints={
+          Array [
+            Object {
+              "attachment": "together",
+              "to": "window",
+            },
+          ]
+        }
+        renderElementTag="div"
+        renderElementTo={null}
+        targetAttachment="bottom left"
+        targetOffset="10px 0"
+      >
+        <div
+          className="react-datepicker__input-container"
+        >
+          <input
+            className=""
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value="2017-01-01"
+          />
+        </div>
+      </t>
+    </t>
+  </div>
+</DatePickerFormField>
+`;
+
+exports[`DatePickerFormField component should render correctly 1`] = `
+<DatePickerFormField
+  input={
+    Object {
+      "onChange": [Function],
+      "value": "2017-01-01",
+    }
+  }
+  meta={
+    Object {
+      "error": "",
+      "touched": false,
+    }
+  }
+>
+  <div>
+    <t
+      dateFormat="YYYY-MM-DD"
+      dateFormatCalendar="MMMM YYYY"
+      disabled={false}
+      disabledKeyboardNavigation={false}
+      dropdownMode="scroll"
+      monthsShown={1}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClickOutside={[Function]}
+      onFocus={[Function]}
+      onMonthChange={[Function]}
+      onSelect={[Function]}
+      popoverAttachment="top left"
+      popoverTargetAttachment="bottom left"
+      popoverTargetOffset="10px 0"
+      selected={"2017-01-01T08:00:00.000Z"}
+      tetherConstraints={
+        Array [
+          Object {
+            "attachment": "together",
+            "to": "window",
+          },
+        ]
+      }
+      todayButton="Today"
+      utcOffset={-420}
+      withPortal={false}
+    >
+      <t
+        attachment="top left"
+        classPrefix="react-datepicker__tether"
+        constraints={
+          Array [
+            Object {
+              "attachment": "together",
+              "to": "window",
+            },
+          ]
+        }
+        renderElementTag="div"
+        renderElementTo={null}
+        targetAttachment="bottom left"
+        targetOffset="10px 0"
+      >
+        <div
+          className="react-datepicker__input-container"
+        >
+          <input
+            className=""
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            type="text"
+            value="2017-01-01"
+          />
+        </div>
+      </t>
+    </t>
+  </div>
+</DatePickerFormField>
+`;
