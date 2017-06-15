@@ -186,6 +186,38 @@ class TestAuthRoutes(BaseTestCase):
         blacklist = BlacklistToken.query.filter_by(token=auth_token).first()
         self.assertTrue(blacklist is not None)
 
+    def test_blacklist_token_rejection(self):
+        ''' Test that blacklisted auth tokens are rejected '''
+
+        # Create user / auth_token
+        user = User(
+            email='foo@bar.com',
+            password='test',
+            name='joe'
+        )
+        db.session.add(user)
+        db.session.commit()
+        auth_token = user.encode_auth_token(user.id).decode()
+
+        # Blacklist auth_token
+        blacklist_token = BlacklistToken(token=auth_token)
+        db.session.add(blacklist_token)
+        db.session.commit()
+
+        # Check to make sure that the blacklisted token cannot be used
+        response = self.client.get(
+            '/user',
+            headers={
+                'Authorization': 'Bearer ' + auth_token
+            }
+        )
+        data = json.loads(response.data.decode())
+        self.assertEqual(data['status'], 'error')
+        self.assertEqual(data['error'], 'Token blacklisted. Please log in again.')
+        self.assertEqual(response.content_type, 'application/json')
+        self.assertEqual(response.status_code, 401)
+
+
     def test_invalid_token_rejection(self):
         ''' Test that using an invalid token gives correct error '''
         auth_token = 'not_an_auth_token ;)'
