@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`entry component should render correctly with an error message 1`] = `
+<Form
+  as="form"
+  error={true}
+  warning={true}
+>
+  <ErrorMessage
+    message="Something went wrong"
+  />
+  <FormGroup>
+    <FormField>
+      <label>
+        Rating
+      </label>
+      <Field
+        clearable={true}
+        component={[Function]}
+        name="rating"
+      />
+    </FormField>
+    <FormField
+      style={
+        Object {
+          "marginLeft": "auto",
+        }
+      }
+    >
+      <label>
+        Date
+      </label>
+      <Field
+        component={[Function]}
+        name="date"
+      />
+    </FormField>
+  </FormGroup>
+  <FormField>
+    <label>
+      Notes
+    </label>
+    <Field
+      as={[Function]}
+      autoFocus={true}
+      component={[Function]}
+      name="notes"
+      placeholder="How'd the day go?"
+    />
+  </FormField>
+  <Button
+    as="button"
+    primary={true}
+    type="submit"
+  >
+    Save
+  </Button>
+</Form>
+`;
+
+exports[`entry component should render correctly with blank data 1`] = `
+<Form
+  as="form"
+  error={true}
+  warning={true}
+>
+  <FormGroup>
+    <FormField>
+      <label>
+        Rating
+      </label>
+      <Field
+        clearable={true}
+        component={[Function]}
+        name="rating"
+      />
+    </FormField>
+    <FormField
+      style={
+        Object {
+          "marginLeft": "auto",
+        }
+      }
+    >
+      <label>
+        Date
+      </label>
+      <Field
+        component={[Function]}
+        name="date"
+      />
+    </FormField>
+  </FormGroup>
+  <FormField>
+    <label>
+      Notes
+    </label>
+    <Field
+      as={[Function]}
+      autoFocus={true}
+      component={[Function]}
+      name="notes"
+      placeholder="How'd the day go?"
+    />
+  </FormField>
+  <Button
+    as="button"
+    primary={true}
+    type="submit"
+  >
+    Save
+  </Button>
+</Form>
+`;

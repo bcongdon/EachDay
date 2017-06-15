@@ -25,7 +25,7 @@ function validate (formProps) {
   return errors
 }
 
-class EntryForm extends Component {
+export class EntryForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     isNewEntry: PropTypes.bool.isRequired,
