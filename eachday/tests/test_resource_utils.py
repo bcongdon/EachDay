@@ -1,6 +1,6 @@
 from eachday.resources import LoginResource
 from eachday.tests.base import BaseTestCase
-from unittest.mock import patch
+from mock import patch
 import json
 
 
