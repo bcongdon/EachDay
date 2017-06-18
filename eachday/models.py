@@ -32,21 +32,18 @@ class User(db.Model):
         Generates an Auth Token
         :return: string
         """
-        try:
-            td = timedelta(days=User.TOKEN_EXPIRATION_DAYS)
-            payload = {
-                'exp': datetime.utcnow() + td,
-                'iat': datetime.utcnow(),
-                'sub': self.id,
-            }
-            payload.update(UserSchema().dump(self).data)
-            return jwt.encode(
-                payload,
-                app.config.get('SECRET_KEY'),
-                algorithm='HS256'
-            )
-        except Exception as e:
-            return e
+        td = timedelta(days=User.TOKEN_EXPIRATION_DAYS)
+        payload = {
+            'exp': datetime.utcnow() + td,
+            'iat': datetime.utcnow(),
+            'sub': self.id,
+        }
+        payload.update(UserSchema().dump(self).data)
+        return jwt.encode(
+            payload,
+            app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+        )
 
     @staticmethod
     def decode_auth_token(auth_token):
@@ -73,12 +70,6 @@ class Entry(db.Model):
     rating = db.Column(db.Integer)
 
     __table_args__ = (UniqueConstraint('user_id', 'date'),)
-
-    @validates('rating')
-    def validate_rating(self, key, rating):
-        if rating is not None and not 1 <= rating <= 10:
-            raise ValueError('Rating must be between 1 and 10')
-        return rating
 
 
 class BlacklistToken(db.Model):
