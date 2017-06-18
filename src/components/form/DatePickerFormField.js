@@ -36,7 +36,7 @@ class DatePickerFormField extends Component {
     return (
       <div>
         <DatePicker
-          selected={moment(input.value)}
+          selected={moment.utc(input.value)}
           dateFormat='YYYY-MM-DD'
           todayButton={'Today'}
           onChange={this.handleChange}

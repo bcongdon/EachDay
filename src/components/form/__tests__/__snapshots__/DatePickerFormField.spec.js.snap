@@ -32,7 +32,7 @@ exports[`DatePickerFormField component should display error if touched 1`] = `
       popoverAttachment="top left"
       popoverTargetAttachment="bottom left"
       popoverTargetOffset="10px 0"
-      selected={"2017-01-01T08:00:00.000Z"}
+      selected={"2017-01-01T00:00:00.000Z"}
       tetherConstraints={
         Array [
           Object {
@@ -42,7 +42,7 @@ exports[`DatePickerFormField component should display error if touched 1`] = `
         ]
       }
       todayButton="Today"
-      utcOffset={-420}
+      utcOffset={-0}
       withPortal={false}
     >
       <t
@@ -117,7 +117,7 @@ exports[`DatePickerFormField component should not display error if not touched 1
       popoverAttachment="top left"
       popoverTargetAttachment="bottom left"
       popoverTargetOffset="10px 0"
-      selected={"2017-01-01T08:00:00.000Z"}
+      selected={"2017-01-01T00:00:00.000Z"}
       tetherConstraints={
         Array [
           Object {
@@ -127,7 +127,7 @@ exports[`DatePickerFormField component should not display error if not touched 1
         ]
       }
       todayButton="Today"
-      utcOffset={-420}
+      utcOffset={-0}
       withPortal={false}
     >
       <t
@@ -199,7 +199,7 @@ exports[`DatePickerFormField component should render correctly 1`] = `
       popoverAttachment="top left"
       popoverTargetAttachment="bottom left"
       popoverTargetOffset="10px 0"
-      selected={"2017-01-01T08:00:00.000Z"}
+      selected={"2017-01-01T00:00:00.000Z"}
       tetherConstraints={
         Array [
           Object {
@@ -209,7 +209,7 @@ exports[`DatePickerFormField component should render correctly 1`] = `
         ]
       }
       todayButton="Today"
-      utcOffset={-420}
+      utcOffset={-0}
       withPortal={false}
     >
       <t

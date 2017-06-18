@@ -9,6 +9,7 @@ describe('DatePickerFormField component', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     Date.now = jest.fn(() => 1495984743025)
+    Date.prototype.getTimezoneOffset = () => 0 // eslint-disable-line no-extend-native
   })
 
   it('should render correctly', () => {
